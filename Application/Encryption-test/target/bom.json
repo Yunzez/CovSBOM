@@ -1,0 +1,382 @@
+{
+  "bomFormat" : "CycloneDX",
+  "specVersion" : "1.4",
+  "serialNumber" : "urn:uuid:7305f37c-e49d-4afd-a2f6-dc9046bdaf93",
+  "version" : 1,
+  "metadata" : {
+    "timestamp" : "2024-02-08T23:46:22Z",
+    "tools" : [
+      {
+        "vendor" : "OWASP Foundation",
+        "name" : "CycloneDX Maven plugin",
+        "version" : "2.7.10",
+        "hashes" : [
+          {
+            "alg" : "MD5",
+            "content" : "1cc7f6a0382f8bb2f758d6a6ea401d1b"
+          },
+          {
+            "alg" : "SHA-1",
+            "content" : "a4297947a1f2d7d453105db542651614bbd37f38"
+          },
+          {
+            "alg" : "SHA-256",
+            "content" : "bd0fdd8f2f2116eee5e715aeac1580f19eb7a10ec2b6f805b53567067658e872"
+          },
+          {
+            "alg" : "SHA-512",
+            "content" : "9cde8352a427e10b96cae01348fc7cfe5d4aa9cd0a5e5dd93b414ce3bb7d112993c3b3004e53af52567fbfa16de0704ec59a5556a635ad70571fd124ae389f39"
+          },
+          {
+            "alg" : "SHA-384",
+            "content" : "93d7bf5b5c735347edfbfbd66810273ca840f9a322b816d22d44c3d8e8255c09e86570bb23712aeb0cade0f478be5aeb"
+          },
+          {
+            "alg" : "SHA3-384",
+            "content" : "4467f16e9ca32190a6e49c65339eb28ee5e8c78f4e918fcf95128a4b7648898de56ccb43eacfad0c9391ef8cdb7d629a"
+          },
+          {
+            "alg" : "SHA3-256",
+            "content" : "ed2996c99b483e969221d5e9a40f562ea2ab85442d361d72a90e85266a3ed781"
+          },
+          {
+            "alg" : "SHA3-512",
+            "content" : "c8e6ea9ddc38edc77e284b3bf541663e84752bdc59ed1935799847a48a14ea2fa531b61008fefcba37d732a56702a11ac112437b9b80d18f4ecc8ef0ecfb32cf"
+          }
+        ]
+      }
+    ],
+    "component" : {
+      "group" : "com.encryption",
+      "name" : "demo",
+      "version" : "1.0-SNAPSHOT",
+      "licenses" : [ ],
+      "purl" : "pkg:maven/com.encryption/demo@1.0-SNAPSHOT?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "http://www.example.com"
+        }
+      ],
+      "type" : "library",
+      "bom-ref" : "pkg:maven/com.encryption/demo@1.0-SNAPSHOT?type=jar"
+    },
+    "properties" : [
+      {
+        "name" : "maven.goal",
+        "value" : "makeAggregateBom"
+      },
+      {
+        "name" : "maven.scopes",
+        "value" : "compile,provided,runtime,system"
+      }
+    ]
+  },
+  "components" : [
+    {
+      "group" : "org.bouncycastle",
+      "name" : "bcprov-jdk15on",
+      "version" : "1.70",
+      "description" : "The Bouncy Castle Crypto package is a Java implementation of cryptographic algorithms. This jar contains JCE provider and lightweight API for the Bouncy Castle Cryptography APIs for JDK 1.5 and up.",
+      "scope" : "required",
+      "hashes" : [
+        {
+          "alg" : "MD5",
+          "content" : "1809d0449a6374279c01fdd3be26cd92"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "4636a0d01f74acaf28082fb62b317f1080118371"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "8f3c20e3e2d565d26f33e8d4857a37d0d7f8ac39b62a7026496fcab1bdac30d4"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "7dccfc636ee4df1487615818cfa99c69941081df95e8ef1eaf4bca165594dff9547e3774fd70de3418abace77d2c45889f70bcd2e6823f8539f359e68eaf36d1"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "a0b35d204cd962f1d246fa94b6e8b0fcee1a7c3f37b7e87cda742f2124a25b48794ce11a903ea8d12009c86227b6808d"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "980d81d3d9906764bbf2ae9b3b364ea58628b485ce1dc3d06734e10495d79f2be2e7cc7df61ac88cd67c1104c7af9393"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "10a3572e42d29f609721d795116e3e5d0f6f03efef84bb979ce72e26908d242b"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "a0761cb6deeb86c94b96850c72c0a0eaf516ca849f4b8268f9f60c9ed2a6730e692c15098d47e617da294e931113c6cbcaddec8957c9f029fa595b5f14ff35ac"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "name" : "Bouncy Castle Licence",
+            "url" : "https://www.bouncycastle.org/licence.html"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/org.bouncycastle/bcprov-jdk15on@1.70?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://www.bouncycastle.org/java.html"
+        },
+        {
+          "type" : "issue-tracker",
+          "url" : "https://github.com/bcgit/bc-java/issues"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/bcgit/bc-java"
+        }
+      ],
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.bouncycastle/bcprov-jdk15on@1.70?type=jar"
+    },
+    {
+      "publisher" : "The JASYPT team",
+      "group" : "org.jasypt",
+      "name" : "jasypt",
+      "version" : "1.9.3",
+      "description" : "Java library which enables encryption in java apps with minimum effort.",
+      "scope" : "required",
+      "hashes" : [
+        {
+          "alg" : "MD5",
+          "content" : "39327c7e38782102ecdb3c9dc4e8dcd3"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "0d99ef9540f51c617f2a293b460f025d2ee563dd"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "f481fbb8dd8ce754bfde7552af4fcbe8c5e303d53663bb3d8ce9d4338e0e55aa"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "99369da44e4c26f64e600f99b135eb05167ae1ebb5bb9f22233f14023f5416318bb4ca5893dbb0e7d444395ea6fa53713559a6990120b4fc962a1e9284ba5821"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "12baa02ea8f8bdfdf04070d216dff4339b7b1c128f895007e900a18ee38a899e1a82fded92595a9a6f9127ae8c42877c"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "72ba6c5ea5781cf7f627fc1e847c68e0064947cd75587e028a443b2d8056c6434cb5be8a0e3c6170f71fae6d67719e8d"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "1cf8809814fad98e8204220110becfeb901050ea9aefd9cb4607adf76631b547"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "08f3aee5e0c3b57cb0be5f8f2de7b2429793c717dd25fb74e20eaafcaf1cfac3721cf184d179a4c507d90fd864b300f3e83d15ebbeb937637d8eb1d1bf779d48"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/org.jasypt/jasypt@1.9.3?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "http://www.jasypt.org"
+        },
+        {
+          "type" : "distribution",
+          "url" : "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+        },
+        {
+          "type" : "vcs",
+          "url" : "scm:git:git@github.com:jasypt/jasypt.git"
+        }
+      ],
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.jasypt/jasypt@1.9.3?type=jar"
+    },
+    {
+      "publisher" : "The Apache Software Foundation",
+      "group" : "org.apache.commons",
+      "name" : "commons-crypto",
+      "version" : "1.1.0",
+      "description" : "Apache Commons Crypto is a cryptographic library optimized with AES-NI (Advanced Encryption Standard New Instructions). It provides Java API for both cipher level and Java stream level. Developers can use it to implement high performance AES encryption/decryption with the minimum code and effort. Please note that Crypto doesn't implement the cryptographic algorithm such as AES directly. It wraps to Openssl or JCE which implement the algorithms. Features -------- 1. Cipher API for low level cryptographic operations. 2. Java stream API (CryptoInputStream/CryptoOutputStream) for high level stream encryption/decryption. 3. Both optimized with high performance AES encryption/decryption. (1400 MB/s - 1700 MB/s throughput in modern Xeon processors). 4. JNI-based implementation to achieve comparable performance to the native C/C++ version based on OpenSsl. 5. Portable across various operating systems (currently only Linux/MacOSX/Windows); Apache Commons Crypto loads the library according to your machine environment (it checks system properties, `os.name` and `os.arch`). 6. Simple usage. Add the commons-crypto-(version).jar file to your classpath. Export restrictions ------------------- This distribution includes cryptographic software. The country in which you currently reside may have restrictions on the import, possession, use, and/or re-export to another country, of encryption software. BEFORE using any encryption software, please check your country's laws, regulations and policies concerning the import, possession, or use, and re-export of encryption software, to see if this is permitted. See <http://www.wassenaar.org/> for more information. The U.S. Government Department of Commerce, Bureau of Industry and Security (BIS), has classified this software as Export Commodity Control Number (ECCN) 5D002.C.1, which includes information security software using or performing cryptographic functions with asymmetric algorithms. The form and manner of this Apache Software Foundation distribution makes it eligible for export under the License Exception ENC Technology Software Unrestricted (TSU) exception (see the BIS Export Administration Regulations, Section 740.13) for both object code and source code. The following provides more details on the included cryptographic software: * Commons Crypto use [Java Cryptography Extension](http://docs.oracle.com/javase/8/docs/technotes/guides/security/crypto/CryptoSpec.html) provided by Java * Commons Crypto link to and use [OpenSSL](https://www.openssl.org/) ciphers",
+      "scope" : "required",
+      "hashes" : [
+        {
+          "alg" : "MD5",
+          "content" : "c71451f3c4737ba6d84f9bd9e8f2400d"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "4a8b4caa84032a0f1f1dad16875820a4f37524b7"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "44dc28551cdba731658090d9b10d2eead9839c269d70cdcd7d56c0423df5227f"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "62acf1d90ad667c8f3f9b267c6f4fefa57eb914ef57a24e10a7dc6ea7bf1f2a6933db831f836dc2ca0fe86aff84a6d1a0fb3c8bb34c7c24e3e1190778efb241d"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "0d7c20964ab9cbde60d3d03ca92b481e30f969b30adc336b77ec8b8dcb660e327bfff8c98cb9c30163e7bdf5ffbae486"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "a86cd2c434475336d6258dbccae98575888b910a935517ddb832bbefd944b0427ebb7742e5ef65e5e7e2046f94a4fc27"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "aea2f3e041185d2f7ede524ebdc76f76708db74da5023dc34d2d75c0fe2ec6c2"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "313cd4870c67daf90157f6567e969cfe8845f0cf4b90f7667dfbadd4cb35a526109a59b60e1bb677a9938471c15ebdfe973038e0cdfba2f06db98fdbf88e8710"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/org.apache.commons/commons-crypto@1.1.0?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://commons.apache.org/proper/commons-crypto/"
+        },
+        {
+          "type" : "build-system",
+          "url" : "https://builds.apache.org/search/?q=Commons-CRYPTO"
+        },
+        {
+          "type" : "distribution",
+          "url" : "https://repository.apache.org/service/local/staging/deploy/maven2"
+        },
+        {
+          "type" : "issue-tracker",
+          "url" : "https://issues.apache.org/jira/browse/CRYPTO"
+        },
+        {
+          "type" : "mailing-list",
+          "url" : "https://mail-archives.apache.org/mod_mbox/commons-user/"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://gitbox.apache.org/repos/asf?p=commons-crypto.git"
+        }
+      ],
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.apache.commons/commons-crypto@1.1.0?type=jar"
+    },
+    {
+      "group" : "net.java.dev.jna",
+      "name" : "jna",
+      "version" : "5.5.0",
+      "description" : "Java Native Access",
+      "scope" : "required",
+      "hashes" : [
+        {
+          "alg" : "MD5",
+          "content" : "acfb5b5fd9ee10bf69497792fd469f85"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "0e0845217c4907822403912ad6828d8e0b256208"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "b308faebfe4ed409de8410e0a632d164b2126b035f6eacff968d3908cafb4d9e"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "e52575f58a195ceb3bd16b9740eadf5bc5b1d4d63c0734e8e5fd1d1776aa2d068d2e4c7173b83803f95f72c0a6759ae1c9b65773c734250d4cfcdf47a19f82aa"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "9fab5e0a992959f723a5fcea5b88e0a05e593b4472df397f326a4d467973496ff955e32871f4909f38e0006f728b2731"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "338a740fb868809b9eabee64183b359c74b9cc0723dd5158c73fd48c9a9a8ab778918b47e7016b727f735c153c44436b"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "8ea0f28658b8c1f08c9a616e68c62738eecfa12d7e35f5b8f1985e2d22c1b1c2"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "b59deeb847dda02fa9660dd9b869320f0eabb94e4321e46805fa3fc8eb3e251575b2d0f8ddaac9ea4b656523734a81cbc0d8abcad1f2a8b434f6298823f3f670"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "name" : "LGPL, version 2.1",
+            "url" : "http://www.gnu.org/licenses/licenses.html"
+          }
+        },
+        {
+          "license" : {
+            "id" : "Apache-2.0"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/net.java.dev.jna/jna@5.5.0?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://github.com/java-native-access/jna"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/java-native-access/jna"
+        }
+      ],
+      "type" : "library",
+      "bom-ref" : "pkg:maven/net.java.dev.jna/jna@5.5.0?type=jar"
+    }
+  ],
+  "dependencies" : [
+    {
+      "ref" : "pkg:maven/com.encryption/demo@1.0-SNAPSHOT?type=jar",
+      "dependsOn" : [
+        "pkg:maven/org.bouncycastle/bcprov-jdk15on@1.70?type=jar",
+        "pkg:maven/org.jasypt/jasypt@1.9.3?type=jar",
+        "pkg:maven/org.apache.commons/commons-crypto@1.1.0?type=jar"
+      ]
+    },
+    {
+      "ref" : "pkg:maven/org.bouncycastle/bcprov-jdk15on@1.70?type=jar",
+      "dependsOn" : [ ]
+    },
+    {
+      "ref" : "pkg:maven/org.jasypt/jasypt@1.9.3?type=jar",
+      "dependsOn" : [ ]
+    },
+    {
+      "ref" : "pkg:maven/org.apache.commons/commons-crypto@1.1.0?type=jar",
+      "dependsOn" : [
+        "pkg:maven/net.java.dev.jna/jna@5.5.0?type=jar"
+      ]
+    },
+    {
+      "ref" : "pkg:maven/net.java.dev.jna/jna@5.5.0?type=jar",
+      "dependsOn" : [ ]
+    }
+  ]
+}
