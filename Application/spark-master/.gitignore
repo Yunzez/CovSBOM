@@ -1,0 +1,14 @@
+target
+bin
+.settings
+.externalToolBuilders
+.project
+.classpath
+.pdm
+.idea
+*.iml
+*.ipr
+*.iws
+reports
+.java-version
+.DS_Store
