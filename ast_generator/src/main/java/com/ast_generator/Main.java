@@ -51,7 +51,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         libraryAstJsonMap = new HashMap<>();
         // Delete existing ast.json file if it exists
-        System.out.print("initializing");
+        System.out.print("-------Initializing-------\n");
         astPath = Paths.get("asts/main/ast.json");
         if (Files.exists(astPath)) {
             try {
@@ -63,13 +63,12 @@ public class Main {
             Files.createDirectories(astPath.getParent());
         }
 
-        System.out.print("Please enter the path to the Java source file (hit enter for default): ");
-        String rootDirectoryPath = scanner.nextLine().trim();
-
-        if (rootDirectoryPath.isEmpty()) {
-            // ! default source file path:
-            rootDirectoryPath = "java/Encryption-test";
-        }
+        System.out.print("Please enter the path to the Java source file: ");
+        
+        // String rootDirectoryPath = scanner.nextLine().trim();
+        
+        // Dennis: Only for testing
+        String rootDirectoryPath = "/home/dennis/Documents/CovSBOM/Application/spark-master";
 
         // Validate and process the directory
         Path rootPath = Paths.get(rootDirectoryPath);
@@ -88,26 +87,26 @@ public class Main {
 
         Map<String, Dependency> dependencyMap = DependencyProcessor.parsePomForDependencies(inferredPomPath);
 
-        // * import manager manage imports line to share imports between files
-        ImportManager importManager = new ImportManager();
+        // // * import manager manage imports line to share imports between files
+        // ImportManager importManager = new ImportManager();
 
-        // print out dependecy map in a easy to read format
-        System.out.println("---------------------------- dependency map ----------------------------");
-        dependencyMap.forEach((k, v) -> System.out.println(k + " : " + v));
-        System.out.println("---------------------------- dependency map ----------------------------");
+        // // print out dependecy map in a easy to read format
+        // System.out.println("---------------------------- dependency map ----------------------------");
+        // dependencyMap.forEach((k, v) -> System.out.println(k + " : " + v));
+        // System.out.println("---------------------------- dependency map ----------------------------");
 
-        // ! process directory (local java file)
-        DirectoryProcessor processor = new DirectoryProcessor(rootDirectoryPath, astPath, dependencyMap);
+        // // ! process directory (local java file)
+        // DirectoryProcessor processor = new DirectoryProcessor(rootDirectoryPath, astPath, dependencyMap);
 
-        // ! add import manager to processor before processing directory
-        processor.addImportMaganer(importManager);
+        // // ! add import manager to processor before processing directory
+        // processor.addImportMaganer(importManager);
 
-        // ! turn this on to process directory
-        processor.processDirectory();
+        // // ! turn this on to process directory
+        // processor.processDirectory();
 
-        importManager.printImports();
-        // // ! process dependencies
-        // DependencyProcessor.processDependencies(inferredPomPath, importManager);
+        // importManager.printImports();
+        // // // ! process dependencies
+        // // DependencyProcessor.processDependencies(inferredPomPath, importManager);
 
         scanner.close();
     }

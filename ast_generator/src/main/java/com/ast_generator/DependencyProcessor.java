@@ -77,6 +77,7 @@ public class DependencyProcessor {
      */
     public static Map<String, Dependency> parsePomForDependencies(String pomFilePath) {
         Map<String, Dependency> dependencyMap = new HashMap<>();
+        
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -84,6 +85,28 @@ public class DependencyProcessor {
             doc.getDocumentElement().normalize();
 
             NodeList dependenciesList = doc.getElementsByTagName("dependency");
+
+            NodeList propertiesList = doc.getElementsByTagName("properties");
+            Map<String, String> versionMap = new HashMap<>();
+            if (propertiesList != null && propertiesList.getLength() > 0) {
+                for (int i = 0; i < propertiesList.getLength(); i++) {
+                    Node propertiesNode = propertiesList.item(i);
+                    if (propertiesNode.getNodeType() == Node.ELEMENT_NODE) {
+                        Element propertiesElement = (Element) propertiesNode;
+                        NodeList propertyNodes = propertiesElement.getChildNodes();
+                        for (int j = 0; j < propertyNodes.getLength(); j++) {
+                            Node propertyNode = propertyNodes.item(j);
+                            if (propertyNode.getNodeType() == Node.ELEMENT_NODE) {
+                                Element propertyElement = (Element) propertyNode;
+                                String propertyName = propertyElement.getTagName();
+                                String propertyValue = propertyElement.getTextContent();
+                                versionMap.put(propertyName, propertyValue);
+                            }
+                        }
+                    }
+                }
+            }
+            
             System.out.println("Number of dependencies: " + dependenciesList.getLength());
             System.out.println("----------------------------");
             for (int i = 0; i < dependenciesList.getLength(); i++) {
@@ -96,9 +119,20 @@ public class DependencyProcessor {
                     String artifactId = dependencyElement.getElementsByTagName("artifactId").item(0).getTextContent();
                     String version = dependencyElement.getElementsByTagName("version").item(0).getTextContent();
 
+                    if (version.startsWith("${")) {
+                        version = versionMap.get(version.substring(2, version.length() - 1));
+                    }
+                    
+                    // System.out.println("\nCurrent groupId :" + groupId);
+                    // System.out.println("\nCurrent artifactId :" + artifactId);
+                    // System.out.println("\nCurrent version :" + version);
+
                     String mavenPath = System.getProperty("user.home") + "/.m2/repository/"
                             + groupId.replace('.', '/') + "/" + artifactId + "/" + version
-                            + "/" + artifactId + "-" + version + ".jar";
+                            + "/" + artifactId + "-" + version + "-sources.jar";
+
+                    // System.out.println("\nCurrent mavenPath :" + mavenPath);
+                    
 
                     Dependency dependency = new Dependency(groupId, artifactId, version, mavenPath);
                     dependencyMap.put(artifactId, dependency);
