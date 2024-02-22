@@ -86,6 +86,9 @@ public class Main {
             inferredPomPath = scanner.nextLine();
         }
 
+        System.out.println("installing source code: " + rootDirectoryPath);
+        Utils.mavenInstallSources(rootDirectoryPath);
+
         Map<String, Dependency> dependencyMap = DependencyProcessor.parsePomForDependencies(inferredPomPath);
 
         // print out dependecy map in a easy to read format
@@ -94,12 +97,15 @@ public class Main {
         System.out.println("---------------------------- dependency map ----------------------------");
 
         // ! generate ASTs for all java files in the application
-        DirectoryProcessor processor = new DirectoryProcessor(rootDirectoryPath, astPath, dependencyMap);
-        ImportManager importManager = new ImportManager(dependencyMap, astPath);
-        processor.addImportMaganer(importManager);
-        processor.processDirectory();
 
-        // ! based on ASTs, get all the import statements
+        // * create an instance of import manager
+        ImportManager importManager = new ImportManager(dependencyMap, astPath);
+
+        // * create an instance of directory processor
+        DirectoryProcessor processor = new DirectoryProcessor(rootDirectoryPath, astPath, dependencyMap, importManager);
+    
+        // * process the directory
+        processor.processDirectory();
 
         // ! filter out the third party libraries
 
@@ -110,22 +116,4 @@ public class Main {
 
         scanner.close();
     }
-
-    private static void appendAllASTsToJsonFile() throws IOException {
-        JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
-
-        if (Files.exists(astPath)) {
-            String existingContent = Files.readString(astPath);
-            JsonObject existingJson = Json.createReader(new StringReader(existingContent)).readObject();
-            jsonBuilder = Json.createObjectBuilder(existingJson);
-        }
-
-        libraryAstJsonMap.forEach(jsonBuilder::add);
-
-        try (JsonWriter jsonWriter = Json.createWriter(
-                Files.newBufferedWriter(astPath, StandardOpenOption.CREATE, StandardOpenOption.WRITE))) {
-            jsonWriter.writeObject(jsonBuilder.build());
-        }
-    }
-
 }

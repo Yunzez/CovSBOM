@@ -51,10 +51,11 @@ public class DirectoryProcessor {
         this.separateFiles = separateFiles;
     }
 
-    public DirectoryProcessor(String directoryPath, Path astPath, Map<String, Dependency> dependencyMap) {
+    public DirectoryProcessor(String directoryPath, Path astPath, Map<String, Dependency> dependencyMap, ImportManager importManager) {
         this.directoryPath = directoryPath;
         DirectoryProcessor.astPath = astPath;
         DirectoryProcessor.dependencyMap = dependencyMap;
+        this.importManager = importManager;
     }
 
     // Main method for command-line execution
@@ -74,61 +75,39 @@ public class DirectoryProcessor {
         }
     }
 
-    public void addImportMaganer(ImportManager manager) {
-        DirectoryProcessor.importManager = manager;
-    }
-
     private static void processDirectory(Path directory) throws IOException {
         Files.walkFileTree(directory, new SimpleFileVisitor<Path>() {
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                 if (file.toString().endsWith(".java")) {
-                    generateAST(file.toString());
+                    processSingleJavaFile(file.toString());
                 }
                 return FileVisitResult.CONTINUE;
             }
         });
     }
 
-    private static void generateAST(String sourceFilePath) {
+    private static void processSingleJavaFile(String sourceFilePath) {
+
         // Configure parser
-        // System.out.println("Configuring parser for file: " + sourceFilePath);
         ParserConfiguration config = new ParserConfiguration();
         StaticJavaParser.setConfiguration(config);
         Path path = Paths.get(sourceFilePath);
 
         try {
+            // ! generate AST object
             CompilationUnit cu = StaticJavaParser.parse(path);
 
-            // ! dependency can be null when we are processing directory without pom.xml or
-            // ! calling this class by itself
             if (dependencyMap != null) {
-                FunctionSignatureExtractor extractor = new FunctionSignatureExtractor(
-                        dependencyMap != null ? dependencyMap : null);
-                extractor.extractThirdPartyImports(cu);
-                Set<String> thirdPartyImports = extractor.getThirdPartyImports();
-
-                // Store the imports in ImportManager
-                if (importManager != null) {
-                    importManager.addImports(thirdPartyImports);
-                } else {
-                    System.out.println("ImportManager is null");
-                    System.out.println("---------------------------- third party imports ----------------------------");
-                    for (String signature : thirdPartyImports) {
-                        System.out.println(signature);
-                    }
-                }
-
+                analyzeSingleASTObject(cu);
             }
 
-            StringWriter stringWriter = new StringWriter();
-            try (JsonGenerator jsonGenerator = Json.createGenerator(stringWriter)) {
-                JavaParserJsonSerializer serializer = new JavaParserJsonSerializer();
-                serializer.serialize(cu, jsonGenerator);
-            }
+            // ! convert AST object to JSON
+            String astJson = convertASTObjecttoJson(cu, path);
 
-            String astJson = stringWriter.toString();
-            appendLocalASTToJsonFile(path.toString(), astJson);
+            // ! save AST JSON to file
+            saveASTJsonToFile(path.toString(), astJson);
+
         } catch (IOException e) {
             System.out.println("Error parsing file: " + path);
             e.printStackTrace();
@@ -139,63 +118,139 @@ public class DirectoryProcessor {
         }
     }
 
-    private static void appendLocalASTToJsonFile(String sourceFilePath, String astJson)
+    private static void analyzeSingleASTObject(CompilationUnit cu) {
+        FunctionSignatureExtractor extractor = new FunctionSignatureExtractor(
+                dependencyMap != null ? dependencyMap : null);
+        extractor.extractThirdPartyImports(cu);
+        Set<String> thirdPartyImports = extractor.getThirdPartyImports();
+
+        // Store the imports in ImportManager
+        if (importManager != null) {
+            importManager.addImports(thirdPartyImports);
+        } else {
+            System.out.println("ImportManager is null");
+            System.out.println("---------------------------- third party imports ----------------------------");
+            for (String signature : thirdPartyImports) {
+                System.out.println(signature);
+            }
+        }
+    }
+
+    private static String convertASTObjecttoJson(CompilationUnit cu, Path path) throws IOException {
+        StringWriter stringWriter = new StringWriter();
+        try (JsonGenerator jsonGenerator = Json.createGenerator(stringWriter)) {
+            JavaParserJsonSerializer serializer = new JavaParserJsonSerializer();
+            serializer.serialize(cu, jsonGenerator);
+        }
+
+        String astJson = stringWriter.toString();
+        return astJson;
+    }
+
+    // private static void generateAST(String sourceFilePath) {
+    //     // Configure parser
+    //     // System.out.println("Configuring parser for file: " + sourceFilePath);
+    //     ParserConfiguration config = new ParserConfiguration();
+    //     StaticJavaParser.setConfiguration(config);
+    //     Path path = Paths.get(sourceFilePath);
+
+    //     try {
+    //         CompilationUnit cu = StaticJavaParser.parse(path);
+
+    //         // ! dependency can be null when we are processing directory without pom.xml or
+    //         // ! calling this class by itself
+    //         if (dependencyMap != null) {
+    //             FunctionSignatureExtractor extractor = new FunctionSignatureExtractor(
+    //                     dependencyMap != null ? dependencyMap : null);
+    //             extractor.extractThirdPartyImports(cu);
+    //             Set<String> thirdPartyImports = extractor.getThirdPartyImports();
+
+    //             // Store the imports in ImportManager
+    //             if (importManager != null) {
+    //                 importManager.addImports(thirdPartyImports);
+    //             } else {
+    //                 System.out.println("ImportManager is null");
+    //                 System.out.println("---------------------------- third party imports ----------------------------");
+    //                 for (String signature : thirdPartyImports) {
+    //                     System.out.println(signature);
+    //                 }
+    //             }
+
+    //         }
+
+    //         StringWriter stringWriter = new StringWriter();
+    //         try (JsonGenerator jsonGenerator = Json.createGenerator(stringWriter)) {
+    //             JavaParserJsonSerializer serializer = new JavaParserJsonSerializer();
+    //             serializer.serialize(cu, jsonGenerator);
+    //         }
+
+    //         String astJson = stringWriter.toString();
+    //         appendLocalASTToJsonFile(path.toString(), astJson);
+    //     } catch (IOException e) {
+    //         System.out.println("Error parsing file: " + path);
+    //         e.printStackTrace();
+    //     } catch (ParseProblemException e) {
+    //         System.out.print("Parse problem in file: " + sourceFilePath);
+    //         e.printStackTrace();
+    //         // System.out.println(" Skipped");
+    //     }
+    // }
+
+    private static void saveASTJsonToFile(String sourceFilePath, String astJson)
             throws IOException {
 
         // if (separateFiles) {
-            // Replace .java extension with .json
-            Path dirPath = Path.of("asts/main");
-            if (!Files.exists(dirPath)) {
-                Files.createDirectories(dirPath);
-            }
-            Path filePath = dirPath.resolve(sourceFilePath.substring(0, sourceFilePath.length() - 5) + ".json");
-            if (!Files.exists(filePath.getParent())) {
-                Files.createDirectories(filePath.getParent());
-            }
-            
-            if (Files.exists(filePath)) {
-                Files.delete(filePath);
-            } else {
-                Files.createFile(filePath);
-            }
+        // Replace .java extension with .json
+        Path dirPath = Path.of("asts/main");
+        if (!Files.exists(dirPath)) {
+            Files.createDirectories(dirPath);
+        }
+        Path filePath = dirPath.resolve(sourceFilePath.substring(0, sourceFilePath.length() - 5) + ".json");
+        if (!Files.exists(filePath.getParent())) {
+            Files.createDirectories(filePath.getParent());
+        }
 
-            // Create a new JSON object with fileName, className, and AST data
-           
-            JsonObject wrappedJson = Json.createObjectBuilder()
-                    .build();
+        if (Files.exists(filePath)) {
+            Files.delete(filePath);
+        } else {
+            Files.createFile(filePath);
+        }
 
-            // Convert the new JSON object to string and write to the file
-            System.out.println("Writing to file: " + filePath);
-            System.out.println("AST: " + astJson.length());
-            Files.writeString(filePath, astJson.toString(), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+        // Convert the new JSON object to string and write to the file
+        System.out.println("Writing to file: " + filePath);
+        System.out.println("AST: " + astJson.length());
+        Files.writeString(filePath, astJson.toString(), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
 
         // } else {
 
-        //     JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
-        //     System.out.println("Appending AST to JSON file: " + astPath);
-        //     if (!Files.exists(astPath)) {
-        //         Files.createFile(astPath);
-        //     }
-        //     // Parse existing JSON and add new AST
-        //     String existingContent = Files.readString(astPath);
-        //     if (existingContent.trim().isEmpty()) {
-        //         // File is empty, start with an empty JSON object
-        //         jsonBuilder = Json.createObjectBuilder();
-        //     } else {
-        //         // File has content, parse it as JSON
-        //         JsonObject existingJson = Json.createReader(new StringReader(existingContent)).readObject();
-        //         jsonBuilder = Json.createObjectBuilder(existingJson);
-        //     }
+        // JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
+        // System.out.println("Appending AST to JSON file: " + astPath);
+        // if (!Files.exists(astPath)) {
+        // Files.createFile(astPath);
+        // }
+        // // Parse existing JSON and add new AST
+        // String existingContent = Files.readString(astPath);
+        // if (existingContent.trim().isEmpty()) {
+        // // File is empty, start with an empty JSON object
+        // jsonBuilder = Json.createObjectBuilder();
+        // } else {
+        // // File has content, parse it as JSON
+        // JsonObject existingJson = Json.createReader(new
+        // StringReader(existingContent)).readObject();
+        // jsonBuilder = Json.createObjectBuilder(existingJson);
+        // }
 
-        //     // Add new AST
-        //     JsonObject newAst = Json.createReader(new StringReader(astJson)).readObject();
-        //     jsonBuilder.add(sourceFilePath, newAst);
+        // // Add new AST
+        // JsonObject newAst = Json.createReader(new
+        // StringReader(astJson)).readObject();
+        // jsonBuilder.add(sourceFilePath, newAst);
 
-        //     // Write back to file
-        //     try (JsonWriter jsonWriter = Json.createWriter(
-        //             Files.newBufferedWriter(astPath, StandardOpenOption.CREATE, StandardOpenOption.WRITE))) {
-        //         jsonWriter.writeObject(jsonBuilder.build());
-        //     }
+        // // Write back to file
+        // try (JsonWriter jsonWriter = Json.createWriter(
+        // Files.newBufferedWriter(astPath, StandardOpenOption.CREATE,
+        // StandardOpenOption.WRITE))) {
+        // jsonWriter.writeObject(jsonBuilder.build());
+        // }
         // }
     }
 }

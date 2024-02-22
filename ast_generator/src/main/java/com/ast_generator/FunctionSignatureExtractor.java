@@ -35,13 +35,13 @@ public class FunctionSignatureExtractor {
         compilationUnit.findAll(ImportDeclaration.class).forEach(importDecl -> {
             String importName = importDecl.getNameAsString();
             // Check if this is a third-party import
-            System.out.println("importName: " + importName);
+            // System.out.println("importName: " + importName);
             if (isThirdPartyImport(importName)) {
                 thirdPartyImports.add(importName);
             }
         });
 
-        System.out.println("thirdPartyImports: " + thirdPartyImports.toString());
+        // System.out.println("thirdPartyImports: " + thirdPartyImports.toString());
     }
 
 
