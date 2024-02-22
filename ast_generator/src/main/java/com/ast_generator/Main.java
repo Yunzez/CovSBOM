@@ -68,7 +68,8 @@ public class Main {
         // String rootDirectoryPath = scanner.nextLine().trim();
         
         // Dennis: Only for testing
-        String rootDirectoryPath = "/home/dennis/Documents/CovSBOM/Application/spark-master";
+        System.out.println("rootDirectoryPath: " + System.getProperty("user.dir"));
+        String rootDirectoryPath = "Application/spark-master";
 
         // Validate and process the directory
         Path rootPath = Paths.get(rootDirectoryPath);
