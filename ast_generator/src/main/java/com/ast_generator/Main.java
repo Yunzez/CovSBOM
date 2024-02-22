@@ -99,6 +99,10 @@ public class Main {
         processor.addImportMaganer(importManager);
         processor.processDirectory();
 
+        // ! based on ASTs, get all the import statements
+
+        // ! filter out the third party libraries
+
         // ! test
         importManager.printImports();
         // // ! process dependencies
