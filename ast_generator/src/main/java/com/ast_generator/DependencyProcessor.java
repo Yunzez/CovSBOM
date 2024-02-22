@@ -56,12 +56,11 @@ public class DependencyProcessor {
      * dependency, and stores them in a `HashMap`. It then generates ASTs for all
      * dependencies.
      */
-    public static void processDependencies(String pomPath, ImportManager importManager) {
+    public static void processDependencies(String pomPath, ImportManager importManager, Map<String, Dependency> dependencyMap) {
         DependencyProcessor.importManager = importManager;
         DependencyProcessor.pomPath = pomPath;
+        DependencyProcessor.dependencyMap = dependencyMap;
         System.out.println("Processing pom.xml: " + pomPath);
-        dependencyMap = parsePomForDependencies(pomPath);
-
         System.out
                 .println("---------------------------- generate AST for all dependencies ----------------------------");
         generateASTForAllDependencies();
@@ -150,6 +149,8 @@ public class DependencyProcessor {
      * Maven repository. If it does, the `.jar` file is decompiled using JD-CLI, a
      * command-line Java Decompiler. The decompiled Java files are then parsed using
      * JavaParser to generate ASTs.
+     * 
+     * @param dependencyMap
      */
     public static void generateASTForAllDependencies() {
         dependencyMap.forEach((artifactId, dependecy) -> {

@@ -16,6 +16,7 @@ import java.util.Set;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import javax.json.JsonReader;
 import javax.json.JsonWriter;
 import javax.json.stream.JsonGenerator;
 
@@ -141,42 +142,60 @@ public class DirectoryProcessor {
     private static void appendLocalASTToJsonFile(String sourceFilePath, String astJson)
             throws IOException {
 
-        if (separateFiles) {
+        // if (separateFiles) {
             // Replace .java extension with .json
-            String jsonFileName = new File(sourceFilePath).getName().replace(".java", ".json");
-            Path individualAstPath = Paths.get(astPath.toString(), jsonFileName);
-            try (JsonWriter jsonWriter = Json
-                    .createWriter(Files.newBufferedWriter(individualAstPath, StandardOpenOption.CREATE))) {
-                JsonObject newAst = Json.createReader(new StringReader(astJson)).readObject();
-                jsonWriter.writeObject(newAst);
+            Path dirPath = Path.of("asts/main");
+            if (!Files.exists(dirPath)) {
+                Files.createDirectories(dirPath);
             }
-        } else {
-
-            JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
-            System.out.println("Appending AST to JSON file: " + astPath);
-            if (!Files.exists(astPath)) {
-                Files.createFile(astPath);
+            Path filePath = dirPath.resolve(sourceFilePath.substring(0, sourceFilePath.length() - 5) + ".json");
+            if (!Files.exists(filePath.getParent())) {
+                Files.createDirectories(filePath.getParent());
             }
-            // Parse existing JSON and add new AST
-            String existingContent = Files.readString(astPath);
-            if (existingContent.trim().isEmpty()) {
-                // File is empty, start with an empty JSON object
-                jsonBuilder = Json.createObjectBuilder();
+            
+            if (Files.exists(filePath)) {
+                Files.delete(filePath);
             } else {
-                // File has content, parse it as JSON
-                JsonObject existingJson = Json.createReader(new StringReader(existingContent)).readObject();
-                jsonBuilder = Json.createObjectBuilder(existingJson);
+                Files.createFile(filePath);
             }
 
-            // Add new AST
-            JsonObject newAst = Json.createReader(new StringReader(astJson)).readObject();
-            jsonBuilder.add(sourceFilePath, newAst);
+            // Create a new JSON object with fileName, className, and AST data
+           
+            JsonObject wrappedJson = Json.createObjectBuilder()
+                    .build();
 
-            // Write back to file
-            try (JsonWriter jsonWriter = Json.createWriter(
-                    Files.newBufferedWriter(astPath, StandardOpenOption.CREATE, StandardOpenOption.WRITE))) {
-                jsonWriter.writeObject(jsonBuilder.build());
-            }
-        }
+            // Convert the new JSON object to string and write to the file
+            System.out.println("Writing to file: " + filePath);
+            System.out.println("AST: " + astJson.length());
+            Files.writeString(filePath, astJson.toString(), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+
+        // } else {
+
+        //     JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
+        //     System.out.println("Appending AST to JSON file: " + astPath);
+        //     if (!Files.exists(astPath)) {
+        //         Files.createFile(astPath);
+        //     }
+        //     // Parse existing JSON and add new AST
+        //     String existingContent = Files.readString(astPath);
+        //     if (existingContent.trim().isEmpty()) {
+        //         // File is empty, start with an empty JSON object
+        //         jsonBuilder = Json.createObjectBuilder();
+        //     } else {
+        //         // File has content, parse it as JSON
+        //         JsonObject existingJson = Json.createReader(new StringReader(existingContent)).readObject();
+        //         jsonBuilder = Json.createObjectBuilder(existingJson);
+        //     }
+
+        //     // Add new AST
+        //     JsonObject newAst = Json.createReader(new StringReader(astJson)).readObject();
+        //     jsonBuilder.add(sourceFilePath, newAst);
+
+        //     // Write back to file
+        //     try (JsonWriter jsonWriter = Json.createWriter(
+        //             Files.newBufferedWriter(astPath, StandardOpenOption.CREATE, StandardOpenOption.WRITE))) {
+        //         jsonWriter.writeObject(jsonBuilder.build());
+        //     }
+        // }
     }
 }

@@ -52,7 +52,7 @@ public class Main {
         libraryAstJsonMap = new HashMap<>();
         // Delete existing ast.json file if it exists
         System.out.print("-------Initializing-------\n");
-        astPath = Paths.get("asts/main/ast.json");
+        astPath = Paths.get("asts/main");
         if (Files.exists(astPath)) {
             try {
                 Files.delete(astPath);
@@ -88,26 +88,21 @@ public class Main {
 
         Map<String, Dependency> dependencyMap = DependencyProcessor.parsePomForDependencies(inferredPomPath);
 
-        // // * import manager manage imports line to share imports between files
-        // ImportManager importManager = new ImportManager();
+        // print out dependecy map in a easy to read format
+        System.out.println("---------------------------- dependency map ----------------------------");
+        dependencyMap.forEach((k, v) -> System.out.println(k + " : " + v));
+        System.out.println("---------------------------- dependency map ----------------------------");
 
-        // // print out dependecy map in a easy to read format
-        // System.out.println("---------------------------- dependency map ----------------------------");
-        // dependencyMap.forEach((k, v) -> System.out.println(k + " : " + v));
-        // System.out.println("---------------------------- dependency map ----------------------------");
+        // ! generate ASTs for all java files in the application
+        DirectoryProcessor processor = new DirectoryProcessor(rootDirectoryPath, astPath, dependencyMap);
+        ImportManager importManager = new ImportManager();
+        processor.addImportMaganer(importManager);
+        processor.processDirectory();
 
-        // // ! process directory (local java file)
-        // DirectoryProcessor processor = new DirectoryProcessor(rootDirectoryPath, astPath, dependencyMap);
-
-        // // ! add import manager to processor before processing directory
-        // processor.addImportMaganer(importManager);
-
-        // // ! turn this on to process directory
-        // processor.processDirectory();
-
-        // importManager.printImports();
-        // // // ! process dependencies
-        // // DependencyProcessor.processDependencies(inferredPomPath, importManager);
+        // ! test
+        importManager.printImports();
+        // // ! process dependencies
+        // DependencyProcessor.processDependencies(inferredPomPath, importManager, dependencyMap);
 
         scanner.close();
     }
