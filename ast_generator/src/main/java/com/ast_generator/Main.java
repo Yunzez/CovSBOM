@@ -95,7 +95,7 @@ public class Main {
 
         // ! generate ASTs for all java files in the application
         DirectoryProcessor processor = new DirectoryProcessor(rootDirectoryPath, astPath, dependencyMap);
-        ImportManager importManager = new ImportManager();
+        ImportManager importManager = new ImportManager(dependencyMap, astPath);
         processor.addImportMaganer(importManager);
         processor.processDirectory();
 
