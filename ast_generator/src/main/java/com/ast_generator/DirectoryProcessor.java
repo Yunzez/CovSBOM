@@ -216,6 +216,7 @@ public class DirectoryProcessor {
             try {
                 ResolvedMethodDeclaration resolvedMethod = methodCall.resolve();
                 int lineNumber = methodCall.getBegin().map(pos -> pos.line).orElse(-1);
+                String fullExpression = methodCall.toString();
                 // System.out.println("Method call: " + methodCall.getName());
                 // System.out.println("Declaring type: " +
                 // resolvedMethod.declaringType().getQualifiedName());
@@ -224,6 +225,7 @@ public class DirectoryProcessor {
                         resolvedMethod.declaringType().getQualifiedName(),
                         methodCall.getNameAsString(),
                         lineNumber,
+                        fullExpression,
                         packageName[0]);
 
             } catch (Exception e) {

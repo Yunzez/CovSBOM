@@ -18,9 +18,9 @@ public class MethodCallReporter {
     private String parentPackageName;
 
     // Add a method call entry
-    public void addEntry(String fileName, String declaringType, String methodName, int lineNumber,  String newPackageName) {
+    public void addEntry(String fileName, String declaringType, String methodName, int lineNumber, String fullExpression, String newPackageName) {
         reportMap.putIfAbsent(fileName, new ArrayList<>());
-        reportMap.get(fileName).add(new MethodCallEntry(declaringType, methodName, lineNumber));
+        reportMap.get(fileName).add(new MethodCallEntry(declaringType, methodName, lineNumber, fullExpression));
 
         if (parentPackageName == null || (newPackageName.length() < parentPackageName.length()
                 && parentPackageName.startsWith(newPackageName))) {
