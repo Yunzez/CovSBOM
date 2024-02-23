@@ -22,6 +22,7 @@ import javax.json.stream.JsonGenerator;
 
 import com.github.javaparser.ParseProblemException;
 import com.github.javaparser.ParserConfiguration;
+import com.github.javaparser.Position;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.expr.MethodCallExpr;
@@ -116,8 +117,8 @@ public class DirectoryProcessor {
             System.out.println("Invalid directory path.");
         }
 
-          // output method call report
-          outputAnalysisReport();
+        // output method call report
+        outputAnalysisReport();
     }
 
     private void outputAnalysisReport() {
@@ -173,7 +174,7 @@ public class DirectoryProcessor {
         }
     }
 
-    /*  
+    /*
      * this method analyze single AST object
      */
     private void analyzeSingleASTObject(CompilationUnit cu, Path path) {
@@ -187,7 +188,8 @@ public class DirectoryProcessor {
     }
 
     /*
-     * this method analyze an AST object import, and save the result to ImportManager
+     * this method analyze an AST object import, and save the result to
+     * ImportManager
      */
     private void analyzeASTObjectImport(CompilationUnit cu, Path path) {
         FunctionSignatureExtractor extractor = new FunctionSignatureExtractor(
@@ -201,20 +203,29 @@ public class DirectoryProcessor {
     }
 
     /*
-     * this method analyze an AST object function call, and save the result to MethodCallReport
+     * this method analyze an AST object function call, and save the result to
+     * MethodCallReport
      */
     private void analyzeASTObjectFunctionCall(CompilationUnit cu, Path path) {
-        final String[] packageName = {""}; // Use array to bypass final/effectively final requirement
-        cu.getPackageDeclaration().ifPresent(packageDeclaration -> packageName[0] = packageDeclaration.getName().asString());
+        final String[] packageName = { "" }; // Use array to bypass final/effectively final requirement
+        cu.getPackageDeclaration()
+                .ifPresent(packageDeclaration -> packageName[0] = packageDeclaration.getName().asString());
         // System.out.println("Package: " + packageName[0]);
 
         cu.findAll(MethodCallExpr.class).forEach(methodCall -> {
             try {
                 ResolvedMethodDeclaration resolvedMethod = methodCall.resolve();
+                int lineNumber = methodCall.getBegin().map(pos -> pos.line).orElse(-1);
                 // System.out.println("Method call: " + methodCall.getName());
-                // System.out.println("Declaring type: " + resolvedMethod.declaringType().getQualifiedName());
-                this.methodReporter.addEntry(path.toString(), resolvedMethod.declaringType().getQualifiedName(),
-                        methodCall.getNameAsString(), packageName[0]);
+                // System.out.println("Declaring type: " +
+                // resolvedMethod.declaringType().getQualifiedName());
+                this.methodReporter.addEntry(
+                        path.toString(),
+                        resolvedMethod.declaringType().getQualifiedName(),
+                        methodCall.getNameAsString(),
+                        lineNumber,
+                        packageName[0]);
+
             } catch (Exception e) {
                 // this.methodReporter.addEntry(path.toString(), "unknown_delcare_type",
                 // methodCall.getNameAsString());
