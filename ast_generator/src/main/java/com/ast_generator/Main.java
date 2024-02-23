@@ -109,8 +109,8 @@ public class Main {
 
         // ! filter out the third party libraries
 
-        // ! test
-        importManager.printImports();
+        // // ! test
+        // importManager.printImports();
         // // ! process dependencies
         // DependencyProcessor.processDependencies(inferredPomPath, importManager, dependencyMap);
 

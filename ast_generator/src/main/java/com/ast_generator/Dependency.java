@@ -5,13 +5,15 @@ public class Dependency {
     private String artifactId;
     private String version;
     private String jarPath;
+    private String sourceJarPath;
 
     // Constructor, getters, and setters
-    public Dependency(String groupId, String artifactId, String version, String jarPath) {
+    public Dependency(String groupId, String artifactId, String version, String jarPath, String sourceJarPath) {
         this.groupId = groupId;
         this.artifactId = artifactId;
         this.version = version;
         this.jarPath = jarPath;
+        this.sourceJarPath = sourceJarPath;
     }
 
     public String getBasePackageName() {
@@ -34,6 +36,10 @@ public class Dependency {
 
     public String getJarPath() {
         return jarPath;
+    }
+
+    public String getSourceJarPath() {
+        return sourceJarPath;
     }
 
     public void setGroupId(String groupId) {

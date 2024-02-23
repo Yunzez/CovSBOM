@@ -24,6 +24,13 @@ import com.github.javaparser.ParseProblemException;
 import com.github.javaparser.ParserConfiguration;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.expr.MethodCallExpr;
+import com.github.javaparser.symbolsolver.JavaSymbolSolver;
+import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver;
+import com.github.javaparser.symbolsolver.resolution.typesolvers.JarTypeSolver;
+import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
+import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
+import com.github.javaparser.resolution.declarations.ResolvedMethodDeclaration;
 import com.github.javaparser.serialization.JavaParserJsonSerializer;
 import java.io.File;
 
@@ -36,7 +43,8 @@ public class DirectoryProcessor {
     private static Map<String, Dependency> dependencyMap;
     private static ImportManager importManager;
     private static boolean separateFiles;
-
+    CombinedTypeSolver combinedSolver;
+    MethodCallReport methodReport;
     public DirectoryProcessor() {
     }
 
@@ -51,11 +59,37 @@ public class DirectoryProcessor {
         this.separateFiles = separateFiles;
     }
 
-    public DirectoryProcessor(String directoryPath, Path astPath, Map<String, Dependency> dependencyMap, ImportManager importManager) {
+    public DirectoryProcessor(String directoryPath, Path astPath, Map<String, Dependency> dependencyMap,
+            ImportManager importManager) {
         this.directoryPath = directoryPath;
         DirectoryProcessor.astPath = astPath;
         DirectoryProcessor.dependencyMap = dependencyMap;
         this.importManager = importManager;
+
+         // !!!! test code: 
+        this.methodReport = new MethodCallReport();
+
+        this.combinedSolver = new CombinedTypeSolver();
+         combinedSolver.add(new ReflectionTypeSolver());
+         for (String dependencyPath : dependencyMap.keySet()) {
+            Dependency dependency = dependencyMap.get(dependencyPath);
+            try {
+                System.out.println("Adding dependency: " + dependency.getSourceJarPath());
+             combinedSolver.add(new JarTypeSolver(dependency.getSourceJarPath()));
+            } catch (Exception e) {
+                System.out.println("Failed to add dependency: " + dependencyPath);
+                e.printStackTrace();
+            }
+         }
+
+         System.out.println("combinedSolver: " + combinedSolver.getRoot().toString());
+         // Initialize JavaParserTypeSolver with the source directory, not a specific Java file
+         combinedSolver.add(new JavaParserTypeSolver(new File(directoryPath)));
+ 
+         JavaSymbolSolver symbolSolver = new JavaSymbolSolver(combinedSolver);
+         // Update to use the current method as per JavaParser's version if getConfiguration() is deprecated
+         StaticJavaParser.getParserConfiguration().setSymbolResolver(symbolSolver);
+
     }
 
     // Main method for command-line execution
@@ -75,7 +109,7 @@ public class DirectoryProcessor {
         }
     }
 
-    private static void processDirectory(Path directory) throws IOException {
+    private void processDirectory(Path directory) throws IOException {
         Files.walkFileTree(directory, new SimpleFileVisitor<Path>() {
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
@@ -85,13 +119,15 @@ public class DirectoryProcessor {
                 return FileVisitResult.CONTINUE;
             }
         });
+
+        methodReport.generateJsonReport("asts/analysis/method_calls.json");
     }
 
-    private static void processSingleJavaFile(String sourceFilePath) {
+    private void processSingleJavaFile(String sourceFilePath) {
 
         // Configure parser
-        ParserConfiguration config = new ParserConfiguration();
-        StaticJavaParser.setConfiguration(config);
+        // ParserConfiguration config = new ParserConfiguration();
+        // StaticJavaParser.setConfiguration(config);
         Path path = Paths.get(sourceFilePath);
 
         try {
@@ -99,7 +135,7 @@ public class DirectoryProcessor {
             CompilationUnit cu = StaticJavaParser.parse(path);
 
             if (dependencyMap != null) {
-                analyzeSingleASTObject(cu);
+                analyzeSingleASTObject(cu, path);
             }
 
             // ! convert AST object to JSON
@@ -118,7 +154,7 @@ public class DirectoryProcessor {
         }
     }
 
-    private static void analyzeSingleASTObject(CompilationUnit cu) {
+    private void analyzeSingleASTObject(CompilationUnit cu, Path path) {
         FunctionSignatureExtractor extractor = new FunctionSignatureExtractor(
                 dependencyMap != null ? dependencyMap : null);
         extractor.extractThirdPartyImports(cu);
@@ -129,11 +165,27 @@ public class DirectoryProcessor {
             importManager.addImports(thirdPartyImports);
         } else {
             System.out.println("ImportManager is null");
-            System.out.println("---------------------------- third party imports ----------------------------");
-            for (String signature : thirdPartyImports) {
-                System.out.println(signature);
-            }
+            // System.out.println("---------------------------- third party imports
+            // ----------------------------");
+            // for (String signature : thirdPartyImports) {
+            // System.out.println(signature);
+            // }
         }
+
+
+        // If you have third-party JARs, add them like this:
+        // combinedSolver.add(new JarTypeSolver("path/to/your/library.jar"));
+        
+        cu.findAll(MethodCallExpr.class).forEach(methodCall -> {
+            try {
+                ResolvedMethodDeclaration resolvedMethod = methodCall.resolve();
+                System.out.println("Method call: " + methodCall.getName());
+                System.out.println("Declaring type: " + resolvedMethod.declaringType().getQualifiedName());
+                this.methodReport.addEntry(path.toString(), resolvedMethod.declaringType().getQualifiedName(), methodCall.getNameAsString());
+            } catch (Exception e) {
+                // System.err.println("Failed to resolve method call: " + methodCall.getName());
+            }
+        });
     }
 
     private static String convertASTObjecttoJson(CompilationUnit cu, Path path) throws IOException {
@@ -146,55 +198,6 @@ public class DirectoryProcessor {
         String astJson = stringWriter.toString();
         return astJson;
     }
-
-    // private static void generateAST(String sourceFilePath) {
-    //     // Configure parser
-    //     // System.out.println("Configuring parser for file: " + sourceFilePath);
-    //     ParserConfiguration config = new ParserConfiguration();
-    //     StaticJavaParser.setConfiguration(config);
-    //     Path path = Paths.get(sourceFilePath);
-
-    //     try {
-    //         CompilationUnit cu = StaticJavaParser.parse(path);
-
-    //         // ! dependency can be null when we are processing directory without pom.xml or
-    //         // ! calling this class by itself
-    //         if (dependencyMap != null) {
-    //             FunctionSignatureExtractor extractor = new FunctionSignatureExtractor(
-    //                     dependencyMap != null ? dependencyMap : null);
-    //             extractor.extractThirdPartyImports(cu);
-    //             Set<String> thirdPartyImports = extractor.getThirdPartyImports();
-
-    //             // Store the imports in ImportManager
-    //             if (importManager != null) {
-    //                 importManager.addImports(thirdPartyImports);
-    //             } else {
-    //                 System.out.println("ImportManager is null");
-    //                 System.out.println("---------------------------- third party imports ----------------------------");
-    //                 for (String signature : thirdPartyImports) {
-    //                     System.out.println(signature);
-    //                 }
-    //             }
-
-    //         }
-
-    //         StringWriter stringWriter = new StringWriter();
-    //         try (JsonGenerator jsonGenerator = Json.createGenerator(stringWriter)) {
-    //             JavaParserJsonSerializer serializer = new JavaParserJsonSerializer();
-    //             serializer.serialize(cu, jsonGenerator);
-    //         }
-
-    //         String astJson = stringWriter.toString();
-    //         appendLocalASTToJsonFile(path.toString(), astJson);
-    //     } catch (IOException e) {
-    //         System.out.println("Error parsing file: " + path);
-    //         e.printStackTrace();
-    //     } catch (ParseProblemException e) {
-    //         System.out.print("Parse problem in file: " + sourceFilePath);
-    //         e.printStackTrace();
-    //         // System.out.println(" Skipped");
-    //     }
-    // }
 
     private static void saveASTJsonToFile(String sourceFilePath, String astJson)
             throws IOException {
@@ -218,7 +221,7 @@ public class DirectoryProcessor {
 
         // Convert the new JSON object to string and write to the file
         System.out.println("Writing to file: " + filePath);
-        System.out.println("AST: " + astJson.length());
+        // System.out.println("AST: " + astJson.length());
         Files.writeString(filePath, astJson.toString(), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
 
         // } else {

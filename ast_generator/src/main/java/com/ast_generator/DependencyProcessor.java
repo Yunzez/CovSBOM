@@ -126,14 +126,15 @@ public class DependencyProcessor {
                     // System.out.println("\nCurrent artifactId :" + artifactId);
                     // System.out.println("\nCurrent version :" + version);
 
-                    String mavenPath = System.getProperty("user.home") + "/.m2/repository/"
+                    String mavenPathBase = System.getProperty("user.home") + "/.m2/repository/"
                             + groupId.replace('.', '/') + "/" + artifactId + "/" + version
-                            + "/" + artifactId + "-" + version + "-sources.jar";
+                            + "/" + artifactId + "-" + version;
+
 
                     // System.out.println("\nCurrent mavenPath :" + mavenPath);
                     
 
-                    Dependency dependency = new Dependency(groupId, artifactId, version, mavenPath);
+                    Dependency dependency = new Dependency(groupId, artifactId, version, mavenPathBase + ".jar", mavenPathBase + "-sources.jar");
                     dependencyMap.put(artifactId, dependency);
                 }
             }
