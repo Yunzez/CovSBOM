@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.lang.reflect.Method;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -64,9 +65,9 @@ public class Main {
         }
 
         System.out.print("Please enter the path to the Java source file: ");
-        
+
         // String rootDirectoryPath = scanner.nextLine().trim();
-        
+
         // Dennis: Only for testing
         System.out.println("rootDirectoryPath: " + System.getProperty("user.dir"));
         String rootDirectoryPath = "Application/spark-master";
@@ -97,22 +98,39 @@ public class Main {
         System.out.println("---------------------------- dependency map ----------------------------");
 
         // ! generate ASTs for all java files in the application
+          /*
+         * +--------------------+
+         * | Generation section |
+         * +--------------------+
+         */
 
         // * create an instance of import manager
         ImportManager importManager = new ImportManager(dependencyMap, astPath);
-
+        MethodCallReporter methodCallReporter = new MethodCallReporter();
         // * create an instance of directory processor
-        DirectoryProcessor processor = new DirectoryProcessor(rootDirectoryPath, astPath, dependencyMap, importManager);
-    
+        DirectoryProcessor processor = new DirectoryProcessor(rootDirectoryPath, astPath, dependencyMap, importManager, methodCallReporter);
+
         // * process the directory
         processor.processDirectory();
 
-        // ! filter out the third party libraries
+        importManager.printImports();
+
+
+        System.out.println(" ------- end processing directory, start analyzing dependencies -------");
+
+        /*
+         * +------------------+
+         * | Analysis section |
+         * +------------------+
+         */
 
         // // ! test
-        // importManager.printImports();
+       DependencyAnalyzer dependencyAnalyzer = new DependencyAnalyzer(dependencyMap, methodCallReporter);
+
+       dependencyAnalyzer.analyze();
         // // ! process dependencies
-        // DependencyProcessor.processDependencies(inferredPomPath, importManager, dependencyMap);
+        // DependencyProcessor.processDependencies(inferredPomPath, importManager,
+        // dependencyMap);
 
         scanner.close();
     }

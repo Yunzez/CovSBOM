@@ -44,7 +44,7 @@ public class DirectoryProcessor {
     private ImportManager importManager;
     private static boolean separateFiles;
     CombinedTypeSolver combinedSolver;
-    MethodCallReport methodReport;
+    MethodCallReporter methodReporter;
 
     public DirectoryProcessor() {
     }
@@ -61,15 +61,17 @@ public class DirectoryProcessor {
     }
 
     public DirectoryProcessor(String directoryPath, Path astPath, Map<String, Dependency> dependencyMap,
-            ImportManager importManager) {
+            ImportManager importManager, MethodCallReporter methodReporter) {
         this.directoryPath = directoryPath;
         DirectoryProcessor.astPath = astPath;
         DirectoryProcessor.dependencyMap = dependencyMap;
         this.importManager = importManager;
+        this.methodReporter = methodReporter;
 
-        // !!!! test code:
-        this.methodReport = new MethodCallReport();
+        initCombinedSolver();
+    }
 
+    private void initCombinedSolver() {
         this.combinedSolver = new CombinedTypeSolver();
         combinedSolver.add(new ReflectionTypeSolver());
         for (String dependencyPath : dependencyMap.keySet()) {
@@ -113,6 +115,18 @@ public class DirectoryProcessor {
         } else {
             System.out.println("Invalid directory path.");
         }
+
+          // output method call report
+          outputAnalysisReport();
+    }
+
+    private void outputAnalysisReport() {
+        // output method call report
+        try {
+            methodReporter.generateThirdPartyTypeJsonReport("asts/analysis/method_calls.json");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void processDirectory(Path directory) throws IOException {
@@ -126,7 +140,6 @@ public class DirectoryProcessor {
             }
         });
 
-        methodReport.generateThirdPartyTypeJsonReport("asts/analysis/method_calls.json");
     }
 
     private void processSingleJavaFile(String sourceFilePath) {
@@ -193,17 +206,17 @@ public class DirectoryProcessor {
     private void analyzeASTObjectFunctionCall(CompilationUnit cu, Path path) {
         final String[] packageName = {""}; // Use array to bypass final/effectively final requirement
         cu.getPackageDeclaration().ifPresent(packageDeclaration -> packageName[0] = packageDeclaration.getName().asString());
-        System.out.println("Package: " + packageName[0]);
+        // System.out.println("Package: " + packageName[0]);
 
         cu.findAll(MethodCallExpr.class).forEach(methodCall -> {
             try {
                 ResolvedMethodDeclaration resolvedMethod = methodCall.resolve();
-                System.out.println("Method call: " + methodCall.getName());
-                System.out.println("Declaring type: " + resolvedMethod.declaringType().getQualifiedName());
-                this.methodReport.addEntry(path.toString(), resolvedMethod.declaringType().getQualifiedName(),
+                // System.out.println("Method call: " + methodCall.getName());
+                // System.out.println("Declaring type: " + resolvedMethod.declaringType().getQualifiedName());
+                this.methodReporter.addEntry(path.toString(), resolvedMethod.declaringType().getQualifiedName(),
                         methodCall.getNameAsString(), packageName[0]);
             } catch (Exception e) {
-                // this.methodReport.addEntry(path.toString(), "unknown_delcare_type",
+                // this.methodReporter.addEntry(path.toString(), "unknown_delcare_type",
                 // methodCall.getNameAsString());
                 System.err.println("Failed to resolve method call: " + methodCall.getName());
             }

@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MethodCallReport {
+public class MethodCallReporter {
     private Map<String, List<MethodCallEntry>> reportMap = new HashMap<>();
     private String parentPackageName;
 
@@ -78,5 +78,9 @@ public class MethodCallReport {
         // This method creates the file if it does not exist
         mapper.writeValue(path.toFile(), filteredReportMap);
         System.out.println("parentPackageName: " + parentPackageName);
+    }
+
+    public Map<String, List<MethodCallEntry>> getReportMap() {
+        return reportMap;
     }
 }
