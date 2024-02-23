@@ -12,7 +12,8 @@ public class DependencyAnalyzer {
     private Map<String, Dependency> dependencyMap;
     private MethodCallReporter methodCallReporter;
 
-    private Map<String, Set<String>> typeJarLookup = new HashMap<String, Set<String>>();
+    private Map<String, Set<String>> typeToJarLookup = new HashMap<String, Set<String>>();
+
     public DependencyAnalyzer() {
     }
 
@@ -22,6 +23,25 @@ public class DependencyAnalyzer {
     }
 
     public void analyze() {
+
+        // * find all required jar and save the results in typeToJarLookup
+        findRequiredJars();
+
+        // * analyze jars
+       
+        for (String jarPath : typeToJarLookup.keySet()) {
+           
+            Set<String> types = typeToJarLookup.get(jarPath);
+            SourceJarAnalyzer sourceJarAnalyzer = new SourceJarAnalyzer(jarPath, types, "decompressed");
+            try {
+                sourceJarAnalyzer.analyze();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void findRequiredJars() {
         Map<String, List<MethodCallEntry>> reportMap = methodCallReporter.getReportMap();
         for (String javaFilePath : reportMap.keySet()) {
             List<MethodCallEntry> currentMethodCallEntries = reportMap.get(javaFilePath);
@@ -32,6 +52,7 @@ public class DependencyAnalyzer {
             }
         }
     }
+
 
     /*
      * Create a map of jarPath to a set of types that are found in the jar
@@ -44,16 +65,16 @@ public class DependencyAnalyzer {
         // Search in dependencyMap for a matching dependency
         for (Dependency dependency : dependencyMap.values()) {
             if (groupIdPart.startsWith(dependency.getGroupId())) {
-                if (typeJarLookup.get(dependency.getJarPath()) == null) {
-                    typeJarLookup.put(dependency.getJarPath(), new HashSet<String>());
+                if (typeToJarLookup.get(dependency.getSourceJarPath()) == null) {
+                    typeToJarLookup.put(dependency.getSourceJarPath(), new HashSet<String>());
                 }
 
-                if (typeJarLookup.get(dependency.getJarPath()).contains(declaringType)) {
+                if (typeToJarLookup.get(dependency.getSourceJarPath()).contains(declaringType)) {
                     continue;
                 }
 
-                System.out.println("Found dependency for " + declaringType + " : " + dependency.getJarPath());
-                typeJarLookup.get(dependency.getJarPath()).add(declaringType);
+                System.out.println("Found dependency for " + declaringType + " : " + dependency.getSourceJarPath());
+                typeToJarLookup.get(dependency.getSourceJarPath()).add(declaringType);
             }
         }
     }
