@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -98,7 +99,7 @@ public class Main {
         System.out.println("---------------------------- dependency map ----------------------------");
 
         // ! generate ASTs for all java files in the application
-          /*
+        /*
          * +--------------------+
          * | Generation section |
          * +--------------------+
@@ -108,13 +109,13 @@ public class Main {
         ImportManager importManager = new ImportManager(dependencyMap, astPath);
         MethodCallReporter methodCallReporter = new MethodCallReporter();
         // * create an instance of directory processor
-        DirectoryProcessor processor = new DirectoryProcessor(rootDirectoryPath, astPath, dependencyMap, importManager, methodCallReporter);
+        DirectoryProcessor processor = new DirectoryProcessor(rootDirectoryPath, astPath, dependencyMap, importManager,
+                methodCallReporter);
 
         // * process the directory
         processor.processDirectory();
 
         importManager.printImports();
-
 
         System.out.println(" ------- end processing directory, start analyzing dependencies -------");
 
@@ -125,9 +126,9 @@ public class Main {
          */
 
         // // ! test
-       DependencyAnalyzer dependencyAnalyzer = new DependencyAnalyzer(dependencyMap, methodCallReporter);
+        DependencyAnalyzer dependencyAnalyzer = new DependencyAnalyzer(dependencyMap, methodCallReporter);
 
-       dependencyAnalyzer.analyze();
+        dependencyAnalyzer.analyze();
         // // ! process dependencies
         // DependencyProcessor.processDependencies(inferredPomPath, importManager,
         // dependencyMap);

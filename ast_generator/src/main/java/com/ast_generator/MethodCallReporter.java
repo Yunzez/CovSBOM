@@ -28,6 +28,17 @@ public class MethodCallReporter {
         }
     }
 
+    public void addDeclarationInfoForType(String declaringType, MethodDeclarationInfo declarationInfo) {
+        for (List<MethodCallEntry> entries : reportMap.values()) {
+            for (MethodCallEntry entry : entries) {
+                if (entry.getDeclaringType().equals(declaringType)) {
+                    entry.setDeclarationInfo(declarationInfo);
+                }
+            }
+        }
+    }
+    
+
     // Generate JSON report
     public void generateJsonReport(String toFilePath) throws IOException {
         ObjectMapper mapper = new ObjectMapper();

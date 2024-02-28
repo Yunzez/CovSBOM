@@ -12,6 +12,9 @@ public class DependencyAnalyzer {
     private Map<String, Dependency> dependencyMap;
     private MethodCallReporter methodCallReporter;
 
+
+    // * Map of jarPath to a set of types that are found in the jar
+    // * Key: jarPath, Value: Set of types
     private Map<String, Set<String>> typeToJarLookup = new HashMap<String, Set<String>>();
 
     public DependencyAnalyzer() {
@@ -30,9 +33,10 @@ public class DependencyAnalyzer {
         // * analyze jars
        
         for (String jarPath : typeToJarLookup.keySet()) {
-           
+            
+            // * we get all the parth we need to analyze for this jar 
             Set<String> types = typeToJarLookup.get(jarPath);
-            SourceJarAnalyzer sourceJarAnalyzer = new SourceJarAnalyzer(jarPath, types, "decompressed");
+            SourceJarAnalyzer sourceJarAnalyzer = new SourceJarAnalyzer(jarPath, types, methodCallReporter, "decompressed");
             try {
                 sourceJarAnalyzer.analyze();
             } catch (Exception e) {
