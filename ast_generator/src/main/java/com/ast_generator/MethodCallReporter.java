@@ -21,18 +21,26 @@ public class MethodCallReporter {
     public void addEntry(String fileName, String declaringType, String methodName, int lineNumber, String fullExpression, String newPackageName) {
         reportMap.putIfAbsent(fileName, new ArrayList<>());
         reportMap.get(fileName).add(new MethodCallEntry(declaringType, methodName, lineNumber, fullExpression));
-
+        System.out.println("added entry");
         if (parentPackageName == null || (newPackageName.length() < parentPackageName.length()
                 && parentPackageName.startsWith(newPackageName))) {
             parentPackageName = newPackageName;
         }
     }
 
-    public void addDeclarationInfoForType(String declaringType, MethodDeclarationInfo declarationInfo) {
+    public void addDeclarationInfoForMethodinType(String declaringType, MethodDeclarationInfo declarationInfo) {
+        String methodName = declarationInfo.getMethodName();
+        if (declaringType.startsWith("java.") || declaringType.startsWith("javax.")) {
+            return;
+        }
+
         for (List<MethodCallEntry> entries : reportMap.values()) {
             for (MethodCallEntry entry : entries) {
                 if (entry.getDeclaringType().equals(declaringType)) {
-                    entry.setDeclarationInfo(declarationInfo);
+                    // System.out.println("looking for method: " + methodName + " in type: " + declaringType);
+                    if (entry.getMethodName().equals(methodName)) {
+                        entry.setDeclarationInfo(declarationInfo);
+                    }
                 }
             }
         }
@@ -57,10 +65,27 @@ public class MethodCallReporter {
     }
 
     public void generateThirdPartyTypeJsonReport(String toFilePath) throws IOException {
+
+
         ObjectMapper mapper = new ObjectMapper();
 
         // Prepare a filtered report map excluding standard Java library types
         Map<String, List<MethodCallEntry>> filteredReportMap = new HashMap<>();
+
+
+        // ! Print out the entries with methodDeclarationInfo
+        // filteredReportMap.forEach((fileName, methodCallEntries) -> {
+        //     System.out.println("Entries in file: " + fileName);
+        //     for (MethodCallEntry entry : methodCallEntries) {
+        //         System.out.println("Declaring Type: " + entry.getDeclaringType());
+        //         System.out.println("Method Name: " + entry.getMethodName());
+        //         System.out.println("Line Number: " + entry.getLineNumber());
+        //         System.out.println("Full Expression: " + entry.getFullExpression());
+        //         System.out.println("Declaration Info: " + entry.getDeclarationInfo());
+        //         System.out.println();
+        //     }
+        // });
+
 
         reportMap.forEach((fileName, methodCallEntries) -> {
             List<MethodCallEntry> filteredEntries = new ArrayList<>();
@@ -68,14 +93,15 @@ public class MethodCallReporter {
                 if (!(entry.getDeclaringType().startsWith("java.") ||
                         entry.getDeclaringType().startsWith("javax.") ||
                         entry.getDeclaringType().startsWith(parentPackageName))) {
-                    filteredEntries.add(entry);
+                    // if (entry.getDeclarationInfo() != null) {
+                        filteredEntries.add(entry);
+                    // }
                 }
             }
             if (!filteredEntries.isEmpty()) {
                 filteredReportMap.put(fileName, filteredEntries);
             }
         });
-
         // Convert the string path to a Path object
         Path path = Paths.get(toFilePath);
 

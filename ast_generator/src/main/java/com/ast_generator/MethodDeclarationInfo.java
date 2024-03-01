@@ -5,17 +5,18 @@ import java.util.List;
 
 public class MethodDeclarationInfo {
 
-
+    private String sourceFilePath;
     private int declarationStartLine;
     private int declarationEndLine;
     private String methodName;
     private List<MethodCallEntry> innerMethodCalls;
 
-    public MethodDeclarationInfo(int declarationStartLine, int declarationEndLine, String methodName) {
+    public MethodDeclarationInfo(String sourceFilePath, int declarationStartLine, int declarationEndLine, String methodName) {
         this.declarationStartLine = declarationStartLine;
         this.declarationEndLine = declarationEndLine;
         this.innerMethodCalls = new ArrayList<>();
         this.methodName = methodName;
+        this.sourceFilePath  = sourceFilePath;
     }
 
     // Method to add an inner method call
@@ -24,13 +25,28 @@ public class MethodDeclarationInfo {
     }
 
     // Getters
-    public int getDeclarationStartLine() { return declarationStartLine; }
-    public int getDeclarationEndLine() { return declarationEndLine; }
-    public List<MethodCallEntry> getInnerMethodCalls() { return innerMethodCalls; }
-    public void toStrings() {
-        System.out.println("MethodDeclarationInfo: " + methodName + " start: " + declarationStartLine + " end: " + declarationEndLine);
-        for (MethodCallEntry methodCall : innerMethodCalls) {
-            System.out.println("MethodCallEntry: " + methodCall.getMethodName() + " line: " + methodCall.getLineNumber());
-        }
+    public int getDeclarationStartLine() {
+        return declarationStartLine;
+    }
+
+    public int getDeclarationEndLine() {
+        return declarationEndLine;
+    }
+
+    public String getMethodName() {
+        return methodName;
+    }
+
+    public String getSourceFilePath() {
+        return sourceFilePath;
+    }
+
+    public List<MethodCallEntry> getInnerMethodCalls() {
+        return innerMethodCalls;
+    }
+
+    public String toString() {
+        String ret = "MethodDeclarationInfo: " + methodName + " " + declarationStartLine + " " + declarationEndLine;
+        return ret;
     }
 }

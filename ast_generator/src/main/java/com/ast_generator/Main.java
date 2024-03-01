@@ -115,8 +115,8 @@ public class Main {
         // * process the directory
         processor.processDirectory();
 
-        importManager.printImports();
-
+        // importManager.printImports();
+        methodCallReporter.generateThirdPartyTypeJsonReport("asts/analysis/method_calls.json");
         System.out.println(" ------- end processing directory, start analyzing dependencies -------");
 
         /*
@@ -129,6 +129,8 @@ public class Main {
         DependencyAnalyzer dependencyAnalyzer = new DependencyAnalyzer(dependencyMap, methodCallReporter);
 
         dependencyAnalyzer.analyze();
+
+        methodCallReporter.generateThirdPartyTypeJsonReport("asts/analysis/final_report.json");
         // // ! process dependencies
         // DependencyProcessor.processDependencies(inferredPomPath, importManager,
         // dependencyMap);

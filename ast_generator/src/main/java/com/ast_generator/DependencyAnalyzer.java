@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.google.common.base.Optional;
-
 public class DependencyAnalyzer {
     private Map<String, Dependency> dependencyMap;
     private MethodCallReporter methodCallReporter;
@@ -15,7 +13,7 @@ public class DependencyAnalyzer {
 
     // * Map of jarPath to a set of types that are found in the jar
     // * Key: jarPath, Value: Set of types
-    private Map<String, Set<String>> typeToJarLookup = new HashMap<String, Set<String>>();
+    private Map<Dependency, Set<String>> typeToJarLookup = new HashMap<Dependency, Set<String>>();
 
     public DependencyAnalyzer() {
     }
@@ -31,12 +29,14 @@ public class DependencyAnalyzer {
         findRequiredJars();
 
         // * analyze jars
-       
-        for (String jarPath : typeToJarLookup.keySet()) {
-            
+        System.out.println(typeToJarLookup.toString());
+
+        for (Dependency dependency : typeToJarLookup.keySet()) {
+            String jarPath = dependency.getSourceJarPath();
             // * we get all the parth we need to analyze for this jar 
-            Set<String> types = typeToJarLookup.get(jarPath);
-            SourceJarAnalyzer sourceJarAnalyzer = new SourceJarAnalyzer(jarPath, types, methodCallReporter, "decompressed");
+            Set<String> types = typeToJarLookup.get(dependency);
+            SourceJarAnalyzer sourceJarAnalyzer = new SourceJarAnalyzer(dependency, types, methodCallReporter, "decompressed");
+            
             try {
                 sourceJarAnalyzer.analyze();
             } catch (Exception e) {
@@ -68,17 +68,20 @@ public class DependencyAnalyzer {
         
         // Search in dependencyMap for a matching dependency
         for (Dependency dependency : dependencyMap.values()) {
-            if (groupIdPart.startsWith(dependency.getGroupId())) {
-                if (typeToJarLookup.get(dependency.getSourceJarPath()) == null) {
-                    typeToJarLookup.put(dependency.getSourceJarPath(), new HashSet<String>());
+            if (groupIdPart.startsWith("java"))  {
+                continue;
+            }
+            // System.out.println("type: " + declaringType + " groupIdPart: " + groupIdPart + " compare to " + dependency.getGroupId());
+            if (groupIdPart.contains(dependency.getGroupId())) {
+                if (typeToJarLookup.get(dependency) == null) {
+                    typeToJarLookup.put(dependency, new HashSet<String>());
                 }
 
-                if (typeToJarLookup.get(dependency.getSourceJarPath()).contains(declaringType)) {
+                if (typeToJarLookup.get(dependency).contains(declaringType)) {
                     continue;
                 }
 
-                System.out.println("Found dependency for " + declaringType + " : " + dependency.getSourceJarPath());
-                typeToJarLookup.get(dependency.getSourceJarPath()).add(declaringType);
+                typeToJarLookup.get(dependency).add(declaringType);
             }
         }
     }

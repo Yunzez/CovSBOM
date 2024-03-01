@@ -116,19 +116,9 @@ public class DirectoryProcessor {
         } else {
             System.out.println("Invalid directory path.");
         }
-
-        // output method call report
-        outputAnalysisReport();
     }
 
-    private void outputAnalysisReport() {
-        // output method call report
-        try {
-            methodReporter.generateThirdPartyTypeJsonReport("asts/analysis/method_calls.json");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+ 
 
     private void processDirectory(Path directory) throws IOException {
         Files.walkFileTree(directory, new SimpleFileVisitor<Path>() {

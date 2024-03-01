@@ -28,6 +28,10 @@ public class MethodCallEntry {
         this.declarationInfo = declarationInfo;
     }
 
+    public MethodDeclarationInfo getDeclarationInfo() {
+        return declarationInfo;
+    }
+
     // Getters
     public String getDeclaringType() { return declaringType; }
     public String getMethodName() { return methodName; }

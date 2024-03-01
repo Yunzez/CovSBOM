@@ -50,7 +50,7 @@ public class WebSocketServletContextHandlerFactory {
                 WebSocketUpgradeFilter webSocketUpgradeFilter = WebSocketUpgradeFilter.configureContext(webSocketServletContextHandler);
                 if (webSocketIdleTimeoutMillis.isPresent()) {
                     webSocketUpgradeFilter.getFactory().getPolicy().setIdleTimeout(webSocketIdleTimeoutMillis.get());
-                }
+                } 
                 // Since we are configuring WebSockets before the ServletContextHandler and WebSocketUpgradeFilter is
                 // even initialized / started, then we have to pre-populate the configuration that will eventually
                 // be used by Jetty's WebSocketUpgradeFilter.
