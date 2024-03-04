@@ -10,42 +10,54 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class MethodCallReporter {
     private Map<String, List<MethodCallEntry>> reportMap = new HashMap<>();
     private String parentPackageName;
 
     // Add a method call entry
-    public void addEntry(String fileName, String declaringType, String methodName, int lineNumber, String fullExpression, String newPackageName) {
+    public void addEntry(String fileName, String declaringType, String methodName, int lineNumber,
+            String fullExpression, String singature, String newPackageName) {
         reportMap.putIfAbsent(fileName, new ArrayList<>());
-        reportMap.get(fileName).add(new MethodCallEntry(declaringType, methodName, lineNumber, fullExpression));
-        System.out.println("added entry");
+        reportMap.get(fileName)
+                .add(new MethodCallEntry(declaringType, methodName, lineNumber, fullExpression, singature));
         if (parentPackageName == null || (newPackageName.length() < parentPackageName.length()
                 && parentPackageName.startsWith(newPackageName))) {
             parentPackageName = newPackageName;
         }
     }
 
-    public void addDeclarationInfoForMethodinType(String declaringType, MethodDeclarationInfo declarationInfo) {
+    public boolean addDeclarationInfoForMethodinType(String declaringType, MethodDeclarationInfo declarationInfo) {
         String methodName = declarationInfo.getMethodName();
         if (declaringType.startsWith("java.") || declaringType.startsWith("javax.")) {
-            return;
+            return false;
         }
 
+        Boolean ret = false;
         for (List<MethodCallEntry> entries : reportMap.values()) {
             for (MethodCallEntry entry : entries) {
                 if (entry.getDeclaringType().equals(declaringType)) {
-                    // System.out.println("looking for method: " + methodName + " in type: " + declaringType);
+                    // System.out.println("looking for method: " + methodName + " in type: " +
+                    // declaringType);
+
                     if (entry.getMethodName().equals(methodName)) {
+                        if (entry.getMethodName().equals("assertTrue")) {
+                            System.out.println("checking in reporter: " + entry.getMethodSignature() + " "
+                                    + declarationInfo.getDeclarationSignature());
+                        }
                         entry.setDeclarationInfo(declarationInfo);
+                        ret = true;
                     }
                 }
             }
         }
+        return ret;
+
     }
-    
 
     // Generate JSON report
     public void generateJsonReport(String toFilePath) throws IOException {
@@ -64,28 +76,16 @@ public class MethodCallReporter {
         mapper.writeValue(path.toFile(), reportMap);
     }
 
-    public void generateThirdPartyTypeJsonReport(String toFilePath) throws IOException {
+    public Map<String, List<MethodCallEntry>> getReportMap() {
+        return reportMap;
+    }
 
+    public void generateThirdPartyTypeJsonReport(String toFilePath) throws IOException {
 
         ObjectMapper mapper = new ObjectMapper();
 
         // Prepare a filtered report map excluding standard Java library types
         Map<String, List<MethodCallEntry>> filteredReportMap = new HashMap<>();
-
-
-        // ! Print out the entries with methodDeclarationInfo
-        // filteredReportMap.forEach((fileName, methodCallEntries) -> {
-        //     System.out.println("Entries in file: " + fileName);
-        //     for (MethodCallEntry entry : methodCallEntries) {
-        //         System.out.println("Declaring Type: " + entry.getDeclaringType());
-        //         System.out.println("Method Name: " + entry.getMethodName());
-        //         System.out.println("Line Number: " + entry.getLineNumber());
-        //         System.out.println("Full Expression: " + entry.getFullExpression());
-        //         System.out.println("Declaration Info: " + entry.getDeclarationInfo());
-        //         System.out.println();
-        //     }
-        // });
-
 
         reportMap.forEach((fileName, methodCallEntries) -> {
             List<MethodCallEntry> filteredEntries = new ArrayList<>();
@@ -94,7 +94,7 @@ public class MethodCallReporter {
                         entry.getDeclaringType().startsWith("javax.") ||
                         entry.getDeclaringType().startsWith(parentPackageName))) {
                     // if (entry.getDeclarationInfo() != null) {
-                        filteredEntries.add(entry);
+                    filteredEntries.add(entry);
                     // }
                 }
             }
@@ -117,7 +117,32 @@ public class MethodCallReporter {
         System.out.println("parentPackageName: " + parentPackageName);
     }
 
-    public Map<String, List<MethodCallEntry>> getReportMap() {
-        return reportMap;
+    public void generateThirdPartyTypeJsonReportBasedonPackage(String toFilePath) throws IOException {
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        Map<MethodSignatureKey, MethodCallEntry> uniqueMethodDeclarations = new HashMap<>();
+
+        for (List<MethodCallEntry> entries : reportMap.values()) {
+            for (MethodCallEntry entry : entries) {
+                if (!(entry.getDeclaringType().startsWith("java.") ||
+                        entry.getDeclaringType().startsWith("javax.") ||
+                        entry.getDeclaringType().startsWith(parentPackageName))) {
+
+                    MethodSignatureKey key = new MethodSignatureKey(entry.getDeclaringType(),
+                            entry.getMethodSignature());
+                    uniqueMethodDeclarations.putIfAbsent(key, entry);
+                }
+            }
+        }
+
+        // Now you have a map of unique method declarations, you can convert it to a
+        // list or directly use it for JSON generation
+        List<MethodCallEntry> allMethodDeclarationInfos = new ArrayList<>(uniqueMethodDeclarations.values());
+
+        // Generate JSON
+        mapper.writeValue(new File(toFilePath), allMethodDeclarationInfos);
+
     }
+
 }

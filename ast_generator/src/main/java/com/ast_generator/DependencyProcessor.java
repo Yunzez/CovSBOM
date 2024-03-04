@@ -344,7 +344,7 @@ public class DependencyProcessor {
                     .build();
 
             // Convert the new JSON object to string and write to the file
-            System.out.println("Writing to file: " + filePath);
+            // System.out.println("Writing to file: " + filePath);
             Files.writeString(filePath, wrappedJson.toString(), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
 
         } catch (IOException e) {

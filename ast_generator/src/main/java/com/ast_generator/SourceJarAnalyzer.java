@@ -15,6 +15,7 @@ import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.expr.MethodCallExpr;
+import com.github.javaparser.resolution.UnsolvedSymbolException;
 import com.github.javaparser.resolution.declarations.ResolvedMethodDeclaration;
 import com.github.javaparser.symbolsolver.JavaSymbolSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver;
@@ -25,17 +26,22 @@ import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
 import com.github.javaparser.utils.ProjectRoot;
 import com.github.javaparser.utils.SourceRoot;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.CallableDeclaration.Signature;
 
 public class SourceJarAnalyzer {
     private Path jarPath;
     private Dependency dependency;
-    private String decompiledPath;
+    private String decompressedPath;
     private Collection<String> targetPackages;
+    private List<ParseResult<CompilationUnit>> currentParseResults;
+    // * this is the packages we will be tracking again when we loop thru internal
+    // methods
     private Path decompressDir;
     CombinedTypeSolver combinedSolver;
     MethodCallReporter methodCallReporter;
 
-    private Map<String, Set<MethodDeclarationInfo>> singleJarAnalysis = new HashMap<String, Set<MethodDeclarationInfo>>();
+    // ! max recursion depth for digging into method calls
+    final int MAX_DIG_DEPTH = 5;
 
     // ! analysis statcs
     int totalCount = 0;
@@ -54,83 +60,13 @@ public class SourceJarAnalyzer {
 
     public void analyze() throws IOException {
         // Decompress the JAR file
-        decompressJar();
-
+        // decompressJar();
+        decompressedPath = Utils.decompressSingleJar(dependency, decompressDir);
         // Process the decompressed directory
         processDecompressedDirectory();
         System.out.println("Total third party method calls: " + totalCount + ", Success: " + successCount + ", Fail: "
                 + failCount);
 
-    }
-
-    public void deleteMetaInfDirectory(Path metaInfPath) throws IOException {
-        if (Files.exists(metaInfPath)) {
-            // Use walk to find all files and directories under META-INF
-            try (Stream<Path> walk = Files.walk(metaInfPath)) {
-                // Sort in reverse order so directories are deleted after their contents
-                walk.sorted(Comparator.reverseOrder())
-                        .forEach(path -> {
-                            try {
-                                Files.delete(path);
-                            } catch (IOException e) {
-                                System.err.println("Failed to delete " + path + ": " + e.getMessage());
-                            }
-                        });
-            }
-        } else {
-            System.out.println("META-INF directory does not exist or has already been deleted.");
-        }
-    }
-
-    private void decompressJar() throws IOException {
-        // Extract the JAR file name without the extension to use as the directory name
-        String jarFileName = jarPath.toString();
-        System.out.println(jarFileName);
-        String pathAfterRepository = dependency.getBasePackageName(); // jarFileName.split("/repository/")[1];
-        System.out.println(pathAfterRepository);
-        // Replace slashes with underscores (or another preferred character) to flatten
-        // the directory structure
-
-        // * create a path name for each jar decompressed directory
-        String decompressSubDirName = pathAfterRepository.replace('/', '_');
-        decompiledPath = decompressSubDirName;
-        // Create a path for the new directory under decompressDir using the JAR file
-        // name
-
-        Path jarSpecificDecompressDir = decompressDir.resolve(decompressSubDirName);
-        Path metaInfPath = Paths.get(jarSpecificDecompressDir.toString(), "META-INF");
-        if (!Files.exists(jarSpecificDecompressDir)) {
-            Files.createDirectories(jarSpecificDecompressDir);
-        }
-        System.out.println(jarSpecificDecompressDir.toString());
-        try (ZipInputStream zipIn = new ZipInputStream(new FileInputStream(jarPath.toFile()))) {
-            ZipEntry entry = zipIn.getNextEntry();
-            while (entry != null) {
-                Path filePath = jarSpecificDecompressDir.resolve(entry.getName());
-                if (!entry.isDirectory()) {
-                    // Extract file
-                    extractFile(zipIn, filePath);
-                } else {
-                    // Make directory
-                    Files.createDirectories(filePath);
-                }
-                zipIn.closeEntry();
-                entry = zipIn.getNextEntry();
-            }
-        }
-
-        deleteMetaInfDirectory(metaInfPath);
-    }
-
-    private void extractFile(ZipInputStream zipIn, Path filePath) throws IOException {
-        Files.createDirectories(filePath.getParent()); // Ensure directory exists
-        try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath.toFile()))) {
-            byte[] bytesIn = new byte[4096];
-            int read = 0;
-            while ((read = zipIn.read(bytesIn)) != -1) {
-                bos.write(bytesIn, 0, read);
-            }
-        }
     }
 
     /*
@@ -140,16 +76,14 @@ public class SourceJarAnalyzer {
         // * Initialize the combined type solver
 
         // Walk through each directory directly under the decompressed directory
-        String fullPath = decompressDir.toString() + "/" + decompiledPath;
+        String fullPath = decompressDir.toString() + "/" + decompressedPath;
 
-        System.out.println("Source root: " + fullPath);
-        // For parsing and symbol solving
         Path projectRoot = Paths.get(fullPath);
         ProjectRoot projectRootForSolving = new SymbolSolverCollectionStrategy().collect(projectRoot);
 
         initCombinedSolver(fullPath, projectRootForSolving);
-        analyzeDecompressedJar(projectRootForSolving); // A new method to process Java files in
-        // each subdirectory
+
+        analyzeDecompressedJar(projectRootForSolving); 
     }
 
     private void analyzeDecompressedJar(ProjectRoot projectRoot) throws IOException {
@@ -157,114 +91,225 @@ public class SourceJarAnalyzer {
         for (SourceRoot sourceRoot : projectRoot.getSourceRoots()) {
             // Attempt to parse all .java files found in this SourceRoot
             List<ParseResult<CompilationUnit>> parseResults = sourceRoot.tryToParse();
-
+            iterateParseResults(parseResults);
             // Process each ParseResult to get CompilationUnit
-            for (ParseResult<CompilationUnit> parseResult : parseResults) {
+        }
+        System.out.println("------ Completed processing of project source roots with roots number: "
+                + projectRoot.getSourceRoots().size() + "------");
+    }
 
+    private void iterateParseResults(List<ParseResult<CompilationUnit>> parseResults) {
+        this.currentParseResults = parseResults; // ! remember this current list of results
+        for (ParseResult<CompilationUnit> parseResult : parseResults) {
+
+            if (parseResult.isSuccessful() && parseResult.getResult().isPresent()) {
                 if (parseResult.isSuccessful() && parseResult.getResult().isPresent()) {
                     CompilationUnit cu = parseResult.getResult().get();
                     // cu.getStorage().ifPresent(storage -> System.out.println("------ Checking Java
                     // file: " + storage.getFileName() + " --------"));
                     String currentPath = cu.getStorage().get().getPath().toString();
-                    currentPath = currentPath.split(decompiledPath)[1].substring(1);
+                    currentPath = currentPath.split(decompressedPath)[1].substring(1);
 
                     String packageLikePath = currentPath.replace(File.separator, ".") // Replace file separators with
                                                                                       // dots
                             .replaceAll(".java$", "");
 
-                    if (packageLikePath.contains("junit")) {
-                        System.out.println("Current packageLike Path : " + packageLikePath);
-                        String cuPackage = cu.getPackageDeclaration().map(PackageDeclaration::getNameAsString)
-                                .orElse("");
-                        System.out.println("Current file package: " + cuPackage);
-                        System.out.println(
-                                "Target packages: " + targetPackages.toString() + " | Current package: " + cuPackage);
-                    }
                     targetPackages.stream().forEach(targetPackage -> {
                         if (packageLikePath.startsWith(targetPackage)) {
-                            System.out.println("Processing relevant file: " + cu.getStorage().get().getPath()
-                                    + " | Package: " + targetPackage);
                             processCompilationUnit(cu);
                         }
                     });
                 }
             }
         }
-        System.out.println("------ Completed processing of project source roots with roots number: "
-                + projectRoot.getSourceRoots().size() + "------");
     }
 
+    /*
+     * Process the first level of method calls
+     */
     private void processCompilationUnit(CompilationUnit cu) {
-        String packageName = cu.getPackageDeclaration()
-                .map(PackageDeclaration::getNameAsString)
-                .orElse(""); // Default to an empty string if no package is declared
+        String fullPath = cu.getStorage().get().getPath().toString();
+        String packageLikePath = getPackageLikePathFromCU(cu);
+
+        List<MethodDeclaration> methodDeclarations = cu.findAll(MethodDeclaration.class);
+
+        for (MethodDeclaration methodDeclaration : methodDeclarations) {
+            // Initialize MethodDeclarationInfo for the current method declaration
+            try {
+                // * we have to resolve the method declaration to get the Qualified signature,
+                // * qualified signature can be compared with method call qualified signature,
+                // * providing higher accuracy
+                ResolvedMethodDeclaration resolvedDeclaration = methodDeclaration.resolve();
+                String currentDeclarationSignature = resolvedDeclaration.getSignature().toString();
+
+                int startLine = methodDeclaration.getBegin().map(pos -> pos.line).orElse(-1);
+                int endLine = methodDeclaration.getEnd().map(pos -> pos.line).orElse(-1);
+                String name = methodDeclaration.getName().asString();
+
+                MethodDeclarationInfo currentDeclarationInfo = new MethodDeclarationInfo(fullPath, startLine, endLine,
+                        name, currentDeclarationSignature);
+
+                // * extract method calls from the method declaration
+                List<MethodCallEntry> currentCallEntries = extractMethodCallsFromDeclaration(methodDeclaration);
+
+                // * add the method calls to the currentDeclarationInfo
+                currentDeclarationInfo.addInnerMethodCalls(currentCallEntries);
+
+                Boolean pass = methodCallReporter.addDeclarationInfoForMethodinType(packageLikePath,
+                        currentDeclarationInfo);
+
+                if (pass) {
+                    // * start digging
+                    digFunctionCallEntries(currentDeclarationInfo, 0);
+                }
+            } catch (UnsolvedSymbolException e) {
+                System.out.println(
+                        "Warning: Could not resolve method declaration: " + methodDeclaration.getNameAsString());
+            }
+        }
+    }
+
+    /*
+     * Extract method calls from the method declaration
+     */
+    private List<MethodCallEntry> extractMethodCallsFromDeclaration(MethodDeclaration methodDeclaration) {
+        Map<MethodSignatureKey, MethodCallEntry> uniqueMethodCalls = new HashMap<>();
+        List<MethodCallExpr> methodCalls = methodDeclaration.findAll(MethodCallExpr.class);
+        totalCount += methodCalls.size();
+    
+        for (MethodCallExpr methodCall : methodCalls) {
+            try {
+                ResolvedMethodDeclaration resolvedMethod = methodCall.resolve();
+                int lineNumber = methodCall.getBegin().map(pos -> pos.line).orElse(-1);
+                String currentSignature = resolvedMethod.getSignature();
+                String fullExpression = methodCall.toString();
+                String functionCallType = resolvedMethod.declaringType().getQualifiedName();
+    
+                MethodSignatureKey key = new MethodSignatureKey(functionCallType, currentSignature);
+                if (!functionCallType.startsWith("java.") && !functionCallType.startsWith("javax.")) {
+                    MethodCallEntry existingEntry = uniqueMethodCalls.get(key);
+                    if (existingEntry == null) {
+                        // Add new entry if it doesn't exist
+                        MethodCallEntry newEntry = new MethodCallEntry(
+                            functionCallType,
+                            methodCall.getNameAsString(),
+                            lineNumber,
+                            fullExpression,
+                            currentSignature,
+                            null // Consider how to handle inner calls
+                        );
+                        uniqueMethodCalls.put(key, newEntry);
+                        successCount++;
+                    } else {
+                        // Update existing entry with new line number
+                        existingEntry.addLineNumber(lineNumber); // Ensure MethodCallEntry has a setter for lineNumber
+                    }
+                }
+            } catch (UnsolvedSymbolException | UnsupportedOperationException e) {
+                System.out.println("Warning: Could not resolve method call: " + methodCall.getNameAsString());
+                failCount++;
+            }
+        }
+    
+        // Convert the map values to a list to return
+        return new ArrayList<>(uniqueMethodCalls.values());
+    }
+    
+
+    /*
+     * Dig into the internal method calls for recursive searching
+     */
+    private void digFunctionCallEntries(MethodDeclarationInfo currentDeclarationInfo, int depth) {
+
+        if (depth > MAX_DIG_DEPTH) {
+            return;
+        }
+        depth++;
+
+        List<MethodCallEntry> internalTargetCalls = currentDeclarationInfo.getInnerMethodCalls();
+        Set<String> targetPackages = new HashSet<>();
+
+        for (MethodCallEntry callEntry : internalTargetCalls) {
+            targetPackages.add(callEntry.getDeclaringType());
+        }
+
+        for (ParseResult<CompilationUnit> parseResult : this.currentParseResults) {
+            if (!parseResult.isSuccessful() || !parseResult.getResult().isPresent()) {
+                continue;
+            }
+            if (!parseResult.getResult().isPresent()) {
+                continue;
+            }
+            CompilationUnit cu = parseResult.getResult().get();
+            String packageLikePath = getPackageLikePathFromCU(cu);
+
+            final int finalDepth = depth;
+            targetPackages.stream().forEach(targetPackage -> {
+                if (packageLikePath.startsWith(targetPackage)) {
+                    List<MethodCallEntry> lookForCalls = filterCallsForPackage(targetPackage, internalTargetCalls);
+                    System.out.println("all internal calls: " + internalTargetCalls.toString());
+                    System.out.println("---------");
+                    digFunctionCallEntriesHelper(cu, lookForCalls, finalDepth);
+                }
+            });
+
+        }
+    }
+
+    /*
+     * Helper function to dig into the internal method calls
+     * it loops thru the method declarations to find match
+     */
+    private void digFunctionCallEntriesHelper(CompilationUnit cu, List<MethodCallEntry> lookForCalls, int depth) {
+
+        List<MethodDeclaration> methodDeclarations = cu.findAll(MethodDeclaration.class);
 
         String fullPath = cu.getStorage().get().getPath().toString();
         String currentPath = cu.getStorage().get().getPath().toString();
-        currentPath = currentPath.split(decompiledPath)[1].substring(1);
+        currentPath = currentPath.split(decompressedPath)[1].substring(1);
 
         String packageLikePath = currentPath.replace(File.separator, ".") // Replace file separators with
                                                                           // dots
                 .replaceAll(".java$", "");
 
-        Set<MethodDeclarationInfo> methodDeclarationInfos = new HashSet<MethodDeclarationInfo>();
-        singleJarAnalysis.put(packageName, methodDeclarationInfos);
-        List<MethodDeclaration> methodDeclarations = cu.findAll(MethodDeclaration.class);
-
-        // System.out.println("Package: " + packageName);
+        // * looping thru method declaration to find match
         for (MethodDeclaration methodDeclaration : methodDeclarations) {
             // Initialize MethodDeclarationInfo for the current method declaration
+
             int startLine = methodDeclaration.getBegin().map(pos -> pos.line).orElse(-1);
             int endLine = methodDeclaration.getEnd().map(pos -> pos.line).orElse(-1);
             String name = methodDeclaration.getName().asString();
-            // System.out.println(" MethodDeclaration: " + name + " start: " + startLine + "
-            // end: " + endLine);
-            MethodDeclarationInfo currentDeclarationInfo = new MethodDeclarationInfo(fullPath, startLine, endLine,
-                    name);
 
-            List<MethodCallExpr> methodCalls = methodDeclaration.findAll(MethodCallExpr.class);
-            totalCount += methodCalls.size();
+            // ! we have to resolve the method declaration to get the Qualified signature,
+            ResolvedMethodDeclaration resolvedDeclaration = methodDeclaration.resolve();
+            String currentDeclarationSignature = resolvedDeclaration.getSignature().toString();
 
-            for (MethodCallExpr methodCall : methodCalls) {
-                try {
-                    ResolvedMethodDeclaration resolvedMethod = methodCall.resolve();
-                    int lineNumber = methodCall.getBegin().map(pos -> pos.line).orElse(-1);
-                    String fullExpression = methodCall.toString();
+            for (MethodCallEntry lookForCall : lookForCalls) {
 
-                    String functionCallType = resolvedMethod.declaringType().getQualifiedName();
-                    if (functionCallType.startsWith("java.") || functionCallType.startsWith("javax.")) {
-                        continue;
-                    } else {
-                        currentDeclarationInfo.addInnerMethodCall(new MethodCallEntry(
-                                resolvedMethod.declaringType().getQualifiedName(),
-                                methodCall.getNameAsString(),
-                                lineNumber,
-                                fullExpression,
-                                null // Since this is an inner call, the last parameter might need rethinking
-                        ));
+                if (lookForCall.getMethodName().equals(name)
+                        && lookForCall.getMethodSignature().equals(currentDeclarationSignature)) {
+                    System.out.println("Found method: " + name + " in type: " + packageLikePath);
+                    MethodDeclarationInfo currentDeclarationInfo = new MethodDeclarationInfo(fullPath, startLine,
+                            endLine,
+                            name,
+                            currentDeclarationSignature);
+                    lookForCall.setDeclarationInfo(currentDeclarationInfo);
+
+                    // * we found the method we are looking for
+                    // * we need to add the method declaration to the currentDeclarationInfo
+                    List<MethodCallEntry> currentCallEntries = extractMethodCallsFromDeclaration(methodDeclaration);
+                    currentDeclarationInfo.addInnerMethodCalls(currentCallEntries);
+
+                    // * if there are more inner method calls, we need to dig into them again
+                    if (currentDeclarationInfo.getInnerMethodCalls().size() > 0) {
+                        digFunctionCallEntries(currentDeclarationInfo, depth);
                     }
-                    // System.out.println(
-                    // "Method call: " + methodCall.getName() + " in method: " +
-                    // methodDeclaration.getName());
-                    // System.out.println("Declaring type: " +
-                    // resolvedMethod.declaringType().getQualifiedName());
-                    successCount++; // Increment success counter
-                } catch (Exception e) {
-                    failCount++;
-                    if (packageLikePath.contains("junit")) {
-                        System.err.println("Failed to resolve method call: " + methodCall.getName() +
-                                " in method: " + methodDeclaration.getName());
-                    }
-                    continue;
                 }
-
             }
-            // System.out.println("Adding method declaration info for method: " + name + "
-            // in type: " + packageLikePath);
-            methodCallReporter.addDeclarationInfoForMethodinType(packageLikePath,
-                    currentDeclarationInfo);
         }
     }
+
+    // info: ----- Helper functions: -----
 
     /*
      * Different java project might have different verison thus different syntax,
@@ -291,4 +336,25 @@ public class SourceJarAnalyzer {
 
     }
 
+    // * seperate the package like path from the compilation unit
+    private String getPackageLikePathFromCU(CompilationUnit cu) {
+        return cu.getStorage().map(storage -> storage.getPath().toString().split(decompressedPath)[1].substring(1)
+                .replace(File.separator, ".")
+                .replaceAll(".java$", ""))
+                .orElse("");
+    }
+
+    /*
+     * filter the internal method calls for the target package
+     * 
+     * @param targetPackage: the package to filter for
+     * 
+     * @param internalTargetCalls: the internal method calls to filter
+     */
+    private List<MethodCallEntry> filterCallsForPackage(String targetPackage,
+            List<MethodCallEntry> internalTargetCalls) {
+        return internalTargetCalls.stream()
+                .filter(call -> targetPackage.equals(call.getDeclaringType()))
+                .collect(Collectors.toList());
+    }
 }

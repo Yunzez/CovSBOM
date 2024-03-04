@@ -130,7 +130,9 @@ public class Main {
 
         dependencyAnalyzer.analyze();
 
-        methodCallReporter.generateThirdPartyTypeJsonReport("asts/analysis/final_report.json");
+        methodCallReporter.generateThirdPartyTypeJsonReport("asts/analysis/final_report_file_based.json");
+
+        methodCallReporter.generateThirdPartyTypeJsonReportBasedonPackage("asts/analysis/final_report_package_based.json");
         // // ! process dependencies
         // DependencyProcessor.processDependencies(inferredPomPath, importManager,
         // dependencyMap);

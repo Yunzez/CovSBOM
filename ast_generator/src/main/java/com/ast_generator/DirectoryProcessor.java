@@ -205,6 +205,7 @@ public class DirectoryProcessor {
         cu.findAll(MethodCallExpr.class).forEach(methodCall -> {
             try {
                 ResolvedMethodDeclaration resolvedMethod = methodCall.resolve();
+                String currentSignature = resolvedMethod.getSignature().toString();
                 int lineNumber = methodCall.getBegin().map(pos -> pos.line).orElse(-1);
                 String fullExpression = methodCall.toString();
                 // System.out.println("Method call: " + methodCall.getName());
@@ -216,12 +217,13 @@ public class DirectoryProcessor {
                         methodCall.getNameAsString(),
                         lineNumber,
                         fullExpression,
+                        currentSignature,
                         packageName[0]);
 
             } catch (Exception e) {
                 // this.methodReporter.addEntry(path.toString(), "unknown_delcare_type",
                 // methodCall.getNameAsString());
-                System.err.println("Failed to resolve method call: " + methodCall.getName());
+                // System.err.println("Failed to resolve method call: " + methodCall.getName());
             }
         });
     }
@@ -258,7 +260,6 @@ public class DirectoryProcessor {
         }
 
         // Convert the new JSON object to string and write to the file
-        System.out.println("Writing to file: " + filePath);
         // System.out.println("AST: " + astJson.length());
         Files.writeString(filePath, astJson.toString(), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
     }
