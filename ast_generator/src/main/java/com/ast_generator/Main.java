@@ -1,7 +1,9 @@
 package com.ast_generator;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.lang.reflect.Method;
@@ -17,6 +19,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -91,11 +94,26 @@ public class Main {
         System.out.println("installing source code: " + rootDirectoryPath);
         Utils.mavenInstallSources(rootDirectoryPath);
 
+        // ! loading settings:
+        Properties settings = new Properties();
+        try (InputStream input = new FileInputStream("settings.properties")) {
+            settings.load(input);
+            int recursiveLayers = Integer.parseInt(settings.getProperty("recursiveLayers", "2")); // Default to 2 if not
+            // set
+            Settings.setMaxMethodCallDepth(recursiveLayers);
+            boolean ignoreTestAttributes = Boolean.parseBoolean(settings.getProperty("ignoreTestAttributes", "false"));
+            Settings.setIgnoreTest(ignoreTestAttributes);
+            System.out.println("recursiveLayers: " + recursiveLayers);
+            System.out.println("ignoreTestAttributes: " + ignoreTestAttributes);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
         Map<String, Dependency> dependencyMap = DependencyProcessor.parsePomForDependencies(inferredPomPath);
 
         // print out dependecy map in a easy to read format
         System.out.println("---------------------------- dependency map ----------------------------");
-        dependencyMap.forEach((k, v) -> System.out.println(k + " : " + v));
+        dependencyMap.forEach((k, v) -> System.out.println(k + " : " + v + "\n"));
         System.out.println("---------------------------- dependency map ----------------------------");
 
         // ! generate ASTs for all java files in the application
@@ -115,7 +133,7 @@ public class Main {
         // * process the directory
         processor.processDirectory();
 
-        // importManager.printImports();
+        importManager.printImports();
         methodCallReporter.generateThirdPartyTypeJsonReport("asts/analysis/method_calls.json");
         System.out.println(" ------- end processing directory, start analyzing dependencies -------");
 
@@ -125,15 +143,16 @@ public class Main {
          * +------------------+
          */
 
-        // // ! test
+        // ! test
         DependencyAnalyzer dependencyAnalyzer = new DependencyAnalyzer(dependencyMap, methodCallReporter);
 
         dependencyAnalyzer.analyze();
 
         methodCallReporter.generateThirdPartyTypeJsonReport("asts/analysis/final_report_file_based.json");
 
-        methodCallReporter.generateThirdPartyTypeJsonReportBasedonPackage("asts/analysis/final_report_package_based.json");
-        // // ! process dependencies
+        methodCallReporter
+                .generateThirdPartyTypeJsonReportBasedonPackage("asts/analysis/final_report_package_based.json");
+        // ! process dependencies
         // DependencyProcessor.processDependencies(inferredPomPath, importManager,
         // dependencyMap);
 

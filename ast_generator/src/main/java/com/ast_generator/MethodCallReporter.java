@@ -41,14 +41,8 @@ public class MethodCallReporter {
         for (List<MethodCallEntry> entries : reportMap.values()) {
             for (MethodCallEntry entry : entries) {
                 if (entry.getDeclaringType().equals(declaringType)) {
-                    // System.out.println("looking for method: " + methodName + " in type: " +
-                    // declaringType);
 
                     if (entry.getMethodName().equals(methodName)) {
-                        if (entry.getMethodName().equals("assertTrue")) {
-                            System.out.println("checking in reporter: " + entry.getMethodSignature() + " "
-                                    + declarationInfo.getDeclarationSignature());
-                        }
                         entry.setDeclarationInfo(declarationInfo);
                         ret = true;
                     }
@@ -78,6 +72,20 @@ public class MethodCallReporter {
 
     public Map<String, List<MethodCallEntry>> getReportMap() {
         return reportMap;
+    }
+
+    public String getParentPackageName() {
+        return parentPackageName;
+    }
+
+    public List<String> getUniqueTypes() {
+        Set<String> uniqueTypes = new HashSet<>();
+        for (List<MethodCallEntry> entries : reportMap.values()) {
+            for (MethodCallEntry entry : entries) {
+                uniqueTypes.add(entry.getDeclaringType());
+            }
+        }
+        return new ArrayList<>(uniqueTypes);
     }
 
     public void generateThirdPartyTypeJsonReport(String toFilePath) throws IOException {

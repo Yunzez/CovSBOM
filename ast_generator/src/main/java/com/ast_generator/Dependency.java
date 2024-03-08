@@ -6,6 +6,7 @@ public class Dependency {
     private String version;
     private String jarPath;
     private String sourceJarPath;
+    private String sourceDecompressedPath;
 
     // Constructor, getters, and setters
     public Dependency(String groupId, String artifactId, String version, String jarPath, String sourceJarPath) {
@@ -14,12 +15,21 @@ public class Dependency {
         this.version = version;
         this.jarPath = jarPath;
         this.sourceJarPath = sourceJarPath;
+        this.sourceDecompressedPath = null;
     }
 
     public String getBasePackageName() {
         // Convert groupId and artifactId to a base package name
         // Typically, groupId and artifactId are used in Maven to denote the base package structure.
         return groupId + "." + artifactId;
+    }
+
+    public void setSourceDecompressedPath(String sourceDecompressedPath) {
+        this.sourceDecompressedPath = sourceDecompressedPath;
+    }
+
+    public String getSourceDecompressedPath() {
+        return sourceDecompressedPath;
     }
 
     public String getGroupId() {

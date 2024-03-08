@@ -3,7 +3,6 @@ package com.ast_generator;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
-
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -16,11 +15,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+import java.util.Set;
+import java.lang.Object;
 
 public class Utils {
 
@@ -33,9 +37,9 @@ public class Utils {
         List<Path> fileList = new ArrayList<>();
         try {
             Files.walk(rootDir)
-                .filter(Files::isRegularFile)
-                .filter(p -> p.toString().endsWith(fileExtension))
-                .forEach(fileList::add);
+                    .filter(Files::isRegularFile)
+                    .filter(p -> p.toString().endsWith(fileExtension))
+                    .forEach(fileList::add);
         } catch (IOException e) {
             System.err.println("Error traversing directory: " + rootDir);
             e.printStackTrace();
@@ -45,7 +49,7 @@ public class Utils {
 
     public static JsonObject readAst(String filePath) {
         try (InputStream is = new FileInputStream(filePath);
-             JsonReader reader = Json.createReader(is)) {
+                JsonReader reader = Json.createReader(is)) {
             return reader.readObject();
         } catch (FileNotFoundException e) {
             System.err.println("File not found: " + filePath);
@@ -59,7 +63,7 @@ public class Utils {
     public static void mavenInstallSources(String rootDirectoryPath) {
         // Convert the root directory path to an absolute path
         Path rootPath = Paths.get(rootDirectoryPath).toAbsolutePath();
-        
+
         try {
             // Create a process builder to run the mvn command
             ProcessBuilder processBuilder = new ProcessBuilder();
@@ -70,7 +74,7 @@ public class Utils {
 
             // Start the process
             Process process = processBuilder.start();
-            
+
             // Read the output and error streams
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
@@ -90,14 +94,15 @@ public class Utils {
         }
     }
 
-
     /*
      * decompress singale jar files
+     * 
      * @param dependency - the dependency to decompress
+     * 
      * @param decompressDir - the directory to write the decompressed files to
      */
 
-     public static String decompressSingleJar(Dependency dependency, Path decompressDir) throws IOException {
+    public static String decompressSingleJar(Dependency dependency, Path decompressDir) throws IOException {
         // Extract the JAR file name without the extension to use as the directory name
         Path jarPath = Paths.get(dependency.getSourceJarPath());
         String pathAfterRepository = dependency.getBasePackageName(); // jarFileName.split("/repository/")[1];
@@ -127,6 +132,32 @@ public class Utils {
         return decompressSubDirName;
     }
 
+    /**
+     * Decompresses all jar files and updates the {@code sourceDecompressedPath} for
+     * each dependency after decompressing.
+     *
+     * @param collection the collection of dependencies to decompress
+     * @param stringPath the directory to write the decompressed files to
+     * @return A list of strings representing the paths to the decompressed
+     *         subdirectories for each dependency
+     */
+    public static List<String> decompressAllJars(Collection<Dependency> collection, String stringPath) {
+        List<String> decompressSubDirName = new ArrayList<String>();
+        Path decompressedParentPath = Paths.get(stringPath);
+
+        for (Dependency dependency : collection) {
+            try {
+                String decompressedPath = decompressSingleJar(dependency, decompressedParentPath);
+                dependency.setSourceDecompressedPath(decompressedPath);
+                decompressSubDirName.add(decompressedPath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return decompressSubDirName;
+
+    }
+
     public static void extractFile(ZipInputStream zipIn, Path filePath) throws IOException {
         Files.createDirectories(filePath.getParent()); // Ensure directory exists
         try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath.toFile()))) {
@@ -137,7 +168,6 @@ public class Utils {
             }
         }
     }
-
 
     public static void deleteMetaInfDirectory(Path metaInfPath) throws IOException {
         if (Files.exists(metaInfPath)) {
@@ -157,5 +187,81 @@ public class Utils {
             System.out.println("META-INF directory does not exist or has already been deleted.");
         }
     }
-}
 
+    /**
+     * Checks if the declaring type is part of the given dependency.
+     *
+     * @param declaringType The full package name of the type being checked.
+     * @param dependency    The dependency object to compare against.
+     * @return true if the declaring type is part of the dependency; false
+     *         otherwise.
+     */
+    public static boolean isTypePartOfDependency(String declaringType, Dependency dependency) {
+        // Convert groupId and declaringType to a base form for comparison
+        String baseGroupId = getBasePackage(dependency.getGroupId());
+        String baseGroupIdPart = getBasePackage(declaringType);
+
+        // Perform the comparison using the base package name
+        return baseGroupIdPart.equals(baseGroupId) || declaringType.contains(baseGroupId);
+    }
+
+    /**
+     * Extracts the base package name from a longer package name or groupId.
+     *
+     * @param packageName The full package name or groupId.
+     * @return The base package name.
+     */
+    private static String getBasePackage(String packageName) {
+        Set<String> commonPrefixes = new HashSet<>(Arrays.asList("com", "org", "net", "io")); // Add more as needed
+        String[] parts = packageName.split("\\.");
+
+        // Determine starting index based on common prefixes
+        int startIndex = (parts.length > 1 && commonPrefixes.contains(parts[0])) ? 1 : 0;
+
+        // Construct the package name starting from the determined index
+        StringBuilder sb = new StringBuilder();
+        for (int i = startIndex; i < parts.length; i++) {
+            if (i > startIndex)
+                sb.append("."); // Add dot separator between package segments
+            sb.append(parts[i]);
+        }
+        return sb.toString();
+    }
+
+    public static Dependency findDependencyWithMaxProbability(String unresolvedType,
+            Collection<Dependency> dependencies) {
+        String[] unresolvedParts = unresolvedType.split("\\.");
+        Dependency bestMatch = null;
+        int maxMatches = -1;
+
+        for (Dependency dependency : dependencies) {
+            // Combine groupId and artifactId for comparison and split them into parts
+            String combinedDependencyIdentifier = dependency.getGroupId() + "." + dependency.getArtifactId();
+            String[] dependencyParts = combinedDependencyIdentifier.split("\\.");
+
+            int matches = countMatches(unresolvedParts, dependencyParts);
+
+            if (matches > maxMatches) {
+                maxMatches = matches;
+                bestMatch = dependency;
+            }
+        }
+        System.out.println("Best match for unresolved type " + unresolvedType + " is: " + bestMatch.getGroupId() + " "
+                + bestMatch.getArtifactId() + " with " + maxMatches + " matches.");
+        return bestMatch;
+    }
+
+    private static int countMatches(String[] unresolvedParts, String[] dependencyParts) {
+        int matches = 0;
+        for (int i = 0; i < unresolvedParts.length && i < dependencyParts.length; i++) {
+            if (unresolvedParts[i].equals(dependencyParts[i])) {
+                matches++;
+            } else {
+                // Stop counting at the first non-match
+                break;
+            }
+        }
+        return matches;
+    }
+
+}

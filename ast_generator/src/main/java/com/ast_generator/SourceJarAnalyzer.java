@@ -41,7 +41,7 @@ public class SourceJarAnalyzer {
     MethodCallReporter methodCallReporter;
 
     // ! max recursion depth for digging into method calls
-    final int MAX_DIG_DEPTH = 5;
+    final int MAX_DIG_DEPTH = Settings.MAX_METHOD_CALL_DEPTH;
 
     // ! analysis statcs
     int totalCount = 0;
@@ -61,7 +61,8 @@ public class SourceJarAnalyzer {
     public void analyze() throws IOException {
         // Decompress the JAR file
         // decompressJar();
-        decompressedPath = Utils.decompressSingleJar(dependency, decompressDir);
+        decompressedPath = this.dependency.getSourceDecompressedPath();
+        System.out.println("Decompressed path: " + decompressedPath);
         // Process the decompressed directory
         processDecompressedDirectory();
         System.out.println("Total third party method calls: " + totalCount + ", Success: " + successCount + ", Fail: "
@@ -83,7 +84,7 @@ public class SourceJarAnalyzer {
 
         initCombinedSolver(fullPath, projectRootForSolving);
 
-        analyzeDecompressedJar(projectRootForSolving); 
+        analyzeDecompressedJar(projectRootForSolving);
     }
 
     private void analyzeDecompressedJar(ProjectRoot projectRoot) throws IOException {
@@ -94,8 +95,9 @@ public class SourceJarAnalyzer {
             iterateParseResults(parseResults);
             // Process each ParseResult to get CompilationUnit
         }
-        System.out.println("------ Completed processing of project source roots with roots number: "
-                + projectRoot.getSourceRoots().size() + "------");
+        // System.out.println("------ Completed processing of project source roots with
+        // roots number: "
+        // + projectRoot.getSourceRoots().size() + "------");
     }
 
     private void iterateParseResults(List<ParseResult<CompilationUnit>> parseResults) {
@@ -163,8 +165,9 @@ public class SourceJarAnalyzer {
                     digFunctionCallEntries(currentDeclarationInfo, 0);
                 }
             } catch (UnsolvedSymbolException e) {
-                System.out.println(
-                        "Warning: Could not resolve method declaration: " + methodDeclaration.getNameAsString());
+                // System.out.println(
+                // "Warning: Could not resolve method declaration: " +
+                // methodDeclaration.getNameAsString());
             }
         }
     }
@@ -176,7 +179,7 @@ public class SourceJarAnalyzer {
         Map<MethodSignatureKey, MethodCallEntry> uniqueMethodCalls = new HashMap<>();
         List<MethodCallExpr> methodCalls = methodDeclaration.findAll(MethodCallExpr.class);
         totalCount += methodCalls.size();
-    
+
         for (MethodCallExpr methodCall : methodCalls) {
             try {
                 ResolvedMethodDeclaration resolvedMethod = methodCall.resolve();
@@ -184,19 +187,19 @@ public class SourceJarAnalyzer {
                 String currentSignature = resolvedMethod.getSignature();
                 String fullExpression = methodCall.toString();
                 String functionCallType = resolvedMethod.declaringType().getQualifiedName();
-    
+
                 MethodSignatureKey key = new MethodSignatureKey(functionCallType, currentSignature);
                 if (!functionCallType.startsWith("java.") && !functionCallType.startsWith("javax.")) {
                     MethodCallEntry existingEntry = uniqueMethodCalls.get(key);
                     if (existingEntry == null) {
                         // Add new entry if it doesn't exist
                         MethodCallEntry newEntry = new MethodCallEntry(
-                            functionCallType,
-                            methodCall.getNameAsString(),
-                            lineNumber,
-                            fullExpression,
-                            currentSignature,
-                            null // Consider how to handle inner calls
+                                functionCallType,
+                                methodCall.getNameAsString(),
+                                lineNumber,
+                                fullExpression,
+                                currentSignature,
+                                null // Consider how to handle inner calls
                         );
                         uniqueMethodCalls.put(key, newEntry);
                         successCount++;
@@ -205,18 +208,37 @@ public class SourceJarAnalyzer {
                         existingEntry.addLineNumber(lineNumber); // Ensure MethodCallEntry has a setter for lineNumber
                     }
                 }
-            } catch (UnsolvedSymbolException | UnsupportedOperationException e) {
-                System.out.println("Warning: Could not resolve method call: " + methodCall.getNameAsString());
+            } catch (UnsolvedSymbolException e) {
+                // Log unresolved method calls; these might be external methods which are acceptable
+                System.out.println("Info: Unresolved method call to '" + e.getName() + "' might be external and is therefore acceptable.");
+            }
+            catch (UnsupportedOperationException e) {
+                // Log the issue but do not treat as critical error
+                System.out.println("Warning: UnsupportedOperationException encountered. Method may not be supported for resolution: " + e.getMessage());
+            }
+            catch (IllegalStateException e) {
+                System.err.println("Warning: Failed to resolve a type due to an IllegalStateException. " +
+                        "This may indicate a complex type usage not fully supported. " +
+                        "Details: " + e.getMessage());
                 failCount++;
             }
+            catch (RuntimeException e) {
+                if (e.getMessage().contains("cannot be resolved")) {
+                    // Log but do not increment failCount for unresolved external methods
+                    System.out.println("Info: The method '" + e.getMessage().split("'")[1] + "' cannot be resolved, possibly due to being an external dependency.");
+                } else {
+                    // For other RuntimeExceptions, log as error and increment failCount
+                    System.err.println("Error: Unexpected RuntimeException encountered: " + e.getMessage());
+                    failCount++;
+                }
+            }
         }
-    
+
         // Convert the map values to a list to return
         return new ArrayList<>(uniqueMethodCalls.values());
     }
-    
 
-    /*
+    /**
      * Dig into the internal method calls for recursive searching
      */
     private void digFunctionCallEntries(MethodDeclarationInfo currentDeclarationInfo, int depth) {
@@ -247,8 +269,8 @@ public class SourceJarAnalyzer {
             targetPackages.stream().forEach(targetPackage -> {
                 if (packageLikePath.startsWith(targetPackage)) {
                     List<MethodCallEntry> lookForCalls = filterCallsForPackage(targetPackage, internalTargetCalls);
-                    System.out.println("all internal calls: " + internalTargetCalls.toString());
-                    System.out.println("---------");
+                    // System.out.println("all internal calls: " + internalTargetCalls.toString());
+                    // System.out.println("---------");
                     digFunctionCallEntriesHelper(cu, lookForCalls, finalDepth);
                 }
             });
@@ -256,7 +278,7 @@ public class SourceJarAnalyzer {
         }
     }
 
-    /*
+    /**
      * Helper function to dig into the internal method calls
      * it loops thru the method declarations to find match
      */
@@ -288,7 +310,7 @@ public class SourceJarAnalyzer {
 
                 if (lookForCall.getMethodName().equals(name)
                         && lookForCall.getMethodSignature().equals(currentDeclarationSignature)) {
-                    System.out.println("Found method: " + name + " in type: " + packageLikePath);
+                    // System.out.println("Found method: " + name + " in type: " + packageLikePath);
                     MethodDeclarationInfo currentDeclarationInfo = new MethodDeclarationInfo(fullPath, startLine,
                             endLine,
                             name,
@@ -318,8 +340,9 @@ public class SourceJarAnalyzer {
      */
 
     private void initCombinedSolver(String fullPath, ProjectRoot projectRoot) {
-        System.out.println("Init combined solver for root path " + fullPath + " with roots number "
-                + projectRoot.getSourceRoots().size());
+        // System.out.println("Init combined solver for root path " + fullPath + " with
+        // roots number "
+        // + projectRoot.getSourceRoots().size());
 
         CombinedTypeSolver combinedSolver = new CombinedTypeSolver();
 
