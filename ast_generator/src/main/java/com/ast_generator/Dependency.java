@@ -69,8 +69,8 @@ public class Dependency {
     }
 
     public String toString() {
-        return "Dependency [groupId=" + groupId + ", artifactId=" + artifactId + ", version=" + version + ", jarPath="
-                + jarPath + "]";
+        return "Dependency: groupId=" + groupId + ", artifactId=" + artifactId + ", version=" + version + ", jarPath="
+                + jarPath;
     }
 
 }

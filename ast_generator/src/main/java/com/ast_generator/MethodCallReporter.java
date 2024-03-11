@@ -18,6 +18,7 @@ import java.util.Set;
 public class MethodCallReporter {
     private Map<String, List<MethodCallEntry>> reportMap = new HashMap<>();
     private String parentPackageName;
+    private Map<Dependency, Set<String>> typeToJarReference;
 
     // Add a method call entry
     public void addEntry(String fileName, String declaringType, String methodName, int lineNumber,
@@ -51,6 +52,10 @@ public class MethodCallReporter {
         }
         return ret;
 
+    }
+
+    public void setTypeToJarReference(Map<Dependency, Set<String>> typeToJarReference) {
+        this.typeToJarReference = typeToJarReference;
     }
 
     // Generate JSON report
@@ -129,8 +134,8 @@ public class MethodCallReporter {
 
         ObjectMapper mapper = new ObjectMapper();
 
+        // if (typeToJarReference == null) {
         Map<MethodSignatureKey, MethodCallEntry> uniqueMethodDeclarations = new HashMap<>();
-
         for (List<MethodCallEntry> entries : reportMap.values()) {
             for (MethodCallEntry entry : entries) {
                 if (!(entry.getDeclaringType().startsWith("java.") ||
@@ -143,14 +148,35 @@ public class MethodCallReporter {
                 }
             }
         }
-
         // Now you have a map of unique method declarations, you can convert it to a
         // list or directly use it for JSON generation
         List<MethodCallEntry> allMethodDeclarationInfos = new ArrayList<>(uniqueMethodDeclarations.values());
 
         // Generate JSON
-        mapper.writeValue(new File(toFilePath), allMethodDeclarationInfos);
-
+        if (typeToJarReference == null) {
+            mapper.writeValue(new File(toFilePath), allMethodDeclarationInfos);
+            System.out.println("no typeToJarReference, generate file based on declaring types");
+        } else {
+            Map<Dependency, List<MethodCallEntry>> dependencyToMethodCallEntries = new HashMap<>();
+            for (MethodCallEntry entry : allMethodDeclarationInfos) {
+                Dependency matchedDependency = null;
+                for (Map.Entry<Dependency, Set<String>> entry1 : typeToJarReference.entrySet()) {
+                    if (entry1.getValue().contains(entry.getDeclaringType())) {
+                        matchedDependency = entry1.getKey();
+                        break;
+                    }
+                }
+                if (matchedDependency != null) {
+                    if (dependencyToMethodCallEntries.get(matchedDependency) == null) {
+                        dependencyToMethodCallEntries.put(matchedDependency, new ArrayList<>());
+                    }
+                    dependencyToMethodCallEntries.get(matchedDependency).add(entry);
+                }
+            }
+            // Generate JSON
+            mapper.writeValue(new File(toFilePath), dependencyToMethodCallEntries);
+            System.out.println("detected typeToJarReference, generate file based on dependencies");
+        }
     }
 
 }

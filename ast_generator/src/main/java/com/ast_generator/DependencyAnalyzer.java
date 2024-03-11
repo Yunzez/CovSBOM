@@ -52,6 +52,8 @@ public class DependencyAnalyzer {
                 e.printStackTrace();
             }
         }
+
+        methodCallReporter.setTypeToJarReference(typeToJarLookup);
     }
 
     /**
@@ -72,41 +74,44 @@ public class DependencyAnalyzer {
 
     }
 
-    /*
+    /**
      * Create a map of jarPath to a set of types that are found in the jar
      * Key: jarPath, Value: Set of types
      */
-   private void findJarPathForType(String declaringType) {
+    private void findJarPathForType(String declaringType) {
 
-    String filePath = declaringType.replace('.', '/') + ".java"; // Convert package name to file path
+        String filePath = declaringType.replace('.', '/') + ".java"; // Convert package name to file path
 
-    for (String jarDecompressedPath : jarDecompressedPaths) {
-        File potentialFile = new File("decompressed/" + jarDecompressedPath, filePath);
-        if (potentialFile.exists()) {
-            // Assuming dependencyMap keys are artifactIds and Dependency objects have a method getArtifactId()
-            Dependency matchedDependency = findDependencyForDecompressedPath(jarDecompressedPath);
-            if (matchedDependency != null) {
-                if (typeToJarLookup.get(matchedDependency) == null) {
-                    typeToJarLookup.put(matchedDependency, new HashSet<String>());
+        for (String jarDecompressedPath : jarDecompressedPaths) {
+            File potentialFile = new File("decompressed/" + jarDecompressedPath, filePath);
+            if (potentialFile.exists()) {
+                // Assuming dependencyMap keys are artifactIds and Dependency objects have a
+                // method getArtifactId()
+                Dependency matchedDependency = findDependencyForDecompressedPath(jarDecompressedPath);
+                if (matchedDependency != null) {
+                    if (typeToJarLookup.get(matchedDependency) == null) {
+                        typeToJarLookup.put(matchedDependency, new HashSet<String>());
+                    }
+                    typeToJarLookup.get(matchedDependency).add(declaringType);
+                    unresolvedTypes.remove(declaringType); // Mark as resolved
+                    break; // Stop searching once matched
                 }
-                typeToJarLookup.get(matchedDependency).add(declaringType);
-                unresolvedTypes.remove(declaringType); // Mark as resolved
-                break; // Stop searching once matched
+            } else {
+                System.out.println("File not found: " + potentialFile.getAbsolutePath());
             }
-        } else {
-            // System.out.println("File not found: " + potentialFile.getAbsolutePath());
         }
     }
-}
 
-private Dependency findDependencyForDecompressedPath(String decompressedPath) {
-    // Implement logic to find the matching Dependency object based on decompressedPath
-    // This might involve naming conventions or additional metadata stored during decompression
-    // Example return statement (replace with actual logic)
-    return dependencyMap.values().stream()
-            .filter(dependency -> decompressedPath.contains(dependency.getArtifactId()))
-            .findFirst()
-            .orElse(null);
-}
+    private Dependency findDependencyForDecompressedPath(String decompressedPath) {
+        // Implement logic to find the matching Dependency object based on
+        // decompressedPath
+        // This might involve naming conventions or additional metadata stored during
+        // decompression
+        // Example return statement (replace with actual logic)
+        return dependencyMap.values().stream()
+                .filter(dependency -> decompressedPath.contains(dependency.getArtifactId()))
+                .findFirst()
+                .orElse(null);
+    }
 
 }
