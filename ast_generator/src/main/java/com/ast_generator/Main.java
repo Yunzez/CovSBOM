@@ -30,6 +30,7 @@ import javax.json.JsonReader;
 import javax.json.JsonWriter;
 
 public class Main {
+    private List<String> dependenciesTree;
     private static Map<String, String> dependencyMap;
     private static Path astPath;
     private static Map<String, String> libraryAstJsonMap;
@@ -110,11 +111,16 @@ public class Main {
         }
 
         Map<String, Dependency> dependencyMap = DependencyProcessor.parsePomForDependencies(inferredPomPath);
-
+        List<String> mavenTree = MavenDependencyTree.runMavenDependencyTree(rootDirectoryPath);
+        System.out.println("mavenTree: " + mavenTree.toString());
+        MavenDependencyTree.updateDependencyMapWithTreeOutput(mavenTree, dependencyMap);
         // print out dependecy map in a easy to read format
-        System.out.println("---------------------------- dependency map ----------------------------");
-        dependencyMap.forEach((k, v) -> System.out.println(k + " : " + v + "\n"));
-        System.out.println("---------------------------- dependency map ----------------------------");
+
+        // System.out.println("---------------------------- dependency map
+        // ----------------------------");
+        // dependencyMap.forEach((k, v) -> System.out.println(k + " : " + v + "\n"));
+        // System.out.println("---------------------------- dependency map
+        // ----------------------------");
 
         // ! generate ASTs for all java files in the application
         /*
@@ -124,6 +130,7 @@ public class Main {
          */
 
         // * create an instance of import manager
+
         ImportManager importManager = new ImportManager(dependencyMap, astPath);
         MethodCallReporter methodCallReporter = new MethodCallReporter();
         // * create an instance of directory processor
@@ -137,6 +144,9 @@ public class Main {
         methodCallReporter.generateThirdPartyTypeJsonReport("asts/analysis/method_calls.json");
         System.out.println(" ------- end processing directory, start analyzing dependencies -------");
 
+        // testing
+        methodCallReporter.generateThirdPartyTypeJsonReport("asts/analysis/final_report_file_based.json");
+
         /*
          * +------------------+
          * | Analysis section |
@@ -144,7 +154,8 @@ public class Main {
          */
 
         // ! test
-        DependencyAnalyzer dependencyAnalyzer = new DependencyAnalyzer(dependencyMap, methodCallReporter);
+        DependencyAnalyzer dependencyAnalyzer = new DependencyAnalyzer(dependencyMap,
+                methodCallReporter);
 
         dependencyAnalyzer.analyze();
 
@@ -152,6 +163,7 @@ public class Main {
 
         methodCallReporter
                 .generateThirdPartyTypeJsonReportBasedonPackage("asts/analysis/final_report_package_based.json");
+
         // ! process dependencies
         // DependencyProcessor.processDependencies(inferredPomPath, importManager,
         // dependencyMap);

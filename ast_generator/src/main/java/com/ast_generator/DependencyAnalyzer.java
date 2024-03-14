@@ -1,6 +1,9 @@
 package com.ast_generator;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -83,8 +86,9 @@ public class DependencyAnalyzer {
         String filePath = declaringType.replace('.', '/') + ".java"; // Convert package name to file path
 
         for (String jarDecompressedPath : jarDecompressedPaths) {
+            Path potentialPath = Paths.get("decompressed/" + jarDecompressedPath, filePath);
             File potentialFile = new File("decompressed/" + jarDecompressedPath, filePath);
-            if (potentialFile.exists()) {
+            if (Files.exists(potentialPath)) {
                 // Assuming dependencyMap keys are artifactIds and Dependency objects have a
                 // method getArtifactId()
                 Dependency matchedDependency = findDependencyForDecompressedPath(jarDecompressedPath);
@@ -97,7 +101,7 @@ public class DependencyAnalyzer {
                     break; // Stop searching once matched
                 }
             } else {
-                System.out.println("File not found: " + potentialFile.getAbsolutePath());
+                System.out.println("File not found: " + potentialPath.toAbsolutePath());
             }
         }
     }

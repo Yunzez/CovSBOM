@@ -290,20 +290,6 @@ public class DependencyProcessor {
                         System.err.println("Failed to parse (skipping): " + path + "; ");
                     }
                 });
-        // appendAllASTsToJsonFile();
-        // ! Cleanup: delete the temporary directory and extracted files
-        // try (Stream<Path> walk = Files.walk(dir).sorted(Comparator.reverseOrder())) {
-        // walk.forEach(path -> {
-        // try {
-        // Files.delete(path);
-        // // System.out.println("Deleted: " + path);
-        // } catch (IOException e) {
-        // System.err.println("Failed to delete: " + path + "; " + e.getMessage());
-        // }
-        // });
-        // } catch (IOException e) {
-        // System.err.println("Error walking through directory: " + e.getMessage());
-        // }
     }
 
     /*

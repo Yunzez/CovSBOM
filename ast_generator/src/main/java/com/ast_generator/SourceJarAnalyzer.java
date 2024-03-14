@@ -187,7 +187,8 @@ public class SourceJarAnalyzer {
                 String currentSignature = resolvedMethod.getSignature();
                 String fullExpression = methodCall.toString();
                 String functionCallType = resolvedMethod.declaringType().getQualifiedName();
-
+                
+                
                 MethodSignatureKey key = new MethodSignatureKey(functionCallType, currentSignature);
                 if (!functionCallType.startsWith("java.") && !functionCallType.startsWith("javax.")) {
                     MethodCallEntry existingEntry = uniqueMethodCalls.get(key);
@@ -210,27 +211,27 @@ public class SourceJarAnalyzer {
                 }
             } catch (UnsolvedSymbolException e) {
                 // Log unresolved method calls; these might be external methods which are acceptable
-                System.out.println("Info: Unresolved method call to '" + e.getName() + "' might be external and is therefore acceptable.");
+                // System.out.println("Info: Unresolved method call to '" + e.getName() + "' might be external and is therefore acceptable.");
             }
             catch (UnsupportedOperationException e) {
                 // Log the issue but do not treat as critical error
-                System.out.println("Warning: UnsupportedOperationException encountered. Method may not be supported for resolution: " + e.getMessage());
+                // System.out.println("Warning: UnsupportedOperationException encountered. Method may not be supported for resolution: " + e.getMessage());
             }
             catch (IllegalStateException e) {
-                System.err.println("Warning: Failed to resolve a type due to an IllegalStateException. " +
-                        "This may indicate a complex type usage not fully supported. " +
-                        "Details: " + e.getMessage());
+                // System.err.println("Warning: Failed to resolve a type due to an IllegalStateException. " +
+                //         "This may indicate a complex type usage not fully supported. " +
+                //         "Details: " + e.getMessage());
                 failCount++;
             }
             catch (RuntimeException e) {
-                if (e.getMessage().contains("cannot be resolved")) {
-                    // Log but do not increment failCount for unresolved external methods
-                    System.out.println("Info: The method '" + e.getMessage().split("'")[1] + "' cannot be resolved, possibly due to being an external dependency.");
-                } else {
-                    // For other RuntimeExceptions, log as error and increment failCount
-                    System.err.println("Error: Unexpected RuntimeException encountered: " + e.getMessage());
-                    failCount++;
-                }
+                // if (e.getMessage().contains("cannot be resolved")) {
+                //     // Log but do not increment failCount for unresolved external methods
+                //     System.out.println("Info: The method '" + e.getMessage().split("'")[1] + "' cannot be resolved, possibly due to being an external dependency.");
+                // } else {
+                //     // For other RuntimeExceptions, log as error and increment failCount
+                //     System.err.println("Error: Unexpected RuntimeException encountered: " + e.getMessage());
+                //     failCount++;
+                // }
             }
         }
 

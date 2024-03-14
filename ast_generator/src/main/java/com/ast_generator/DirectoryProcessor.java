@@ -72,33 +72,67 @@ public class DirectoryProcessor {
         initCombinedSolver();
     }
 
+    // private void initCombinedSolver() {
+    // this.combinedSolver = new CombinedTypeSolver();
+    // combinedSolver.add(new ReflectionTypeSolver());
+    // for (String dependencyPath : dependencyMap.keySet()) {
+    // System.out.println("Adding dependency: " + dependencyPath);
+    // Dependency dependency = dependencyMap.get(dependencyPath);
+    // try {
+    // // System.out.println("Adding dependency: " + dependency.getJarPath());
+    // String jarPathString = dependency.getJarPath();
+    // // Convert the String to a Path
+    // Path jarPath = Paths.get(jarPathString);
+    // combinedSolver.add(new JarTypeSolver(new File(jarPathString)));
+    // } catch (Exception e) {
+    // // System.out.println("Failed to add dependency: " + dependencyPath);
+    // e.printStackTrace();
+    // }
+    // }
+
+    // System.out.println("combinedSolver: " + combinedSolver.getRoot().toString());
+    // // Initialize JavaParserTypeSolver with the source directory, not a specific
+    // // Java file
+    // combinedSolver.add(new JavaParserTypeSolver(new File(directoryPath)));
+
+    // JavaSymbolSolver symbolSolver = new JavaSymbolSolver(combinedSolver);
+    // // Update to use the current method as per JavaParser's version if
+    // // getConfiguration() is deprecated
+    // StaticJavaParser.getParserConfiguration().setSymbolResolver(symbolSolver);
+
+    // }
+
     private void initCombinedSolver() {
         this.combinedSolver = new CombinedTypeSolver();
-        combinedSolver.add(new ReflectionTypeSolver());
+        combinedSolver.add(new ReflectionTypeSolver()); // Still useful for resolving standard Java types
+
+        // Loop through each dependency and add it to the CombinedTypeSolver
         for (String dependencyPath : dependencyMap.keySet()) {
+
             Dependency dependency = dependencyMap.get(dependencyPath);
             try {
-                // System.out.println("Adding dependency: " + dependency.getJarPath());
-                String jarPathString = dependency.getJarPath();
-                // Convert the String to a Path
-                Path jarPath = Paths.get(jarPathString);
-                combinedSolver.add(new JarTypeSolver(new File(jarPathString)));
+                String jarPathString = dependency.getJarPath(); // Assumes this is the path to the JAR file
+                System.out.println("Adding dependency: " + jarPathString);
+                // Add JarTypeSolver for each JAR file (external dependency)
+                combinedSolver.add(new JarTypeSolver(jarPathString));
             } catch (Exception e) {
-                // System.out.println("Failed to add dependency: " + dependencyPath);
+                System.out.println("Failed to add dependency: " + dependencyPath);
                 e.printStackTrace();
             }
         }
 
-        System.out.println("combinedSolver: " + combinedSolver.getRoot().toString());
-        // Initialize JavaParserTypeSolver with the source directory, not a specific
-        // Java file
-        combinedSolver.add(new JavaParserTypeSolver(new File(directoryPath)));
+        // try {
+		// 	combinedSolver.add(new JarTypeSolver("/Users/yunzezhao/.m2/repository/org/eclipse/jetty/jetty-util/9.4.48.v20220622/jetty-util-9.4.48.v20220622.jar"));
+		// } catch (IOException e) {
+		// 	// TODO Auto-generated catch block
+		// 	e.printStackTrace();
+		// }
+
+        // Note: Not adding JavaParserTypeSolver for the project's own source directory
+        // This limits visibility to external functions provided by dependencies only
 
         JavaSymbolSolver symbolSolver = new JavaSymbolSolver(combinedSolver);
-        // Update to use the current method as per JavaParser's version if
-        // getConfiguration() is deprecated
         StaticJavaParser.getParserConfiguration().setSymbolResolver(symbolSolver);
-
     }
 
     // Main method for command-line execution
@@ -117,8 +151,6 @@ public class DirectoryProcessor {
             System.out.println("Invalid directory path.");
         }
     }
-
- 
 
     private void processDirectory(Path directory) throws IOException {
         Files.walkFileTree(directory, new SimpleFileVisitor<Path>() {
@@ -203,8 +235,15 @@ public class DirectoryProcessor {
         // System.out.println("Package: " + packageName[0]);
 
         cu.findAll(MethodCallExpr.class).forEach(methodCall -> {
+            // System.out.println("Method call: " + methodCall.getName());
+
             try {
+                // methodCall.
                 ResolvedMethodDeclaration resolvedMethod = methodCall.resolve();
+                if (resolvedMethod.getName().toString().equals("setConnectors")) {
+                    System.out.println("setConnectors after resolved: " + methodCall.getName() + resolvedMethod.getQualifiedName());
+                }
+
                 String currentSignature = resolvedMethod.getSignature().toString();
                 int lineNumber = methodCall.getBegin().map(pos -> pos.line).orElse(-1);
                 String fullExpression = methodCall.toString();
@@ -221,9 +260,14 @@ public class DirectoryProcessor {
                         packageName[0]);
 
             } catch (Exception e) {
-                // this.methodReporter.addEntry(path.toString(), "unknown_delcare_type",
-                // methodCall.getNameAsString());
-                // System.err.println("Failed to resolve method call: " + methodCall.getName());
+                if (methodCall.getName().toString().equals("setConnectors")) {
+                    System.out.println("setConnectors: " + methodCall.getName());
+                    // this.methodReporter.addEntry(path.toString(), "unknown_delcare_type",
+                    //         methodCall.getNameAsString());
+                    System.err.println("Failed to resolve method call: " + methodCall.getName());
+                    e.printStackTrace();
+                }
+
             }
         });
     }
