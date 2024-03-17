@@ -10,8 +10,11 @@ import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -122,11 +125,12 @@ public class DirectoryProcessor {
         }
 
         // try {
-		// 	combinedSolver.add(new JarTypeSolver("/Users/yunzezhao/.m2/repository/org/eclipse/jetty/jetty-util/9.4.48.v20220622/jetty-util-9.4.48.v20220622.jar"));
-		// } catch (IOException e) {
-		// 	// TODO Auto-generated catch block
-		// 	e.printStackTrace();
-		// }
+        // combinedSolver.add(new
+        // JarTypeSolver("/Users/yunzezhao/.m2/repository/org/eclipse/jetty/jetty-util/9.4.48.v20220622/jetty-util-9.4.48.v20220622.jar"));
+        // } catch (IOException e) {
+        // // TODO Auto-generated catch block
+        // e.printStackTrace();
+        // }
 
         // Note: Not adding JavaParserTypeSolver for the project's own source directory
         // This limits visibility to external functions provided by dependencies only
@@ -232,44 +236,57 @@ public class DirectoryProcessor {
         final String[] packageName = { "" }; // Use array to bypass final/effectively final requirement
         cu.getPackageDeclaration()
                 .ifPresent(packageDeclaration -> packageName[0] = packageDeclaration.getName().asString());
+                methodReporter.setParentPackageName(packageName[0]);
         // System.out.println("Package: " + packageName[0]);
-
+        Map<MethodSignatureKey, MethodCallEntry> uniqueMethodCalls = new HashMap<>();
         cu.findAll(MethodCallExpr.class).forEach(methodCall -> {
-            // System.out.println("Method call: " + methodCall.getName());
-
             try {
                 // methodCall.
                 ResolvedMethodDeclaration resolvedMethod = methodCall.resolve();
                 if (resolvedMethod.getName().toString().equals("setConnectors")) {
-                    System.out.println("setConnectors after resolved: " + methodCall.getName() + resolvedMethod.getQualifiedName());
+                    System.out.println("setConnectors after resolved: " + methodCall.getName()
+                            + resolvedMethod.getQualifiedName());
                 }
 
                 String currentSignature = resolvedMethod.getSignature().toString();
                 int lineNumber = methodCall.getBegin().map(pos -> pos.line).orElse(-1);
                 String fullExpression = methodCall.toString();
+                String functionCallType = resolvedMethod.declaringType().getQualifiedName();
                 // System.out.println("Method call: " + methodCall.getName());
                 // System.out.println("Declaring type: " +
                 // resolvedMethod.declaringType().getQualifiedName());
-                this.methodReporter.addEntry(
-                        path.toString(),
-                        resolvedMethod.declaringType().getQualifiedName(),
-                        methodCall.getNameAsString(),
-                        lineNumber,
-                        fullExpression,
-                        currentSignature,
-                        packageName[0]);
-
+                MethodSignatureKey key = new MethodSignatureKey(functionCallType, currentSignature);
+                if (!functionCallType.startsWith("java.") && !functionCallType.startsWith("javax.")) {
+                    MethodCallEntry existingEntry = uniqueMethodCalls.get(key);
+                    if (existingEntry == null) {
+                        // Add new entry if it doesn't exist
+                        MethodCallEntry newEntry = new MethodCallEntry(
+                                functionCallType,
+                                methodCall.getNameAsString(),
+                                lineNumber,
+                                fullExpression,
+                                currentSignature,
+                                null // Consider how to handle inner calls
+                        );
+                        uniqueMethodCalls.put(key, newEntry);
+                    } else {
+                        // Update existing entry with new line number
+                        existingEntry.addLineNumber(lineNumber); // Ensure MethodCallEntry has a setter for lineNumber
+                    }
+                }
             } catch (Exception e) {
                 if (methodCall.getName().toString().equals("setConnectors")) {
                     System.out.println("setConnectors: " + methodCall.getName());
                     // this.methodReporter.addEntry(path.toString(), "unknown_delcare_type",
-                    //         methodCall.getNameAsString());
+                    // methodCall.getNameAsString());
                     System.err.println("Failed to resolve method call: " + methodCall.getName());
                     e.printStackTrace();
                 }
 
             }
         });
+
+            methodReporter.addEntries(path.toString(), new ArrayList<>(uniqueMethodCalls.values()));
     }
 
     private static String convertASTObjecttoJson(CompilationUnit cu, Path path) throws IOException {

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -26,11 +27,22 @@ public class MethodCallReporter {
         reportMap.putIfAbsent(fileName, new ArrayList<>());
         reportMap.get(fileName)
                 .add(new MethodCallEntry(declaringType, methodName, lineNumber, fullExpression, singature));
-        if (parentPackageName == null || (newPackageName.length() < parentPackageName.length()
-                && parentPackageName.startsWith(newPackageName))) {
-            parentPackageName = newPackageName;
-        }
     }
+
+    public void setParentPackageName(String parentPackageName) {
+        this.parentPackageName = parentPackageName;
+    }
+
+    public void addEntry( String fileName, MethodCallEntry entry) {
+        reportMap.putIfAbsent(fileName, new ArrayList<>());
+        reportMap.get(fileName).add(entry);
+    }
+
+    public void addEntries(String fileName, List<MethodCallEntry> entries) {
+        reportMap.putIfAbsent(fileName, new ArrayList<>());
+        reportMap.get(fileName).addAll(entries);
+    }
+
 
     public boolean addDeclarationInfoForMethodinType(String declaringType, MethodDeclarationInfo declarationInfo) {
         String methodName = declarationInfo.getMethodName();
@@ -51,7 +63,6 @@ public class MethodCallReporter {
             }
         }
         return ret;
-
     }
 
     public void setTypeToJarReference(Map<Dependency, Set<String>> typeToJarReference) {

@@ -216,6 +216,7 @@ public class SourceJarAnalyzer {
             catch (UnsupportedOperationException e) {
                 // Log the issue but do not treat as critical error
                 // System.out.println("Warning: UnsupportedOperationException encountered. Method may not be supported for resolution: " + e.getMessage());
+                failCount++;
             }
             catch (IllegalStateException e) {
                 // System.err.println("Warning: Failed to resolve a type due to an IllegalStateException. " +
