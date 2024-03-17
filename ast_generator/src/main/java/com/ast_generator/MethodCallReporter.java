@@ -18,6 +18,7 @@ import java.util.Set;
 
 public class MethodCallReporter {
     private Map<String, List<MethodCallEntry>> reportMap = new HashMap<>();
+    private Map<MethodSignatureKey, MethodCallEntry> uniqueMethodDeclarations = new HashMap<>();
     private String parentPackageName;
     private Map<Dependency, Set<String>> typeToJarReference;
 
@@ -25,37 +26,44 @@ public class MethodCallReporter {
     public void addEntry(String fileName, String declaringType, String methodName, int lineNumber,
             String fullExpression, String singature, String newPackageName) {
         reportMap.putIfAbsent(fileName, new ArrayList<>());
-        reportMap.get(fileName)
-                .add(new MethodCallEntry(declaringType, methodName, lineNumber, fullExpression, singature));
+        MethodCallEntry entry = new MethodCallEntry(declaringType, methodName, lineNumber, fullExpression, singature);
+        MethodSignatureKey lookupKey = new MethodSignatureKey(entry.getDeclaringType(), entry.getMethodSignature());
+        uniqueMethodDeclarations.putIfAbsent(new MethodSignatureKey(declaringType, singature), entry);
+        reportMap.get(fileName).add(uniqueMethodDeclarations.get(lookupKey));
+    }
+
+    public void addEntry(String fileName, MethodCallEntry entry) {
+        reportMap.putIfAbsent(fileName, new ArrayList<>());
+        MethodSignatureKey lookupKey = new MethodSignatureKey(entry.getDeclaringType(), entry.getMethodSignature());
+        uniqueMethodDeclarations.putIfAbsent(new MethodSignatureKey(entry.getDeclaringType(), entry.getMethodSignature()), entry);
+        reportMap.get(fileName).add(uniqueMethodDeclarations.get(lookupKey));
+    }
+
+    public void addEntries(String fileName, List<MethodCallEntry> entries) {
+        reportMap.putIfAbsent(fileName, new ArrayList<>());
+        for (MethodCallEntry entry : entries) {
+            this.addEntry(fileName, entry);
+        }
     }
 
     public void setParentPackageName(String parentPackageName) {
         this.parentPackageName = parentPackageName;
     }
 
-    public void addEntry( String fileName, MethodCallEntry entry) {
-        reportMap.putIfAbsent(fileName, new ArrayList<>());
-        reportMap.get(fileName).add(entry);
-    }
-
-    public void addEntries(String fileName, List<MethodCallEntry> entries) {
-        reportMap.putIfAbsent(fileName, new ArrayList<>());
-        reportMap.get(fileName).addAll(entries);
-    }
-
-
     public boolean addDeclarationInfoForMethodinType(String declaringType, MethodDeclarationInfo declarationInfo) {
-        String methodName = declarationInfo.getMethodName();
+        String declarationSignature = declarationInfo.getDeclarationSignature();
         if (declaringType.startsWith("java.") || declaringType.startsWith("javax.")) {
             return false;
         }
 
         Boolean ret = false;
+
+        // checking if the method is already in the reportMap
         for (List<MethodCallEntry> entries : reportMap.values()) {
             for (MethodCallEntry entry : entries) {
                 if (entry.getDeclaringType().equals(declaringType)) {
 
-                    if (entry.getMethodName().equals(methodName)) {
+                    if (entry.getMethodSignature().equals(declarationSignature)) {
                         entry.setDeclarationInfo(declarationInfo);
                         ret = true;
                     }

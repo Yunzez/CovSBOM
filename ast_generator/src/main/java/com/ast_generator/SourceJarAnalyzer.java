@@ -292,10 +292,6 @@ public class SourceJarAnalyzer {
         String currentPath = cu.getStorage().get().getPath().toString();
         currentPath = currentPath.split(decompressedPath)[1].substring(1);
 
-        String packageLikePath = currentPath.replace(File.separator, ".") // Replace file separators with
-                                                                          // dots
-                .replaceAll(".java$", "");
-
         // * looping thru method declaration to find match
         for (MethodDeclaration methodDeclaration : methodDeclarations) {
             // Initialize MethodDeclarationInfo for the current method declaration
