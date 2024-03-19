@@ -12,6 +12,7 @@ import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -28,6 +29,7 @@ import com.github.javaparser.ParserConfiguration;
 import com.github.javaparser.Position;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.symbolsolver.JavaSymbolSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver;
@@ -75,36 +77,6 @@ public class DirectoryProcessor {
         initCombinedSolver();
     }
 
-    // private void initCombinedSolver() {
-    // this.combinedSolver = new CombinedTypeSolver();
-    // combinedSolver.add(new ReflectionTypeSolver());
-    // for (String dependencyPath : dependencyMap.keySet()) {
-    // System.out.println("Adding dependency: " + dependencyPath);
-    // Dependency dependency = dependencyMap.get(dependencyPath);
-    // try {
-    // // System.out.println("Adding dependency: " + dependency.getJarPath());
-    // String jarPathString = dependency.getJarPath();
-    // // Convert the String to a Path
-    // Path jarPath = Paths.get(jarPathString);
-    // combinedSolver.add(new JarTypeSolver(new File(jarPathString)));
-    // } catch (Exception e) {
-    // // System.out.println("Failed to add dependency: " + dependencyPath);
-    // e.printStackTrace();
-    // }
-    // }
-
-    // System.out.println("combinedSolver: " + combinedSolver.getRoot().toString());
-    // // Initialize JavaParserTypeSolver with the source directory, not a specific
-    // // Java file
-    // combinedSolver.add(new JavaParserTypeSolver(new File(directoryPath)));
-
-    // JavaSymbolSolver symbolSolver = new JavaSymbolSolver(combinedSolver);
-    // // Update to use the current method as per JavaParser's version if
-    // // getConfiguration() is deprecated
-    // StaticJavaParser.getParserConfiguration().setSymbolResolver(symbolSolver);
-
-    // }
-
     private void initCombinedSolver() {
         this.combinedSolver = new CombinedTypeSolver();
         combinedSolver.add(new ReflectionTypeSolver()); // Still useful for resolving standard Java types
@@ -124,17 +96,16 @@ public class DirectoryProcessor {
             }
         }
 
-        // try {
-        // combinedSolver.add(new
-        // JarTypeSolver("/Users/yunzezhao/.m2/repository/org/eclipse/jetty/jetty-util/9.4.48.v20220622/jetty-util-9.4.48.v20220622.jar"));
-        // } catch (IOException e) {
-        // // TODO Auto-generated catch block
-        // e.printStackTrace();
-        // }
+        // Add the project's source code to the CombinedTypeSolver
+        try {
+            combinedSolver.add(new JavaParserTypeSolver(new File(directoryPath + "/src/main/java")));
+            System.out.println("Added project source directory: " + directoryPath);
+        } catch (Exception e) {
+            System.out.println("Failed to add project source directory: " + directoryPath);
+            e.printStackTrace();
+        }
 
-        // Note: Not adding JavaParserTypeSolver for the project's own source directory
-        // This limits visibility to external functions provided by dependencies only
-
+        // Configure the JavaSymbolSolver with the CombinedTypeSolver
         JavaSymbolSolver symbolSolver = new JavaSymbolSolver(combinedSolver);
         StaticJavaParser.getParserConfiguration().setSymbolResolver(symbolSolver);
     }
@@ -209,7 +180,15 @@ public class DirectoryProcessor {
         } else {
             System.out.println("ImportManager is null");
         }
-
+        List<TypeDeclaration<?>> types = cu.getTypes();
+        // if (types.size() > 0) {
+        // for (TypeDeclaration<?> type : types) {
+        // System.out.println("Type: " + type.getName());
+        // CompilationUnit newCompilationUnit = new CompilationUnit();
+        // newCompilationUnit.addType(type.clone());
+        // analyzeASTObjectFunctionCall(newCompilationUnit, path);
+        // }
+        // }
         analyzeASTObjectFunctionCall(cu, path);
     }
 
@@ -233,18 +212,19 @@ public class DirectoryProcessor {
      * MethodCallReport
      */
     private void analyzeASTObjectFunctionCall(CompilationUnit cu, Path path) {
+
         final String[] packageName = { "" }; // Use array to bypass final/effectively final requirement
         cu.getPackageDeclaration()
                 .ifPresent(packageDeclaration -> packageName[0] = packageDeclaration.getName().asString());
-                methodReporter.setParentPackageName(packageName[0]);
+        methodReporter.setParentPackageName(packageName[0]);
         // System.out.println("Package: " + packageName[0]);
         Map<MethodSignatureKey, MethodCallEntry> uniqueMethodCalls = new HashMap<>();
         cu.findAll(MethodCallExpr.class).forEach(methodCall -> {
             try {
                 // methodCall.
                 ResolvedMethodDeclaration resolvedMethod = methodCall.resolve();
-                if (resolvedMethod.getName().toString().equals("setConnectors")) {
-                    System.out.println("setConnectors after resolved: " + methodCall.getName()
+                if (resolvedMethod.getName().toString().equals("setTrustStorePassword")) {
+                    System.out.println("setTrustStorePassword after resolved: " + methodCall.getName()
                             + resolvedMethod.getQualifiedName());
                 }
 
@@ -275,8 +255,8 @@ public class DirectoryProcessor {
                     }
                 }
             } catch (Exception e) {
-                if (methodCall.getName().toString().equals("setConnectors")) {
-                    System.out.println("setConnectors: " + methodCall.getName());
+                if (methodCall.getName().toString().equals("setTrustStorePassword")) {
+                    System.out.println("setTrustStorePassword: " + methodCall.getName());
                     // this.methodReporter.addEntry(path.toString(), "unknown_delcare_type",
                     // methodCall.getNameAsString());
                     System.err.println("Failed to resolve method call: " + methodCall.getName());
@@ -286,7 +266,7 @@ public class DirectoryProcessor {
             }
         });
 
-            methodReporter.addEntries(path.toString(), new ArrayList<>(uniqueMethodCalls.values()));
+        methodReporter.addEntries(path.toString(), new ArrayList<>(uniqueMethodCalls.values()));
     }
 
     private static String convertASTObjecttoJson(CompilationUnit cu, Path path) throws IOException {

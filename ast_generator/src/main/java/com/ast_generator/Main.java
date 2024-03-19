@@ -101,6 +101,8 @@ public class Main {
             settings.load(input);
             int recursiveLayers = Integer.parseInt(settings.getProperty("recursiveLayers", "2")); // Default to 2 if not
             // set
+            boolean restrictRecursion = Boolean.parseBoolean(settings.getProperty("restrictRecursion", "true"));
+            Settings.setRestrictDepth(restrictRecursion);
             Settings.setMaxMethodCallDepth(recursiveLayers);
             boolean ignoreTestAttributes = Boolean.parseBoolean(settings.getProperty("ignoreTestAttributes", "false"));
             Settings.setIgnoreTest(ignoreTestAttributes);
@@ -164,9 +166,7 @@ public class Main {
         methodCallReporter
                 .generateThirdPartyTypeJsonReportBasedonPackage("asts/analysis/final_report_package_based.json");
 
-        // ! process dependencies
-        // DependencyProcessor.processDependencies(inferredPomPath, importManager,
-        // dependencyMap);
+       
 
         scanner.close();
     }

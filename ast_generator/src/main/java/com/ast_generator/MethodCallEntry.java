@@ -1,12 +1,19 @@
 package com.ast_generator;
 import java.util.ArrayList;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+@JsonPropertyOrder({ "declaringType", "methodSignature", "methodName", "lineNumber", "fullExpression", "currentLayer", "declarationInfo" })
 public class MethodCallEntry {
     private String declaringType;
     private String methodName;
     private ArrayList<String> lineNumber;
     private String fullExpression;
-    private String methodSignature;
     private MethodDeclarationInfo declarationInfo; // New field
+    private int currentLayer;
+    private String methodSignature;
+
+    @JsonIgnore
+    private MethodSignatureKey methodSignatureKey;
     // Constructor and getters/setters
     public MethodCallEntry(String declaringType, String methodName, int lineNumber, String fullExpression, String methodSignature) {
         this.declaringType = declaringType;
@@ -16,6 +23,8 @@ public class MethodCallEntry {
         this.fullExpression = fullExpression;
         this.methodSignature = methodSignature;
         this.declarationInfo = null; // Initialize declarationInfo to null
+        this.currentLayer = 0;
+        this.methodSignatureKey = new MethodSignatureKey(declaringType, methodSignature);
     }
 
     public MethodCallEntry(String declaringType, String methodName, int lineNumber, String fullExpression,  String methodSignature, MethodDeclarationInfo declarationInfo) {
@@ -26,7 +35,15 @@ public class MethodCallEntry {
         this.fullExpression = fullExpression;
         this.methodSignature = methodSignature;
         this.declarationInfo = declarationInfo; // Initialize declarationInfo to null
+        this.currentLayer = 0;
+        this.methodSignatureKey = new MethodSignatureKey(declaringType, methodSignature);
     }
+
+    public void setCurrentLayer(int currentLayer) {
+        this.currentLayer = currentLayer;
+    }
+
+   
 
     // Add a method to set the declarationInfo
     public void setDeclarationInfo(MethodDeclarationInfo declarationInfo) {
@@ -37,6 +54,14 @@ public class MethodCallEntry {
         lineNumber.add(Integer.toString(newLineNumber));
     }
 
+    // Getters
+    public String getDeclaringType() { return declaringType; }
+    public String getMethodName() { return methodName; }
+    public ArrayList<String> getLineNumber() { return lineNumber; }
+    public String getFullExpression() { return fullExpression; }
+    public int getCurrentLayer() {
+        return currentLayer;
+    }
     public String getMethodSignature() {
         return methodSignature;
     }
@@ -45,14 +70,12 @@ public class MethodCallEntry {
         return declarationInfo;
     }
 
-    // Getters
-    public String getDeclaringType() { return declaringType; }
-    public String getMethodName() { return methodName; }
-    public ArrayList<String> getLineNumber() { return lineNumber; }
-    public String getFullExpression() { return fullExpression; }
-
     public String toString() {
-        return declaringType + "." + methodName;
+        return declaringType + "." + methodName + "-" + methodSignature;
+    }
+
+    public MethodSignatureKey getMethodSignatureKey() {
+        return this.methodSignatureKey;
     }
 }
 

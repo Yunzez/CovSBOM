@@ -28,5 +28,13 @@ public class MethodSignatureKey {
     public int hashCode() {
         return Objects.hash(declaringType, methodSignature);
     }
+
+    public String getDeclaringType() {
+        return declaringType;
+    }
+
+    public String getMethodSignature() {
+        return methodSignature;
+    }
 }
 

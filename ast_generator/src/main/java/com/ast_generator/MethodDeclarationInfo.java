@@ -71,7 +71,6 @@ public class MethodDeclarationInfo {
     }
 
     public String toString() {
-        String ret = "MethodDeclarationInfo: " + methodName + " " + declarationStartLine + " " + declarationEndLine;
-        return ret;
+        return sourceFilePath + ":" + declarationStartLine + "-" + declarationEndLine + " " + methodName;
     }
 }

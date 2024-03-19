@@ -1,6 +1,7 @@
 package com.ast_generator;
 
 import java.io.*;
+import java.lang.reflect.Method;
 import java.nio.file.*;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -26,6 +27,7 @@ import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
 import com.github.javaparser.utils.ProjectRoot;
 import com.github.javaparser.utils.SourceRoot;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.body.CallableDeclaration.Signature;
 
 public class SourceJarAnalyzer {
@@ -42,7 +44,7 @@ public class SourceJarAnalyzer {
 
     // ! max recursion depth for digging into method calls
     final int MAX_DIG_DEPTH = Settings.MAX_METHOD_CALL_DEPTH;
-
+    final boolean RESTRICT_DEPTH = Settings.RESTRICT_DEPTH;
     // ! analysis statcs
     int totalCount = 0;
     int successCount = 0;
@@ -127,6 +129,76 @@ public class SourceJarAnalyzer {
     }
 
     /*
+     * Extract method calls from the method declaration
+     */
+    private List<MethodCallEntry> extractMethodCallsFromDeclaration(MethodDeclaration methodDeclaration) {
+        Map<MethodSignatureKey, MethodCallEntry> uniqueMethodCalls = new HashMap<>();
+        List<MethodCallExpr> methodCalls = methodDeclaration.findAll(MethodCallExpr.class);
+        totalCount += methodCalls.size();
+
+        for (MethodCallExpr methodCall : methodCalls) {
+            try {
+                ResolvedMethodDeclaration resolvedMethod = methodCall.resolve();
+                int lineNumber = methodCall.getBegin().map(pos -> pos.line).orElse(-1);
+                String currentSignature = resolvedMethod.getSignature();
+                String fullExpression = methodCall.toString();
+                String functionCallType = resolvedMethod.declaringType().getQualifiedName();
+
+                MethodSignatureKey key = new MethodSignatureKey(functionCallType, currentSignature);
+                if (!functionCallType.startsWith("java.") && !functionCallType.startsWith("javax.")) {
+                    MethodCallEntry existingEntry = uniqueMethodCalls.get(key);
+                    if (existingEntry == null) {
+                        // Add new entry if it doesn't exist
+                        MethodCallEntry newEntry = new MethodCallEntry(
+                                functionCallType,
+                                methodCall.getNameAsString(),
+                                lineNumber,
+                                fullExpression,
+                                currentSignature,
+                                null // Consider how to handle inner calls
+                        );
+                        uniqueMethodCalls.put(key, newEntry);
+                        successCount++;
+                    } else {
+                        // Update existing entry with new line number
+                        existingEntry.addLineNumber(lineNumber); // Ensure MethodCallEntry has a setter for lineNumber
+                    }
+                }
+            } catch (UnsolvedSymbolException e) {
+                // Log unresolved method calls; these might be external methods which are
+                // acceptable
+                // System.out.println("Info: Unresolved method call to '" + e.getName() + "'
+                // might be external and is therefore acceptable.");
+            } catch (UnsupportedOperationException e) {
+                // Log the issue but do not treat as critical error
+                // System.out.println("Warning: UnsupportedOperationException encountered.
+                // Method may not be supported for resolution: " + e.getMessage());
+                failCount++;
+            } catch (IllegalStateException e) {
+                // System.err.println("Warning: Failed to resolve a type due to an
+                // IllegalStateException. " +
+                // "This may indicate a complex type usage not fully supported. " +
+                // "Details: " + e.getMessage());
+                failCount++;
+            } catch (RuntimeException e) {
+                // if (e.getMessage().contains("cannot be resolved")) {
+                // // Log but do not increment failCount for unresolved external methods
+                // System.out.println("Info: The method '" + e.getMessage().split("'")[1] + "'
+                // cannot be resolved, possibly due to being an external dependency.");
+                // } else {
+                // // For other RuntimeExceptions, log as error and increment failCount
+                // System.err.println("Error: Unexpected RuntimeException encountered: " +
+                // e.getMessage());
+                // failCount++;
+                // }
+            }
+        }
+
+        // Convert the map values to a list to return
+        return new ArrayList<>(uniqueMethodCalls.values());
+    }
+
+    /*
      * Process the first level of method calls
      */
     private void processCompilationUnit(CompilationUnit cu) {
@@ -153,6 +225,9 @@ public class SourceJarAnalyzer {
 
                 // * extract method calls from the method declaration
                 List<MethodCallEntry> currentCallEntries = extractMethodCallsFromDeclaration(methodDeclaration);
+                for (MethodCallEntry callEntry : currentCallEntries) {
+                    callEntry.setCurrentLayer(1);
+                }
 
                 // * add the method calls to the currentDeclarationInfo
                 currentDeclarationInfo.addInnerMethodCalls(currentCallEntries);
@@ -162,7 +237,8 @@ public class SourceJarAnalyzer {
 
                 if (pass) {
                     // * start digging
-                    digFunctionCallEntries(currentDeclarationInfo, 0);
+                    Set<MethodSignatureKey> currentClassSignatureContext = new HashSet<>();
+                    digFunctionCallEntries(currentDeclarationInfo, 1, currentClassSignatureContext);
                 }
             } catch (UnsolvedSymbolException e) {
                 // System.out.println(
@@ -172,83 +248,28 @@ public class SourceJarAnalyzer {
         }
     }
 
-    /*
-     * Extract method calls from the method declaration
-     */
-    private List<MethodCallEntry> extractMethodCallsFromDeclaration(MethodDeclaration methodDeclaration) {
-        Map<MethodSignatureKey, MethodCallEntry> uniqueMethodCalls = new HashMap<>();
-        List<MethodCallExpr> methodCalls = methodDeclaration.findAll(MethodCallExpr.class);
-        totalCount += methodCalls.size();
-
-        for (MethodCallExpr methodCall : methodCalls) {
-            try {
-                ResolvedMethodDeclaration resolvedMethod = methodCall.resolve();
-                int lineNumber = methodCall.getBegin().map(pos -> pos.line).orElse(-1);
-                String currentSignature = resolvedMethod.getSignature();
-                String fullExpression = methodCall.toString();
-                String functionCallType = resolvedMethod.declaringType().getQualifiedName();
-                
-                
-                MethodSignatureKey key = new MethodSignatureKey(functionCallType, currentSignature);
-                if (!functionCallType.startsWith("java.") && !functionCallType.startsWith("javax.")) {
-                    MethodCallEntry existingEntry = uniqueMethodCalls.get(key);
-                    if (existingEntry == null) {
-                        // Add new entry if it doesn't exist
-                        MethodCallEntry newEntry = new MethodCallEntry(
-                                functionCallType,
-                                methodCall.getNameAsString(),
-                                lineNumber,
-                                fullExpression,
-                                currentSignature,
-                                null // Consider how to handle inner calls
-                        );
-                        uniqueMethodCalls.put(key, newEntry);
-                        successCount++;
-                    } else {
-                        // Update existing entry with new line number
-                        existingEntry.addLineNumber(lineNumber); // Ensure MethodCallEntry has a setter for lineNumber
-                    }
-                }
-            } catch (UnsolvedSymbolException e) {
-                // Log unresolved method calls; these might be external methods which are acceptable
-                // System.out.println("Info: Unresolved method call to '" + e.getName() + "' might be external and is therefore acceptable.");
-            }
-            catch (UnsupportedOperationException e) {
-                // Log the issue but do not treat as critical error
-                // System.out.println("Warning: UnsupportedOperationException encountered. Method may not be supported for resolution: " + e.getMessage());
-                failCount++;
-            }
-            catch (IllegalStateException e) {
-                // System.err.println("Warning: Failed to resolve a type due to an IllegalStateException. " +
-                //         "This may indicate a complex type usage not fully supported. " +
-                //         "Details: " + e.getMessage());
-                failCount++;
-            }
-            catch (RuntimeException e) {
-                // if (e.getMessage().contains("cannot be resolved")) {
-                //     // Log but do not increment failCount for unresolved external methods
-                //     System.out.println("Info: The method '" + e.getMessage().split("'")[1] + "' cannot be resolved, possibly due to being an external dependency.");
-                // } else {
-                //     // For other RuntimeExceptions, log as error and increment failCount
-                //     System.err.println("Error: Unexpected RuntimeException encountered: " + e.getMessage());
-                //     failCount++;
-                // }
-            }
-        }
-
-        // Convert the map values to a list to return
-        return new ArrayList<>(uniqueMethodCalls.values());
-    }
-
     /**
      * Dig into the internal method calls for recursive searching
      */
-    private void digFunctionCallEntries(MethodDeclarationInfo currentDeclarationInfo, int depth) {
+    private void digFunctionCallEntries(MethodDeclarationInfo currentDeclarationInfo, int depth, Set<MethodSignatureKey> currentClassSignatureContext) {
 
-        if (depth > MAX_DIG_DEPTH) {
+        Boolean hasRelatedCall = false;
+        if (depth > MAX_DIG_DEPTH && RESTRICT_DEPTH) {
             return;
         }
         depth++;
+
+        if (depth > 50 && depth < 55) {
+            System.out.println("Warning, Depth reached: " + depth);
+            System.out.println(currentDeclarationInfo.toString());
+        }
+
+        if (depth == 55) {
+            System.out.println(currentDeclarationInfo.toString());
+            System.out.println("Paused, possible inifite recursion. Depth reached: " + depth);
+            System.out.println("----------");
+            return;
+        }
 
         List<MethodCallEntry> internalTargetCalls = currentDeclarationInfo.getInnerMethodCalls();
         Set<String> targetPackages = new HashSet<>();
@@ -264,18 +285,30 @@ public class SourceJarAnalyzer {
             if (!parseResult.getResult().isPresent()) {
                 continue;
             }
-            CompilationUnit cu = parseResult.getResult().get();
-            String packageLikePath = getPackageLikePathFromCU(cu);
 
-            final int finalDepth = depth;
+            CompilationUnit cu = parseResult.getResult().get();
+
+            String packageLikePath = getPackageLikePathFromCU(cu);
+            List<TypeDeclaration<?>> types = cu.getTypes();
+            // int finalDepth = depth;
+            List<MethodCallEntry> lookForCalls = new ArrayList<>();
             targetPackages.stream().forEach(targetPackage -> {
                 if (packageLikePath.startsWith(targetPackage)) {
-                    List<MethodCallEntry> lookForCalls = filterCallsForPackage(targetPackage, internalTargetCalls);
+                    lookForCalls.addAll(filterCallsForPackage(targetPackage, internalTargetCalls));
                     // System.out.println("all internal calls: " + internalTargetCalls.toString());
                     // System.out.println("---------");
-                    digFunctionCallEntriesHelper(cu, lookForCalls, finalDepth);
                 }
             });
+            if (types.size() > 0) {
+                digFunctionCallEntriesHelper(cu, lookForCalls, depth, currentClassSignatureContext);
+                for (TypeDeclaration<?> typeDeclaration : types) {
+                    CompilationUnit newCompilationUnit = new CompilationUnit();
+                    newCompilationUnit.addType(typeDeclaration.clone());
+                    digFunctionCallEntriesHelper(cu, lookForCalls, depth, currentClassSignatureContext);
+                }
+            } else {
+                digFunctionCallEntriesHelper(cu, lookForCalls, depth, currentClassSignatureContext);
+            }
 
         }
     }
@@ -284,7 +317,23 @@ public class SourceJarAnalyzer {
      * Helper function to dig into the internal method calls
      * it loops thru the method declarations to find match
      */
-    private void digFunctionCallEntriesHelper(CompilationUnit cu, List<MethodCallEntry> lookForCalls, int depth) {
+    private void digFunctionCallEntriesHelper(CompilationUnit cu, List<MethodCallEntry> lookForCalls, int depth, Set<MethodSignatureKey> currentClassSignatureContext) {
+
+        if (lookForCalls.size() == 0) {
+            return;
+        }
+        List<TypeDeclaration<?>> types = cu.getTypes();
+        if (depth > 50 && depth < 55) {
+            System.out.println("look for calls: ");
+            System.out.println(lookForCalls.toString());
+        }
+
+        if (depth == 55) {
+            System.out.println(lookForCalls.toString());
+            System.out.println("Paused, possible inifite recursion. Depth reached: " + depth);
+            System.out.println("----------");
+            return;
+        }
 
         List<MethodDeclaration> methodDeclarations = cu.findAll(MethodDeclaration.class);
 
@@ -305,9 +354,14 @@ public class SourceJarAnalyzer {
             String currentDeclarationSignature = resolvedDeclaration.getSignature().toString();
 
             for (MethodCallEntry lookForCall : lookForCalls) {
-
+                String methodKey = lookForCall.getDeclaringType() + "." + lookForCall.getMethodName()
+                        + lookForCall.getMethodSignature();
+             
                 if (lookForCall.getMethodName().equals(name)
                         && lookForCall.getMethodSignature().equals(currentDeclarationSignature)) {
+                    if (depth > 400 && depth < 405) {
+                        System.out.println("Found method: " + name + " in type: " + currentDeclarationSignature);
+                    }
                     // System.out.println("Found method: " + name + " in type: " + packageLikePath);
                     MethodDeclarationInfo currentDeclarationInfo = new MethodDeclarationInfo(fullPath, startLine,
                             endLine,
@@ -318,11 +372,21 @@ public class SourceJarAnalyzer {
                     // * we found the method we are looking for
                     // * we need to add the method declaration to the currentDeclarationInfo
                     List<MethodCallEntry> currentCallEntries = extractMethodCallsFromDeclaration(methodDeclaration);
-                    currentDeclarationInfo.addInnerMethodCalls(currentCallEntries);
+                    List<MethodCallEntry> filteredCalls = new ArrayList<>();
+                    for (MethodCallEntry callEntry : currentCallEntries) {
+                        callEntry.setCurrentLayer(depth);
+                        if (!currentClassSignatureContext.contains(callEntry.getMethodSignatureKey())) {
+                            filteredCalls.add(callEntry);
+                            currentClassSignatureContext.add(callEntry.getMethodSignatureKey());
+                        } 
+                    }
+                    currentDeclarationInfo.addInnerMethodCalls(filteredCalls);
 
                     // * if there are more inner method calls, we need to dig into them again
                     if (currentDeclarationInfo.getInnerMethodCalls().size() > 0) {
-                        digFunctionCallEntries(currentDeclarationInfo, depth);
+                        // * create a new context for the next level of method calls
+                        Set<MethodSignatureKey> clonedContext = new HashSet<>(currentClassSignatureContext);
+                        digFunctionCallEntries(currentDeclarationInfo, depth, clonedContext);
                     }
                 }
             }

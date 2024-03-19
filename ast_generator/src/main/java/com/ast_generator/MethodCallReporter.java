@@ -18,7 +18,7 @@ import java.util.Set;
 
 public class MethodCallReporter {
     private Map<String, List<MethodCallEntry>> reportMap = new HashMap<>();
-    private Map<MethodSignatureKey, MethodCallEntry> uniqueMethodDeclarations = new HashMap<>();
+    private Map<MethodSignatureKey, MethodDeclarationInfo> uniqueMethodDeclarations = new HashMap<>();
     private String parentPackageName;
     private Map<Dependency, Set<String>> typeToJarReference;
 
@@ -28,15 +28,17 @@ public class MethodCallReporter {
         reportMap.putIfAbsent(fileName, new ArrayList<>());
         MethodCallEntry entry = new MethodCallEntry(declaringType, methodName, lineNumber, fullExpression, singature);
         MethodSignatureKey lookupKey = new MethodSignatureKey(entry.getDeclaringType(), entry.getMethodSignature());
-        uniqueMethodDeclarations.putIfAbsent(new MethodSignatureKey(declaringType, singature), entry);
-        reportMap.get(fileName).add(uniqueMethodDeclarations.get(lookupKey));
+        uniqueMethodDeclarations.putIfAbsent(new MethodSignatureKey(declaringType, singature), entry.getDeclarationInfo());
+
+        reportMap.get(fileName).add(entry);
     }
 
     public void addEntry(String fileName, MethodCallEntry entry) {
         reportMap.putIfAbsent(fileName, new ArrayList<>());
         MethodSignatureKey lookupKey = new MethodSignatureKey(entry.getDeclaringType(), entry.getMethodSignature());
-        uniqueMethodDeclarations.putIfAbsent(new MethodSignatureKey(entry.getDeclaringType(), entry.getMethodSignature()), entry);
-        reportMap.get(fileName).add(uniqueMethodDeclarations.get(lookupKey));
+        uniqueMethodDeclarations.putIfAbsent(new MethodSignatureKey(entry.getDeclaringType(), entry.getMethodSignature()), entry.getDeclarationInfo());
+        // reportMap.get(fileName).add(uniqueMethodDeclarations.get(lookupKey));
+        reportMap.get(fileName).add(entry);
     }
 
     public void addEntries(String fileName, List<MethodCallEntry> entries) {
