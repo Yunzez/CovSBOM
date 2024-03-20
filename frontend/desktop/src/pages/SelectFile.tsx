@@ -17,19 +17,22 @@ const SelectFile: React.FC = () => {
   };
 
   return (
-    <div >
-          <small>{stage}</small>
+    <div>
+      <small>{stage}</small>
       <section>
         <div className="min-h-screen min-w-screen bg-gray-100 flex flex-col justify-center items-center">
           <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-            <h1 className="block text-gray-700 text-xl font-bold mb-2">
+            <h1 className="block text-gray-700 text-xl font-bold mb-3">
               Welcome to CovSBOM
             </h1>
-            <p className="text-gray-700 text-base mb-4">
-              CovSBOM is a tool designed to help you analyze your project's
-              software dependencies and security. Get started by selecting your
-              project root directory.
+            <p className="text-gray-700 text-base mb-1 text-center">
+              CovSBOM is a tool designed to help you analyze your{" "}
+              <b>Java Maven</b> project's software dependencies and security.
             </p>
+            <p className="text-gray-700 text-base mb-4 text-center">
+              Get started by selecting your project root directory.
+            </p>
+
             <div>
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
