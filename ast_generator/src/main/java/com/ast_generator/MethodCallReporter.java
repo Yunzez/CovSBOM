@@ -169,6 +169,8 @@ public class MethodCallReporter {
                 }
             }
         }
+
+        System.out.println("uniqueMethodDeclarations: " + uniqueMethodDeclarations.size());
         // Now you have a map of unique method declarations, you can convert it to a
         // list or directly use it for JSON generation
         List<MethodCallEntry> allMethodDeclarationInfos = new ArrayList<>(uniqueMethodDeclarations.values());
@@ -178,12 +180,15 @@ public class MethodCallReporter {
             mapper.writeValue(new File(toFilePath), allMethodDeclarationInfos);
             System.out.println("no typeToJarReference, generate file based on declaring types");
         } else {
+
             Map<Dependency, List<MethodCallEntry>> dependencyToMethodCallEntries = new HashMap<>();
             for (MethodCallEntry entry : allMethodDeclarationInfos) {
                 Dependency matchedDependency = null;
                 for (Map.Entry<Dependency, Set<String>> entry1 : typeToJarReference.entrySet()) {
+                  
                     if (entry1.getValue().contains(entry.getDeclaringType())) {
                         matchedDependency = entry1.getKey();
+                        System.out.println("typetoJarReference.getValue(): " + entry1.getValue() + " allMethod.getDeclaringType(): " + entry.getDeclaringType());
                         break;
                     }
                 }

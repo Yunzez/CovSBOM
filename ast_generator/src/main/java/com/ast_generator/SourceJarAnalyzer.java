@@ -301,7 +301,9 @@ public class SourceJarAnalyzer {
             });
             
             List<TypeDeclaration<?>> types = cu.getTypes();
+
             if (types.size() > 1) {
+                System.out.println("Warning: More than one type in the file: " + packageLikePath + " with types: " + types.toString());
                 digFunctionCallEntriesHelper(cu, lookForCalls, depth, currentClassSignatureContext);
                 for (TypeDeclaration<?> typeDeclaration : types) {
                     CompilationUnit newCompilationUnit = new CompilationUnit();
