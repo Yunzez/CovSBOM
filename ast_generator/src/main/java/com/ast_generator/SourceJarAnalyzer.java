@@ -289,7 +289,7 @@ public class SourceJarAnalyzer {
             CompilationUnit cu = parseResult.getResult().get();
 
             String packageLikePath = getPackageLikePathFromCU(cu);
-            List<TypeDeclaration<?>> types = cu.getTypes();
+            
             // int finalDepth = depth;
             List<MethodCallEntry> lookForCalls = new ArrayList<>();
             targetPackages.stream().forEach(targetPackage -> {
@@ -299,7 +299,9 @@ public class SourceJarAnalyzer {
                     // System.out.println("---------");
                 }
             });
-            if (types.size() > 0) {
+            
+            List<TypeDeclaration<?>> types = cu.getTypes();
+            if (types.size() > 1) {
                 digFunctionCallEntriesHelper(cu, lookForCalls, depth, currentClassSignatureContext);
                 for (TypeDeclaration<?> typeDeclaration : types) {
                     CompilationUnit newCompilationUnit = new CompilationUnit();

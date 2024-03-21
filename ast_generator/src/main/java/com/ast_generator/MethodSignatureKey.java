@@ -36,5 +36,9 @@ public class MethodSignatureKey {
     public String getMethodSignature() {
         return methodSignature;
     }
+
+    public String toString() {
+        return declaringType + ":" + methodSignature;
+    }
 }
 
