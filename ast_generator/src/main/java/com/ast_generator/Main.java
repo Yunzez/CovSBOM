@@ -33,7 +33,9 @@ public class Main {
     private List<String> dependenciesTree;
     private static Map<String, String> dependencyMap;
     private static Path astPath;
-    private static Map<String, String> libraryAstJsonMap;
+
+    private static String rootDirectoryPath;
+    private static String inferredPomPath;
 
     public static void main(String[] args) throws IOException {
 
@@ -41,55 +43,66 @@ public class Main {
         if (args.length > 0 && "--process-directory".equals(args[0])) {
             // Assuming args[1] is sourcePath, args[2] is outputPath, and args[3] is
             // --separate
-            if (args.length >= 3) {
-                String sourcePath = Paths.get(args[1]).toString();
-                Path outputPath = Paths.get(args[2]);
-                boolean separateFiles = (args.length == 4 && "--separate".equals(args[3]));
-                DirectoryProcessor processor = new DirectoryProcessor(sourcePath, outputPath, separateFiles);
-                processor.processDirectory();
+            if (args.length >= 2) {
+                System.out.println("Processing directory: " + args[1]);
+                rootDirectoryPath = Paths.get(args[1]).toString();
+                Path rootPath = Paths.get(rootDirectoryPath);
+                // Infer the path to pom.xml
+                inferredPomPath = rootPath.resolve("pom.xml").toString();
+                System.out.println("Inferred path to pom.xml: " + inferredPomPath);
+
+                // Path outputPath = Paths.get(args[2]);
+                // boolean separateFiles = (args.length == 4 && "--separate".equals(args[3]));
+                // DirectoryProcessor processor = new DirectoryProcessor(sourcePath, outputPath,
+                // separateFiles);
+                // processor.processDirectory();
             } else {
                 System.out.println(
-                        "Usage: java Main --process-directory <source directory> <AST output path> [--separate]");
+                        "Usage: java Main --process-directory <source directory>");
             }
-            return; // Exit after processing directory
-        }
-
-        Scanner scanner = new Scanner(System.in);
-        libraryAstJsonMap = new HashMap<>();
-        // Delete existing ast.json file if it exists
-        System.out.print("-------Initializing-------\n");
-        astPath = Paths.get("asts/main");
-        if (Files.exists(astPath)) {
-            try {
-                Files.delete(astPath);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            // return; // Exit after processing directory
         } else {
-            Files.createDirectories(astPath.getParent());
-        }
+            Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Please enter the path to the Java source file: ");
+            // Delete existing ast.json file if it exists
+            System.out.print("-------Initializing-------\n");
+            astPath = Paths.get("asts/main");
+            if (Files.exists(astPath)) {
+                try {
+                    Files.delete(astPath);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Files.createDirectories(astPath.getParent());
+            }
 
-        // String rootDirectoryPath = scanner.nextLine().trim();
+            System.out.print("Please enter the path to the Java source file: ");
 
-        // Dennis: Only for testing
-        System.out.println("rootDirectoryPath: " + System.getProperty("user.dir"));
-        String rootDirectoryPath = "Application/spark-master";
+            rootDirectoryPath = scanner.nextLine().trim();
 
-        // Validate and process the directory
-        Path rootPath = Paths.get(rootDirectoryPath);
+            // Dennis: Only for testing
+            System.out.println("rootDirectoryPath: " + System.getProperty("user.dir"));
 
-        // Infer the path to pom.xml
-        String inferredPomPath = rootPath.resolve("pom.xml").toString();
-        System.out.println("Inferred path to pom.xml: " + inferredPomPath);
+            if (rootDirectoryPath.isEmpty()) {
+                rootDirectoryPath = "Application/spark-master";
+            }
 
-        // Check if the inferred path is correct
-        System.out.print("Is this path correct? (yes/no): ");
-        String response = scanner.nextLine();
-        if ("no".equalsIgnoreCase(response)) {
-            System.out.print("Please enter the correct path to the pom.xml: ");
-            inferredPomPath = scanner.nextLine();
+            // Validate and process the directory
+            Path rootPath = Paths.get(rootDirectoryPath);
+            // Infer the path to pom.xml
+            inferredPomPath = rootPath.resolve("pom.xml").toString();
+            System.out.println("Inferred path to pom.xml: " + inferredPomPath);
+
+            // Check if the inferred path is correct
+            System.out.print("Is this path correct? (yes/no): ");
+            String response = scanner.nextLine();
+            if ("no".equalsIgnoreCase(response)) {
+                System.out.print("Please enter the correct path to the pom.xml: ");
+                inferredPomPath = scanner.nextLine();
+            }
+
+            scanner.close();
         }
 
         System.out.println("installing source code: " + rootDirectoryPath);
@@ -166,8 +179,6 @@ public class Main {
         methodCallReporter
                 .generateThirdPartyTypeJsonReportBasedonPackage("asts/analysis/final_report_package_based.json");
 
-       
-
-        scanner.close();
+        System.out.println("End of analysis");
     }
 }

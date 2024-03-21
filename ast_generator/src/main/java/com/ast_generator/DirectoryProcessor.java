@@ -156,10 +156,10 @@ public class DirectoryProcessor {
             }
 
             // ! convert AST object to JSON
-            String astJson = convertASTObjecttoJson(cu, path);
+            // String astJson = convertASTObjecttoJson(cu, path);
 
             // ! save AST JSON to file
-            saveASTJsonToFile(path.toString(), astJson);
+            // saveASTJsonToFile(path.toString(), astJson);
 
         } catch (IOException e) {
             System.out.println("Error parsing file: " + path);
@@ -180,15 +180,6 @@ public class DirectoryProcessor {
         } else {
             System.out.println("ImportManager is null");
         }
-        List<TypeDeclaration<?>> types = cu.getTypes();
-        // if (types.size() > 0) {
-        // for (TypeDeclaration<?> type : types) {
-        // System.out.println("Type: " + type.getName());
-        // CompilationUnit newCompilationUnit = new CompilationUnit();
-        // newCompilationUnit.addType(type.clone());
-        // analyzeASTObjectFunctionCall(newCompilationUnit, path);
-        // }
-        // }
         analyzeASTObjectFunctionCall(cu, path);
     }
 

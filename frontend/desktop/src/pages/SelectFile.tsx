@@ -16,9 +16,14 @@ const SelectFile: React.FC = () => {
     console.log(path);
   };
 
+  const startAnalysis = async () => {
+
+    const result = await window.electron.invoke("run-java-program", path);
+    
+  }
+
   return (
     <div>
-      <small>{stage}</small>
       <section>
         <div className="min-h-screen min-w-screen bg-gray-100 flex flex-col justify-center items-center">
           <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
@@ -65,6 +70,7 @@ const SelectFile: React.FC = () => {
                 onClick={() => {
                   console.log("Analyze");
                   setStage(StageProps.ANALYZE);
+                  startAnalysis();
                 }}
               >
                 Analyze

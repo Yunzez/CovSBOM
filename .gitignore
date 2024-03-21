@@ -1,3 +1,4 @@
-/decompressed
+**/decompressed/
 /Application
-~/node_modules
+**/node_modules/
+/target
