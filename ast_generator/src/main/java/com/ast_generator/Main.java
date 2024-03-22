@@ -36,7 +36,8 @@ public class Main {
 
     private static String rootDirectoryPath;
     private static String inferredPomPath;
-
+    private static String outputProjectFolderPath = "";
+    private static String outputFolderName = "CovSBOM_output";
     public static void main(String[] args) throws IOException {
 
         // ! Check for --process-directory argument
@@ -66,7 +67,7 @@ public class Main {
 
             // Delete existing ast.json file if it exists
             System.out.print("-------Initializing-------\n");
-            astPath = Paths.get("asts/main");
+            astPath = Paths.get("CovSBOM_output/main");
             if (Files.exists(astPath)) {
                 try {
                     Files.delete(astPath);
@@ -104,6 +105,8 @@ public class Main {
 
             scanner.close();
         }
+
+        outputProjectFolderPath = rootDirectoryPath.split("/")[rootDirectoryPath.split("/").length - 1];
 
         System.out.println("installing source code: " + rootDirectoryPath);
         Utils.mavenInstallSources(rootDirectoryPath);
@@ -155,12 +158,14 @@ public class Main {
         // * process the directory
         processor.processDirectory();
 
-        importManager.printImports();
-        methodCallReporter.generateThirdPartyTypeJsonReport("asts/analysis/method_calls.json");
+        // importManager.printImports();
+        methodCallReporter.generateThirdPartyTypeJsonReport(
+            "CovSBOM_output/analysis/" + outputProjectFolderPath
+                    + "/method_calls.json");
         System.out.println(" ------- end processing directory, start analyzing dependencies -------");
 
         // testing
-        methodCallReporter.generateThirdPartyTypeJsonReport("asts/analysis/final_report_file_based.json");
+        // methodCallReporter.generateThirdPartyTypeJsonReport("CovSBOM_output/analysis/final_report_file_based.json");
 
         /*
          * +------------------+
@@ -174,10 +179,14 @@ public class Main {
 
         dependencyAnalyzer.analyze();
 
-        methodCallReporter.generateThirdPartyTypeJsonReport("asts/analysis/final_report_file_based.json");
+        methodCallReporter.generateThirdPartyTypeJsonReport(
+                "CovSBOM_output/analysis/" + outputProjectFolderPath
+                        + "/final_report_file_based.json");
 
         methodCallReporter
-                .generateThirdPartyTypeJsonReportBasedonPackage("asts/analysis/final_report_package_based.json");
+                .generateThirdPartyTypeJsonReportBasedonPackage(
+                    "CovSBOM_output/analysis/" + outputProjectFolderPath
+                    + "/final_report_package_based.json");
 
         System.out.println("End of analysis");
     }

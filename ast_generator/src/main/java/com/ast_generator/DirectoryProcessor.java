@@ -276,7 +276,7 @@ public class DirectoryProcessor {
 
         // if (separateFiles) {
         // Replace .java extension with .json
-        Path dirPath = Path.of("asts/main");
+        Path dirPath = Path.of("CovSBOM_output/main");
         if (!Files.exists(dirPath)) {
             Files.createDirectories(dirPath);
         }
