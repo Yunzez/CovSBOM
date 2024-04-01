@@ -3,6 +3,9 @@ package com.ast_generator;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
+
+import com.github.javaparser.ParserConfiguration;
+
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -70,14 +73,26 @@ public class Utils {
             // Set the directory to run the command in
             processBuilder.directory(rootPath.toFile());
             // Set the command to run
-            processBuilder.command("mvn", "dependency:sources");
 
-            // Start the process
+            processBuilder.command("mvn", "dependency:resolve");
+            Process processResolve = processBuilder.start();
+            BufferedReader readerResolve = new BufferedReader(new InputStreamReader(processResolve.getInputStream()));
+            String line;
+            while ((line = readerResolve.readLine()) != null) {
+                System.out.println(line);
+            }
+            int exitValResolve = processResolve.waitFor();
+            if (exitValResolve == 0) {
+                System.out.println("Maven dependency resolution completed successfully.");
+            } else {
+                System.out.println("Maven dependency resolution encountered an error.");
+                return; // Exit if dependency resolution fails
+            }
+
+            processBuilder.command("mvn", "dependency:sources -fn");
             Process process = processBuilder.start();
-
             // Read the output and error streams
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
             while ((line = reader.readLine()) != null) {
                 System.out.println(line);
             }
@@ -262,6 +277,34 @@ public class Utils {
             }
         }
         return matches;
+    }
+
+    public static ParserConfiguration.LanguageLevel getLanguageLevelFromVersion(String version) {
+        switch (version) {
+            case "1.8":
+                return ParserConfiguration.LanguageLevel.JAVA_8;
+            case "9":
+                return ParserConfiguration.LanguageLevel.JAVA_9;
+            case "10":
+                return ParserConfiguration.LanguageLevel.JAVA_10;
+            case "11":
+                return ParserConfiguration.LanguageLevel.JAVA_11;
+            case "12":
+                return ParserConfiguration.LanguageLevel.JAVA_12;
+            case "13":
+                return ParserConfiguration.LanguageLevel.JAVA_13;
+            case "14":
+                return ParserConfiguration.LanguageLevel.JAVA_14;
+            case "15":
+                return ParserConfiguration.LanguageLevel.JAVA_15;
+            case "16":
+                return ParserConfiguration.LanguageLevel.JAVA_16;
+            case "17":
+                return ParserConfiguration.LanguageLevel.JAVA_17;
+            // Add more cases for newer Java versions as JavaParser supports them
+            default:
+                return ParserConfiguration.LanguageLevel.JAVA_8; // Default to JAVA_8 if not specified or recognized
+        }
     }
 
 }

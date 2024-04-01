@@ -41,7 +41,7 @@ public class DependencyAnalyzer {
         System.out.println("total unique types: " + methodCallReporter.getUniqueTypes().size());
         System.out.println("unresolved types: " + unresolvedTypes.size());
 
-        // * analyze jars
+        // * only analyze jars that are used in the program
         for (Dependency dependency : typeToJarLookup.keySet()) {
             // String jarPath = dependency.getSourceJarPath();
             // * we get all the parth we need to analyze for this jar
@@ -101,7 +101,7 @@ public class DependencyAnalyzer {
                     break; // Stop searching once matched
                 }
             } else {
-                System.out.println("File not found: " + potentialPath.toAbsolutePath());
+                // System.out.println("File not found: " + potentialPath.toAbsolutePath());
             }
         }
     }

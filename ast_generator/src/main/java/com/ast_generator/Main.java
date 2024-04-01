@@ -38,6 +38,8 @@ public class Main {
     private static String inferredPomPath;
     private static String outputProjectFolderPath = "";
     private static String outputFolderName = "CovSBOM_output";
+
+    private static boolean test = true;
     public static void main(String[] args) throws IOException {
 
         // ! Check for --process-directory argument
@@ -123,23 +125,32 @@ public class Main {
             boolean ignoreTestAttributes = Boolean.parseBoolean(settings.getProperty("ignoreTestAttributes", "false"));
             Settings.setIgnoreTest(ignoreTestAttributes);
             System.out.println("recursiveLayers: " + recursiveLayers);
-            System.out.println("ignoreTestAttributes: " + ignoreTestAttributes);
+            // System.out.println("ignoreTestAttributes: " + ignoreTestAttributes);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+        Map<String, Dependency> dependencyMap = new HashMap<String,Dependency>();
+        Map<String, String> moduleList = DependencyProcessor.parsePomForModules(inferredPomPath);
+        System.out.println("java version: " + DependencyProcessor.getJavaVersion());
+        Settings.setJavaVersion(DependencyProcessor.getJavaVersion());
+       
 
-        Map<String, Dependency> dependencyMap = DependencyProcessor.parsePomForDependencies(inferredPomPath);
+        System.out.println("moduleList: " + moduleList.toString());
+        
         List<String> mavenTree = MavenDependencyTree.runMavenDependencyTree(rootDirectoryPath);
-        System.out.println("mavenTree: " + mavenTree.toString());
-        MavenDependencyTree.updateDependencyMapWithTreeOutput(mavenTree, dependencyMap);
-        // print out dependecy map in a easy to read format
+        Dependency packageInfo = DependencyProcessor.getPackageInfo();
+        MavenDependencyTree.updateDependencyMapWithTreeOutput(mavenTree, dependencyMap, packageInfo);
 
-        // System.out.println("---------------------------- dependency map
-        // ----------------------------");
-        // dependencyMap.forEach((k, v) -> System.out.println(k + " : " + v + "\n"));
-        // System.out.println("---------------------------- dependency map
-        // ----------------------------");
+        // if(test) {
+        //     return;
+        // }
 
+        System.out.println("total dependencies: " + dependencyMap.size());
+        for(String key: dependencyMap.keySet()){
+            System.out.println("key: " + key + " value: " + dependencyMap.get(key).toString());
+        }
+        
+      
         // ! generate ASTs for all java files in the application
         /*
          * +--------------------+
@@ -153,7 +164,7 @@ public class Main {
         MethodCallReporter methodCallReporter = new MethodCallReporter();
         // * create an instance of directory processor
         DirectoryProcessor processor = new DirectoryProcessor(rootDirectoryPath, astPath, dependencyMap, importManager,
-                methodCallReporter);
+                methodCallReporter, moduleList);
 
         // * process the directory
         processor.processDirectory();
@@ -164,16 +175,12 @@ public class Main {
                     + "/method_calls.json");
         System.out.println(" ------- end processing directory, start analyzing dependencies -------");
 
-        // testing
-        // methodCallReporter.generateThirdPartyTypeJsonReport("CovSBOM_output/analysis/final_report_file_based.json");
-
         /*
          * +------------------+
          * | Analysis section |
          * +------------------+
          */
 
-        // ! test
         DependencyAnalyzer dependencyAnalyzer = new DependencyAnalyzer(dependencyMap,
                 methodCallReporter);
 

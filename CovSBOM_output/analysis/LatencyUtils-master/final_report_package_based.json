@@ -1,0 +1,1635 @@
+{
+  "Dependency: groupId=junit, artifactId=junit, version=4.10, jarPath=/Users/yunzezhao/.m2/repository/junit/junit/4.10/junit-4.10.jar": [
+    {
+      "declaringType": "org.junit.Assert",
+      "methodSignature": "assertEquals(java.lang.String, long, long)",
+      "methodName": "assertEquals",
+      "lineNumber": ["33", "41", "48"],
+      "fullExpression": "Assert.assertEquals(\"expected interval to be 20\", 20, estimator.getEstimatedInterval(now))",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/junit.junit/org/junit/Assert.java",
+        "declarationStartLine": 471,
+        "declarationEndLine": 473,
+        "methodName": "assertEquals",
+        "declarationSignature": "assertEquals(java.lang.String, long, long)",
+        "innerMethodCalls": [
+          {
+            "declaringType": "org.junit.Assert",
+            "methodSignature": "assertEquals(java.lang.String, java.lang.Object, java.lang.Object)",
+            "methodName": "assertEquals",
+            "lineNumber": ["472"],
+            "fullExpression": "assertEquals(message, (Long) expected, (Long) actual)",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/junit.junit/org/junit/Assert.java",
+              "declarationStartLine": 117,
+              "declarationEndLine": 129,
+              "methodName": "assertEquals",
+              "declarationSignature": "assertEquals(java.lang.String, java.lang.Object, java.lang.Object)",
+              "innerMethodCalls": [
+                {
+                  "declaringType": "org.junit.Assert",
+                  "methodSignature": "failNotEquals(java.lang.String, java.lang.Object, java.lang.Object)",
+                  "methodName": "failNotEquals",
+                  "lineNumber": ["128"],
+                  "fullExpression": "failNotEquals(message, expected, actual)",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/junit.junit/org/junit/Assert.java",
+                    "declarationStartLine": 645,
+                    "declarationEndLine": 648,
+                    "methodName": "failNotEquals",
+                    "declarationSignature": "failNotEquals(java.lang.String, java.lang.Object, java.lang.Object)",
+                    "innerMethodCalls": [
+                      {
+                        "declaringType": "org.junit.Assert",
+                        "methodSignature": "format(java.lang.String, java.lang.Object, java.lang.Object)",
+                        "methodName": "format",
+                        "lineNumber": ["647"],
+                        "fullExpression": "format(message, expected, actual)",
+                        "currentLayer": 3,
+                        "declarationInfo": {
+                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/junit.junit/org/junit/Assert.java",
+                          "declarationStartLine": 650,
+                          "declarationEndLine": 663,
+                          "methodName": "format",
+                          "declarationSignature": "format(java.lang.String, java.lang.Object, java.lang.Object)",
+                          "innerMethodCalls": [
+                            {
+                              "declaringType": "org.junit.Assert",
+                              "methodSignature": "formatClassAndValue(java.lang.Object, java.lang.String)",
+                              "methodName": "formatClassAndValue",
+                              "lineNumber": ["658", "659"],
+                              "fullExpression": "formatClassAndValue(expected, expectedString)",
+                              "currentLayer": 4,
+                              "declarationInfo": {
+                                "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/junit.junit/org/junit/Assert.java",
+                                "declarationStartLine": 665,
+                                "declarationEndLine": 668,
+                                "methodName": "formatClassAndValue",
+                                "declarationSignature": "formatClassAndValue(java.lang.Object, java.lang.String)",
+                                "innerMethodCalls": []
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "declaringType": "org.junit.Assert",
+                        "methodSignature": "fail(java.lang.String)",
+                        "methodName": "fail",
+                        "lineNumber": ["647"],
+                        "fullExpression": "fail(format(message, expected, actual))",
+                        "currentLayer": 3,
+                        "declarationInfo": {
+                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/junit.junit/org/junit/Assert.java",
+                          "declarationStartLine": 90,
+                          "declarationEndLine": 94,
+                          "methodName": "fail",
+                          "declarationSignature": "fail(java.lang.String)",
+                          "innerMethodCalls": []
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "declaringType": "org.junit.Assert",
+                  "methodSignature": "isEquals(java.lang.Object, java.lang.Object)",
+                  "methodName": "isEquals",
+                  "lineNumber": ["121"],
+                  "fullExpression": "isEquals(expected, actual)",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/junit.junit/org/junit/Assert.java",
+                    "declarationStartLine": 131,
+                    "declarationEndLine": 133,
+                    "methodName": "isEquals",
+                    "declarationSignature": "isEquals(java.lang.Object, java.lang.Object)",
+                    "innerMethodCalls": []
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "declaringType": "org.junit.Assert",
+      "methodSignature": "assertTrue(java.lang.String, boolean)",
+      "methodName": "assertTrue",
+      "lineNumber": ["67", "79", "121", "132", "172", "183"],
+      "fullExpression": "Assert.assertTrue(\"detected pause needs to be 0 msec, but was \" + detectedPauseLength.get() / 1000000.0 + \" msec instead.\", detectedPauseLength.get() == 0L)",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/junit.junit/org/junit/Assert.java",
+        "declarationStartLine": 41,
+        "declarationEndLine": 44,
+        "methodName": "assertTrue",
+        "declarationSignature": "assertTrue(java.lang.String, boolean)",
+        "innerMethodCalls": [
+          {
+            "declaringType": "org.junit.Assert",
+            "methodSignature": "fail(java.lang.String)",
+            "methodName": "fail",
+            "lineNumber": ["43"],
+            "fullExpression": "fail(message)",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/junit.junit/org/junit/Assert.java",
+              "declarationStartLine": 90,
+              "declarationEndLine": 94,
+              "methodName": "fail",
+              "declarationSignature": "fail(java.lang.String)",
+              "innerMethodCalls": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "declaringType": "org.junit.Assert",
+      "methodSignature": "assertEquals(java.lang.Object, java.lang.Object)",
+      "methodName": "assertEquals",
+      "lineNumber": ["294"],
+      "fullExpression": "Assert.assertEquals(Boolean.TRUE, response)",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/junit.junit/org/junit/Assert.java",
+        "declarationStartLine": 146,
+        "declarationEndLine": 148,
+        "methodName": "assertEquals",
+        "declarationSignature": "assertEquals(java.lang.Object, java.lang.Object)",
+        "innerMethodCalls": [
+          {
+            "declaringType": "org.junit.Assert",
+            "methodSignature": "assertEquals(java.lang.String, java.lang.Object, java.lang.Object)",
+            "methodName": "assertEquals",
+            "lineNumber": ["147"],
+            "fullExpression": "assertEquals(null, expected, actual)",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/junit.junit/org/junit/Assert.java",
+              "declarationStartLine": 117,
+              "declarationEndLine": 129,
+              "methodName": "assertEquals",
+              "declarationSignature": "assertEquals(java.lang.String, java.lang.Object, java.lang.Object)",
+              "innerMethodCalls": [
+                {
+                  "declaringType": "org.junit.Assert",
+                  "methodSignature": "failNotEquals(java.lang.String, java.lang.Object, java.lang.Object)",
+                  "methodName": "failNotEquals",
+                  "lineNumber": ["128"],
+                  "fullExpression": "failNotEquals(message, expected, actual)",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/junit.junit/org/junit/Assert.java",
+                    "declarationStartLine": 645,
+                    "declarationEndLine": 648,
+                    "methodName": "failNotEquals",
+                    "declarationSignature": "failNotEquals(java.lang.String, java.lang.Object, java.lang.Object)",
+                    "innerMethodCalls": [
+                      {
+                        "declaringType": "org.junit.Assert",
+                        "methodSignature": "format(java.lang.String, java.lang.Object, java.lang.Object)",
+                        "methodName": "format",
+                        "lineNumber": ["647"],
+                        "fullExpression": "format(message, expected, actual)",
+                        "currentLayer": 3,
+                        "declarationInfo": {
+                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/junit.junit/org/junit/Assert.java",
+                          "declarationStartLine": 650,
+                          "declarationEndLine": 663,
+                          "methodName": "format",
+                          "declarationSignature": "format(java.lang.String, java.lang.Object, java.lang.Object)",
+                          "innerMethodCalls": [
+                            {
+                              "declaringType": "org.junit.Assert",
+                              "methodSignature": "formatClassAndValue(java.lang.Object, java.lang.String)",
+                              "methodName": "formatClassAndValue",
+                              "lineNumber": ["658", "659"],
+                              "fullExpression": "formatClassAndValue(expected, expectedString)",
+                              "currentLayer": 4,
+                              "declarationInfo": {
+                                "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/junit.junit/org/junit/Assert.java",
+                                "declarationStartLine": 665,
+                                "declarationEndLine": 668,
+                                "methodName": "formatClassAndValue",
+                                "declarationSignature": "formatClassAndValue(java.lang.Object, java.lang.String)",
+                                "innerMethodCalls": []
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "declaringType": "org.junit.Assert",
+                        "methodSignature": "fail(java.lang.String)",
+                        "methodName": "fail",
+                        "lineNumber": ["647"],
+                        "fullExpression": "fail(format(message, expected, actual))",
+                        "currentLayer": 3,
+                        "declarationInfo": {
+                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/junit.junit/org/junit/Assert.java",
+                          "declarationStartLine": 90,
+                          "declarationEndLine": 94,
+                          "methodName": "fail",
+                          "declarationSignature": "fail(java.lang.String)",
+                          "innerMethodCalls": []
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "declaringType": "org.junit.Assert",
+                  "methodSignature": "isEquals(java.lang.Object, java.lang.Object)",
+                  "methodName": "isEquals",
+                  "lineNumber": ["121"],
+                  "fullExpression": "isEquals(expected, actual)",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/junit.junit/org/junit/Assert.java",
+                    "declarationStartLine": 131,
+                    "declarationEndLine": 133,
+                    "methodName": "isEquals",
+                    "declarationSignature": "isEquals(java.lang.Object, java.lang.Object)",
+                    "innerMethodCalls": []
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "declaringType": "org.junit.Assert",
+      "methodSignature": "fail(java.lang.String)",
+      "methodName": "fail",
+      "lineNumber": ["306"],
+      "fullExpression": "Assert.fail(\"Timed out trying to force interval sample.\")",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/junit.junit/org/junit/Assert.java",
+        "declarationStartLine": 90,
+        "declarationEndLine": 94,
+        "methodName": "fail",
+        "declarationSignature": "fail(java.lang.String)",
+        "innerMethodCalls": []
+      }
+    }
+  ],
+  "Dependency: groupId=org.hdrhistogram, artifactId=HdrHistogram, version=2.1.8, jarPath=/Users/yunzezhao/.m2/repository/org/hdrhistogram/HdrHistogram/2.1.8/HdrHistogram-2.1.8.jar": [
+    {
+      "declaringType": "org.HdrHistogram.WriterReaderPhaser",
+      "methodSignature": "writerCriticalSectionExit(long)",
+      "methodName": "writerCriticalSectionExit",
+      "lineNumber": ["206", "414"],
+      "fullExpression": "recordingPhaser.writerCriticalSectionExit(criticalValueAtEnter)",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/WriterReaderPhaser.java",
+        "declarationStartLine": 91,
+        "declarationEndLine": 97,
+        "methodName": "writerCriticalSectionExit",
+        "declarationSignature": "writerCriticalSectionExit(long)",
+        "innerMethodCalls": []
+      }
+    },
+    {
+      "declaringType": "org.HdrHistogram.HistogramLogWriter",
+      "methodSignature": "outputStartTime(long)",
+      "methodName": "outputStartTime",
+      "lineNumber": ["124"],
+      "fullExpression": "histogramLogWriter.outputStartTime(reportingStartTime)",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/HistogramLogWriter.java",
+        "declarationStartLine": 159,
+        "declarationEndLine": 163,
+        "methodName": "outputStartTime",
+        "declarationSignature": "outputStartTime(long)",
+        "innerMethodCalls": []
+      }
+    },
+    {
+      "declaringType": "org.HdrHistogram.WriterReaderPhaser",
+      "methodSignature": "flipPhase()",
+      "methodName": "flipPhase",
+      "lineNumber": ["456"],
+      "fullExpression": "recordingPhaser.flipPhase()",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/WriterReaderPhaser.java",
+        "declarationStartLine": 195,
+        "declarationEndLine": 197,
+        "methodName": "flipPhase",
+        "declarationSignature": "flipPhase()",
+        "innerMethodCalls": [
+          {
+            "declaringType": "org.HdrHistogram.WriterReaderPhaser",
+            "methodSignature": "flipPhase(long)",
+            "methodName": "flipPhase",
+            "lineNumber": ["196"],
+            "fullExpression": "flipPhase(0)",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/WriterReaderPhaser.java",
+              "declarationStartLine": 137,
+              "declarationEndLine": 176,
+              "methodName": "flipPhase",
+              "declarationSignature": "flipPhase(long)",
+              "innerMethodCalls": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "declaringType": "org.HdrHistogram.AbstractHistogram",
+      "methodSignature": "getMean()",
+      "methodName": "getMean",
+      "lineNumber": [
+        "90",
+        "92",
+        "109",
+        "111",
+        "125",
+        "127",
+        "145",
+        "147",
+        "165",
+        "167",
+        "185",
+        "187",
+        "212",
+        "214",
+        "230",
+        "232"
+      ],
+      "fullExpression": "accumulatedHistogram.getMean()",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+        "declarationStartLine": 1156,
+        "declarationEndLine": 1168,
+        "methodName": "getMean",
+        "declarationSignature": "getMean()",
+        "innerMethodCalls": [
+          {
+            "declaringType": "org.HdrHistogram.HistogramIterationValue",
+            "methodSignature": "getCountAtValueIteratedTo()",
+            "methodName": "getCountAtValueIteratedTo",
+            "lineNumber": ["1165"],
+            "fullExpression": "iterationValue.getCountAtValueIteratedTo()",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/HistogramIterationValue.java",
+              "declarationStartLine": 103,
+              "declarationEndLine": 105,
+              "methodName": "getCountAtValueIteratedTo",
+              "declarationSignature": "getCountAtValueIteratedTo()",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "org.HdrHistogram.RecordedValuesIterator",
+            "methodSignature": "reset()",
+            "methodName": "reset",
+            "lineNumber": ["1160"],
+            "fullExpression": "recordedValuesIterator.reset()",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/RecordedValuesIterator.java",
+              "declarationStartLine": 24,
+              "declarationEndLine": 26,
+              "methodName": "reset",
+              "declarationSignature": "reset()",
+              "innerMethodCalls": [
+                {
+                  "declaringType": "org.HdrHistogram.RecordedValuesIterator",
+                  "methodSignature": "reset(org.HdrHistogram.AbstractHistogram)",
+                  "methodName": "reset",
+                  "lineNumber": ["25"],
+                  "fullExpression": "reset(histogram)",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/RecordedValuesIterator.java",
+                    "declarationStartLine": 28,
+                    "declarationEndLine": 31,
+                    "methodName": "reset",
+                    "declarationSignature": "reset(org.HdrHistogram.AbstractHistogram)",
+                    "innerMethodCalls": [
+                      {
+                        "declaringType": "org.HdrHistogram.AbstractHistogramIterator",
+                        "methodSignature": "resetIterator(org.HdrHistogram.AbstractHistogram)",
+                        "methodName": "resetIterator",
+                        "lineNumber": ["29"],
+                        "fullExpression": "super.resetIterator(histogram)",
+                        "currentLayer": 3,
+                        "declarationInfo": {
+                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogramIterator.java",
+                          "declarationStartLine": 39,
+                          "declarationEndLine": 54,
+                          "methodName": "resetIterator",
+                          "declarationSignature": "resetIterator(org.HdrHistogram.AbstractHistogram)",
+                          "innerMethodCalls": [
+                            {
+                              "declaringType": "org.HdrHistogram.HistogramIterationValue",
+                              "methodSignature": "reset()",
+                              "methodName": "reset",
+                              "lineNumber": ["53"],
+                              "fullExpression": "currentIterationValue.reset()",
+                              "currentLayer": 4,
+                              "declarationInfo": {
+                                "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/HistogramIterationValue.java",
+                                "declarationStartLine": 62,
+                                "declarationEndLine": 71,
+                                "methodName": "reset",
+                                "declarationSignature": "reset()",
+                                "innerMethodCalls": []
+                              }
+                            },
+                            {
+                              "declaringType": "org.HdrHistogram.AbstractHistogram",
+                              "methodSignature": "getTotalCount()",
+                              "methodName": "getTotalCount",
+                              "lineNumber": ["41", "42"],
+                              "fullExpression": "histogram.getTotalCount()",
+                              "currentLayer": 4,
+                              "declarationInfo": {
+                                "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+                                "declarationStartLine": 151,
+                                "declarationEndLine": 151,
+                                "methodName": "getTotalCount",
+                                "declarationSignature": "getTotalCount()",
+                                "innerMethodCalls": []
+                              }
+                            },
+                            {
+                              "declaringType": "org.HdrHistogram.AbstractHistogramBase",
+                              "methodSignature": "getIntegerToDoubleValueConversionRatio()",
+                              "methodName": "getIntegerToDoubleValueConversionRatio",
+                              "lineNumber": ["43"],
+                              "fullExpression": "histogram.getIntegerToDoubleValueConversionRatio()",
+                              "currentLayer": 4,
+                              "declarationInfo": null
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "declaringType": "org.HdrHistogram.AbstractHistogram",
+            "methodSignature": "getTotalCount()",
+            "methodName": "getTotalCount",
+            "lineNumber": ["1157", "1167"],
+            "fullExpression": "getTotalCount()",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+              "declarationStartLine": 151,
+              "declarationEndLine": 151,
+              "methodName": "getTotalCount",
+              "declarationSignature": "getTotalCount()",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "org.HdrHistogram.AbstractHistogram",
+            "methodSignature": "medianEquivalentValue(long)",
+            "methodName": "medianEquivalentValue",
+            "lineNumber": ["1164"],
+            "fullExpression": "medianEquivalentValue(iterationValue.getValueIteratedTo())",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+              "declarationStartLine": 1017,
+              "declarationEndLine": 1019,
+              "methodName": "medianEquivalentValue",
+              "declarationSignature": "medianEquivalentValue(long)",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "org.HdrHistogram.HistogramIterationValue",
+            "methodSignature": "getValueIteratedTo()",
+            "methodName": "getValueIteratedTo",
+            "lineNumber": ["1164"],
+            "fullExpression": "iterationValue.getValueIteratedTo()",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/HistogramIterationValue.java",
+              "declarationStartLine": 87,
+              "declarationEndLine": 89,
+              "methodName": "getValueIteratedTo",
+              "declarationSignature": "getValueIteratedTo()",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "org.HdrHistogram.AbstractHistogramIterator",
+            "methodSignature": "next()",
+            "methodName": "next",
+            "lineNumber": ["1163"],
+            "fullExpression": "recordedValuesIterator.next()",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogramIterator.java",
+              "declarationStartLine": 75,
+              "declarationEndLine": 104,
+              "methodName": "next",
+              "declarationSignature": "next()",
+              "innerMethodCalls": [
+                {
+                  "declaringType": "org.HdrHistogram.HistogramIterationValue",
+                  "methodSignature": "set(long, long, long, long, long, long, double, double, double)",
+                  "methodName": "set",
+                  "lineNumber": ["87"],
+                  "fullExpression": "currentIterationValue.set(valueIteratedTo, prevValueIteratedTo, countAtThisValue, (totalCountToCurrentIndex - totalCountToPrevIndex), totalCountToCurrentIndex, totalValueToCurrentIndex, ((100.0 * totalCountToCurrentIndex) / arrayTotalCount), getPercentileIteratedTo(), integerToDoubleValueConversionRatio)",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/HistogramIterationValue.java",
+                    "declarationStartLine": 48,
+                    "declarationEndLine": 60,
+                    "methodName": "set",
+                    "declarationSignature": "set(long, long, long, long, long, long, double, double, double)",
+                    "innerMethodCalls": []
+                  }
+                },
+                {
+                  "declaringType": "org.HdrHistogram.AbstractHistogram",
+                  "methodSignature": "getCountAtIndex(int)",
+                  "methodName": "getCountAtIndex",
+                  "lineNumber": ["79"],
+                  "fullExpression": "histogram.getCountAtIndex(currentIndex)",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+                    "declarationStartLine": 117,
+                    "declarationEndLine": 117,
+                    "methodName": "getCountAtIndex",
+                    "declarationSignature": "getCountAtIndex(int)",
+                    "innerMethodCalls": []
+                  }
+                },
+                {
+                  "declaringType": "org.HdrHistogram.AbstractHistogramIterator",
+                  "methodSignature": "incrementIterationLevel()",
+                  "methodName": "incrementIterationLevel",
+                  "lineNumber": ["94"],
+                  "fullExpression": "incrementIterationLevel()",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogramIterator.java",
+                    "declarationStartLine": 114,
+                    "declarationEndLine": 114,
+                    "methodName": "incrementIterationLevel",
+                    "declarationSignature": "incrementIterationLevel()",
+                    "innerMethodCalls": []
+                  }
+                },
+                {
+                  "declaringType": "org.HdrHistogram.AbstractHistogramIterator",
+                  "methodSignature": "getPercentileIteratedTo()",
+                  "methodName": "getPercentileIteratedTo",
+                  "lineNumber": ["90"],
+                  "fullExpression": "getPercentileIteratedTo()",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogramIterator.java",
+                    "declarationStartLine": 118,
+                    "declarationEndLine": 120,
+                    "methodName": "getPercentileIteratedTo",
+                    "declarationSignature": "getPercentileIteratedTo()",
+                    "innerMethodCalls": []
+                  }
+                },
+                {
+                  "declaringType": "org.HdrHistogram.AbstractHistogramIterator",
+                  "methodSignature": "exhaustedSubBuckets()",
+                  "methodName": "exhaustedSubBuckets",
+                  "lineNumber": ["78"],
+                  "fullExpression": "exhaustedSubBuckets()",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogramIterator.java",
+                    "declarationStartLine": 130,
+                    "declarationEndLine": 132,
+                    "methodName": "exhaustedSubBuckets",
+                    "declarationSignature": "exhaustedSubBuckets()",
+                    "innerMethodCalls": []
+                  }
+                },
+                {
+                  "declaringType": "org.HdrHistogram.AbstractHistogramIterator",
+                  "methodSignature": "incrementSubBucket()",
+                  "methodName": "incrementSubBucket",
+                  "lineNumber": ["100"],
+                  "fullExpression": "incrementSubBucket()",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogramIterator.java",
+                    "declarationStartLine": 134,
+                    "declarationEndLine": 141,
+                    "methodName": "incrementSubBucket",
+                    "declarationSignature": "incrementSubBucket()",
+                    "innerMethodCalls": [
+                      {
+                        "declaringType": "org.HdrHistogram.AbstractHistogram",
+                        "methodSignature": "valueFromIndex(int)",
+                        "methodName": "valueFromIndex",
+                        "lineNumber": ["138", "140"],
+                        "fullExpression": "histogram.valueFromIndex(currentIndex)",
+                        "currentLayer": 3,
+                        "declarationInfo": {
+                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+                          "declarationStartLine": 2143,
+                          "declarationEndLine": 2151,
+                          "methodName": "valueFromIndex",
+                          "declarationSignature": "valueFromIndex(int)",
+                          "innerMethodCalls": []
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "declaringType": "org.HdrHistogram.AbstractHistogramIterator",
+                  "methodSignature": "getValueIteratedTo()",
+                  "methodName": "getValueIteratedTo",
+                  "lineNumber": ["86"],
+                  "fullExpression": "getValueIteratedTo()",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogramIterator.java",
+                    "declarationStartLine": 126,
+                    "declarationEndLine": 128,
+                    "methodName": "getValueIteratedTo",
+                    "declarationSignature": "getValueIteratedTo()",
+                    "innerMethodCalls": []
+                  }
+                },
+                {
+                  "declaringType": "org.HdrHistogram.AbstractHistogram",
+                  "methodSignature": "highestEquivalentValue(long)",
+                  "methodName": "highestEquivalentValue",
+                  "lineNumber": ["82"],
+                  "fullExpression": "histogram.highestEquivalentValue(currentValueAtIndex)",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+                    "declarationStartLine": 1005,
+                    "declarationEndLine": 1007,
+                    "methodName": "highestEquivalentValue",
+                    "declarationSignature": "highestEquivalentValue(long)",
+                    "innerMethodCalls": []
+                  }
+                },
+                {
+                  "declaringType": "org.HdrHistogram.AbstractHistogramIterator",
+                  "methodSignature": "reachedIterationLevel()",
+                  "methodName": "reachedIterationLevel",
+                  "lineNumber": ["85"],
+                  "fullExpression": "reachedIterationLevel()",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogramIterator.java",
+                    "declarationStartLine": 116,
+                    "declarationEndLine": 116,
+                    "methodName": "reachedIterationLevel",
+                    "declarationSignature": "reachedIterationLevel()",
+                    "innerMethodCalls": []
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "declaringType": "org.HdrHistogram.AbstractHistogramIterator",
+            "methodSignature": "hasNext()",
+            "methodName": "hasNext",
+            "lineNumber": ["1162"],
+            "fullExpression": "recordedValuesIterator.hasNext()",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogramIterator.java",
+              "declarationStartLine": 62,
+              "declarationEndLine": 68,
+              "methodName": "hasNext",
+              "declarationSignature": "hasNext()",
+              "innerMethodCalls": [
+                {
+                  "declaringType": "org.HdrHistogram.AbstractHistogram",
+                  "methodSignature": "getTotalCount()",
+                  "methodName": "getTotalCount",
+                  "lineNumber": ["64"],
+                  "fullExpression": "histogram.getTotalCount()",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+                    "declarationStartLine": 151,
+                    "declarationEndLine": 151,
+                    "methodName": "getTotalCount",
+                    "declarationSignature": "getTotalCount()",
+                    "innerMethodCalls": []
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "declaringType": "org.HdrHistogram.WriterReaderPhaser",
+      "methodSignature": "readerLock()",
+      "methodName": "readerLock",
+      "lineNumber": ["240", "260", "279", "298", "442"],
+      "fullExpression": "recordingPhaser.readerLock()",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/WriterReaderPhaser.java",
+        "declarationStartLine": 107,
+        "declarationEndLine": 109,
+        "methodName": "readerLock",
+        "declarationSignature": "readerLock()",
+        "innerMethodCalls": []
+      }
+    },
+    {
+      "declaringType": "org.HdrHistogram.WriterReaderPhaser",
+      "methodSignature": "readerUnlock()",
+      "methodName": "readerUnlock",
+      "lineNumber": ["245", "265", "284", "301", "458"],
+      "fullExpression": "recordingPhaser.readerUnlock()",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/WriterReaderPhaser.java",
+        "declarationStartLine": 115,
+        "declarationEndLine": 117,
+        "methodName": "readerUnlock",
+        "declarationSignature": "readerUnlock()",
+        "innerMethodCalls": []
+      }
+    },
+    {
+      "declaringType": "org.HdrHistogram.AbstractHistogram",
+      "methodSignature": "setEndTimeStamp(long)",
+      "methodName": "setEndTimeStamp",
+      "lineNumber": ["85"],
+      "fullExpression": "intervalHistogram.setEndTimeStamp(intervalHistogram.getEndTimeStamp() - reportingStartTime)",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+        "declarationStartLine": 1094,
+        "declarationEndLine": 1097,
+        "methodName": "setEndTimeStamp",
+        "declarationSignature": "setEndTimeStamp(long)",
+        "innerMethodCalls": []
+      }
+    },
+    {
+      "declaringType": "org.HdrHistogram.AbstractHistogram",
+      "methodSignature": "recordValueWithExpectedInterval(long, long)",
+      "methodName": "recordValueWithExpectedInterval",
+      "lineNumber": ["408"],
+      "fullExpression": "activePauseCorrectionsHistogram.recordValueWithExpectedInterval(observedLatencyMinbar, estimatedInterval)",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+        "declarationStartLine": 381,
+        "declarationEndLine": 384,
+        "methodName": "recordValueWithExpectedInterval",
+        "declarationSignature": "recordValueWithExpectedInterval(long, long)",
+        "innerMethodCalls": [
+          {
+            "declaringType": "org.HdrHistogram.AbstractHistogram",
+            "methodSignature": "recordSingleValueWithExpectedInterval(long, long)",
+            "methodName": "recordSingleValueWithExpectedInterval",
+            "lineNumber": ["383"],
+            "fullExpression": "recordSingleValueWithExpectedInterval(value, expectedIntervalBetweenValueSamples)",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+              "declarationStartLine": 462,
+              "declarationEndLine": 473,
+              "methodName": "recordSingleValueWithExpectedInterval",
+              "declarationSignature": "recordSingleValueWithExpectedInterval(long, long)",
+              "innerMethodCalls": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "declaringType": "org.HdrHistogram.AbstractHistogram",
+      "methodSignature": "getEndTimeStamp()",
+      "methodName": "getEndTimeStamp",
+      "lineNumber": ["85"],
+      "fullExpression": "intervalHistogram.getEndTimeStamp()",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+        "declarationStartLine": 1085,
+        "declarationEndLine": 1088,
+        "methodName": "getEndTimeStamp",
+        "declarationSignature": "getEndTimeStamp()",
+        "innerMethodCalls": []
+      }
+    },
+    {
+      "declaringType": "org.HdrHistogram.AbstractHistogram",
+      "methodSignature": "getStartTimeStamp()",
+      "methodName": "getStartTimeStamp",
+      "lineNumber": ["84"],
+      "fullExpression": "intervalHistogram.getStartTimeStamp()",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+        "declarationStartLine": 1067,
+        "declarationEndLine": 1070,
+        "methodName": "getStartTimeStamp",
+        "declarationSignature": "getStartTimeStamp()",
+        "innerMethodCalls": []
+      }
+    },
+    {
+      "declaringType": "org.HdrHistogram.AbstractHistogram",
+      "methodSignature": "add(org.HdrHistogram.AbstractHistogram)",
+      "methodName": "add",
+      "lineNumber": ["64"],
+      "fullExpression": "accumulatedHistogram.add(intervalHistogram)",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+        "declarationStartLine": 579,
+        "declarationEndLine": 616,
+        "methodName": "add",
+        "declarationSignature": "add(org.HdrHistogram.AbstractHistogram)",
+        "innerMethodCalls": [
+          {
+            "declaringType": "org.HdrHistogram.AbstractHistogram",
+            "methodSignature": "getCountAtIndex(int)",
+            "methodName": "getCountAtIndex",
+            "lineNumber": ["595", "608"],
+            "fullExpression": "otherHistogram.getCountAtIndex(i)",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+              "declarationStartLine": 117,
+              "declarationEndLine": 117,
+              "methodName": "getCountAtIndex",
+              "declarationSignature": "getCountAtIndex(int)",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "org.HdrHistogram.AbstractHistogram",
+            "methodSignature": "getMinNonZeroValue()",
+            "methodName": "getMinNonZeroValue",
+            "lineNumber": ["603", "603"],
+            "fullExpression": "getMinNonZeroValue()",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+              "declarationStartLine": 1136,
+              "declarationEndLine": 1139,
+              "methodName": "getMinNonZeroValue",
+              "declarationSignature": "getMinNonZeroValue()",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "org.HdrHistogram.AbstractHistogram",
+            "methodSignature": "updatedMaxValue(long)",
+            "methodName": "updatedMaxValue",
+            "lineNumber": ["602"],
+            "fullExpression": "updatedMaxValue(Math.max(getMaxValue(), otherHistogram.getMaxValue()))",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+              "declarationStartLine": 158,
+              "declarationEndLine": 162,
+              "methodName": "updatedMaxValue",
+              "declarationSignature": "updatedMaxValue(long)",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "org.HdrHistogram.AbstractHistogram",
+            "methodSignature": "recordValueWithCount(long, long)",
+            "methodName": "recordValueWithCount",
+            "lineNumber": ["610"],
+            "fullExpression": "recordValueWithCount(otherHistogram.valueFromIndex(i), otherCount)",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+              "declarationStartLine": 356,
+              "declarationEndLine": 358,
+              "methodName": "recordValueWithCount",
+              "declarationSignature": "recordValueWithCount(long, long)",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "org.HdrHistogram.AbstractHistogram",
+            "methodSignature": "isAutoResize()",
+            "methodName": "isAutoResize",
+            "lineNumber": ["582"],
+            "fullExpression": "isAutoResize()",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+              "declarationStartLine": 318,
+              "declarationEndLine": 320,
+              "methodName": "isAutoResize",
+              "declarationSignature": "isAutoResize()",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "org.HdrHistogram.AbstractHistogram",
+            "methodSignature": "addToCountAtIndex(int, long)",
+            "methodName": "addToCountAtIndex",
+            "lineNumber": ["597"],
+            "fullExpression": "addToCountAtIndex(i, otherCount)",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+              "declarationStartLine": 123,
+              "declarationEndLine": 123,
+              "methodName": "addToCountAtIndex",
+              "declarationSignature": "addToCountAtIndex(int, long)",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "org.HdrHistogram.AbstractHistogram",
+            "methodSignature": "getMaxValue()",
+            "methodName": "getMaxValue",
+            "lineNumber": ["581", "586", "602", "602"],
+            "fullExpression": "otherHistogram.getMaxValue()",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+              "declarationStartLine": 1126,
+              "declarationEndLine": 1128,
+              "methodName": "getMaxValue",
+              "declarationSignature": "getMaxValue()",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "org.HdrHistogram.AbstractHistogram",
+            "methodSignature": "getNormalizingIndexOffset()",
+            "methodName": "getNormalizingIndexOffset",
+            "lineNumber": ["591", "591"],
+            "fullExpression": "getNormalizingIndexOffset()",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+              "declarationStartLine": 129,
+              "declarationEndLine": 129,
+              "methodName": "getNormalizingIndexOffset",
+              "declarationSignature": "getNormalizingIndexOffset()",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "org.HdrHistogram.AbstractHistogram",
+            "methodSignature": "setTotalCount(long)",
+            "methodName": "setTotalCount",
+            "lineNumber": ["601"],
+            "fullExpression": "setTotalCount(getTotalCount() + observedOtherTotalCount)",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+              "declarationStartLine": 135,
+              "declarationEndLine": 135,
+              "methodName": "setTotalCount",
+              "declarationSignature": "setTotalCount(long)",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "org.HdrHistogram.AbstractHistogram",
+            "methodSignature": "resize(long)",
+            "methodName": "resize",
+            "lineNumber": ["586"],
+            "fullExpression": "resize(otherHistogram.getMaxValue())",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+              "declarationStartLine": 145,
+              "declarationEndLine": 145,
+              "methodName": "resize",
+              "declarationSignature": "resize(long)",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "org.HdrHistogram.AbstractHistogram",
+            "methodSignature": "updateMinNonZeroValue(long)",
+            "methodName": "updateMinNonZeroValue",
+            "lineNumber": ["603"],
+            "fullExpression": "updateMinNonZeroValue(Math.min(getMinNonZeroValue(), otherHistogram.getMinNonZeroValue()))",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+              "declarationStartLine": 173,
+              "declarationEndLine": 177,
+              "methodName": "updateMinNonZeroValue",
+              "declarationSignature": "updateMinNonZeroValue(long)",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "org.HdrHistogram.AbstractHistogram",
+            "methodSignature": "valueFromIndex(int)",
+            "methodName": "valueFromIndex",
+            "lineNumber": ["580", "610"],
+            "fullExpression": "valueFromIndex(countsArrayLength - 1)",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+              "declarationStartLine": 2143,
+              "declarationEndLine": 2151,
+              "methodName": "valueFromIndex",
+              "declarationSignature": "valueFromIndex(int)",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "org.HdrHistogram.AbstractHistogram",
+            "methodSignature": "setEndTimeStamp(long)",
+            "methodName": "setEndTimeStamp",
+            "lineNumber": ["615"],
+            "fullExpression": "setEndTimeStamp(Math.max(endTimeStampMsec, otherHistogram.endTimeStampMsec))",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+              "declarationStartLine": 1094,
+              "declarationEndLine": 1097,
+              "methodName": "setEndTimeStamp",
+              "declarationSignature": "setEndTimeStamp(long)",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "org.HdrHistogram.AbstractHistogram",
+            "methodSignature": "getTotalCount()",
+            "methodName": "getTotalCount",
+            "lineNumber": ["601"],
+            "fullExpression": "getTotalCount()",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+              "declarationStartLine": 151,
+              "declarationEndLine": 151,
+              "methodName": "getTotalCount",
+              "declarationSignature": "getTotalCount()",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "org.HdrHistogram.AbstractHistogram",
+            "methodSignature": "setStartTimeStamp(long)",
+            "methodName": "setStartTimeStamp",
+            "lineNumber": ["614"],
+            "fullExpression": "setStartTimeStamp(Math.min(startTimeStampMsec, otherHistogram.startTimeStampMsec))",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+              "declarationStartLine": 1076,
+              "declarationEndLine": 1079,
+              "methodName": "setStartTimeStamp",
+              "declarationSignature": "setStartTimeStamp(long)",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "org.HdrHistogram.AbstractHistogram",
+            "methodSignature": "highestEquivalentValue(long)",
+            "methodName": "highestEquivalentValue",
+            "lineNumber": ["580"],
+            "fullExpression": "highestEquivalentValue(valueFromIndex(countsArrayLength - 1))",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+              "declarationStartLine": 1005,
+              "declarationEndLine": 1007,
+              "methodName": "highestEquivalentValue",
+              "declarationSignature": "highestEquivalentValue(long)",
+              "innerMethodCalls": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "declaringType": "org.HdrHistogram.HistogramLogWriter",
+      "methodSignature": "outputLogFormatVersion()",
+      "methodName": "outputLogFormatVersion",
+      "lineNumber": ["118"],
+      "fullExpression": "histogramLogWriter.outputLogFormatVersion()",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/HistogramLogWriter.java",
+        "declarationStartLine": 194,
+        "declarationEndLine": 196,
+        "methodName": "outputLogFormatVersion",
+        "declarationSignature": "outputLogFormatVersion()",
+        "innerMethodCalls": [
+          {
+            "declaringType": "org.HdrHistogram.HistogramLogWriter",
+            "methodSignature": "outputComment(java.lang.String)",
+            "methodName": "outputComment",
+            "lineNumber": ["195"],
+            "fullExpression": "outputComment(\"[Histogram log format version \" + HISTOGRAM_LOG_FORMAT_VERSION + \"]\")",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/HistogramLogWriter.java",
+              "declarationStartLine": 180,
+              "declarationEndLine": 182,
+              "methodName": "outputComment",
+              "declarationSignature": "outputComment(java.lang.String)",
+              "innerMethodCalls": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "declaringType": "org.HdrHistogram.HistogramLogWriter",
+      "methodSignature": "outputComment(java.lang.String)",
+      "methodName": "outputComment",
+      "lineNumber": ["117"],
+      "fullExpression": "histogramLogWriter.outputComment(\"[Logged with LatencyLoggingDemo]\")",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/HistogramLogWriter.java",
+        "declarationStartLine": 180,
+        "declarationEndLine": 182,
+        "methodName": "outputComment",
+        "declarationSignature": "outputComment(java.lang.String)",
+        "innerMethodCalls": []
+      }
+    },
+    {
+      "declaringType": "org.HdrHistogram.HistogramLogWriter",
+      "methodSignature": "outputIntervalHistogram(org.HdrHistogram.EncodableHistogram)",
+      "methodName": "outputIntervalHistogram",
+      "lineNumber": ["88"],
+      "fullExpression": "histogramLogWriter.outputIntervalHistogram(intervalHistogram)",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/HistogramLogWriter.java",
+        "declarationStartLine": 149,
+        "declarationEndLine": 153,
+        "methodName": "outputIntervalHistogram",
+        "declarationSignature": "outputIntervalHistogram(org.HdrHistogram.EncodableHistogram)",
+        "innerMethodCalls": [
+          {
+            "declaringType": "org.HdrHistogram.HistogramLogWriter",
+            "methodSignature": "outputIntervalHistogram(double, double, org.HdrHistogram.EncodableHistogram)",
+            "methodName": "outputIntervalHistogram",
+            "lineNumber": ["150"],
+            "fullExpression": "outputIntervalHistogram((histogram.getStartTimeStamp() - baseTime) / 1000.0, (histogram.getEndTimeStamp() - baseTime) / 1000.0, histogram)",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/HistogramLogWriter.java",
+              "declarationStartLine": 127,
+              "declarationEndLine": 131,
+              "methodName": "outputIntervalHistogram",
+              "declarationSignature": "outputIntervalHistogram(double, double, org.HdrHistogram.EncodableHistogram)",
+              "innerMethodCalls": [
+                {
+                  "declaringType": "org.HdrHistogram.HistogramLogWriter",
+                  "methodSignature": "outputIntervalHistogram(double, double, org.HdrHistogram.EncodableHistogram, double)",
+                  "methodName": "outputIntervalHistogram",
+                  "lineNumber": ["130"],
+                  "fullExpression": "outputIntervalHistogram(startTimeStampSec, endTimeStampSec, histogram, 1000000.0)",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/HistogramLogWriter.java",
+                    "declarationStartLine": 96,
+                    "declarationEndLine": 114,
+                    "methodName": "outputIntervalHistogram",
+                    "declarationSignature": "outputIntervalHistogram(double, double, org.HdrHistogram.EncodableHistogram, double)",
+                    "innerMethodCalls": [
+                      {
+                        "declaringType": "org.HdrHistogram.EncodableHistogram",
+                        "methodSignature": "encodeIntoCompressedByteBuffer(java.nio.ByteBuffer, int)",
+                        "methodName": "encodeIntoCompressedByteBuffer",
+                        "lineNumber": ["105"],
+                        "fullExpression": "histogram.encodeIntoCompressedByteBuffer(targetBuffer, Deflater.BEST_COMPRESSION)",
+                        "currentLayer": 3,
+                        "declarationInfo": {
+                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/EncodableHistogram.java",
+                          "declarationStartLine": 23,
+                          "declarationEndLine": 23,
+                          "methodName": "encodeIntoCompressedByteBuffer",
+                          "declarationSignature": "encodeIntoCompressedByteBuffer(java.nio.ByteBuffer, int)",
+                          "innerMethodCalls": []
+                        }
+                      },
+                      {
+                        "declaringType": "org.HdrHistogram.EncodableHistogram",
+                        "methodSignature": "getNeededByteBufferCapacity()",
+                        "methodName": "getNeededByteBufferCapacity",
+                        "lineNumber": ["100", "101"],
+                        "fullExpression": "histogram.getNeededByteBufferCapacity()",
+                        "currentLayer": 3,
+                        "declarationInfo": {
+                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/EncodableHistogram.java",
+                          "declarationStartLine": 21,
+                          "declarationEndLine": 21,
+                          "methodName": "getNeededByteBufferCapacity",
+                          "declarationSignature": "getNeededByteBufferCapacity()",
+                          "innerMethodCalls": []
+                        }
+                      },
+                      {
+                        "declaringType": "org.HdrHistogram.EncodableHistogram",
+                        "methodSignature": "getMaxValueAsDouble()",
+                        "methodName": "getMaxValueAsDouble",
+                        "lineNumber": ["111"],
+                        "fullExpression": "histogram.getMaxValueAsDouble()",
+                        "currentLayer": 3,
+                        "declarationInfo": {
+                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/EncodableHistogram.java",
+                          "declarationStartLine": 33,
+                          "declarationEndLine": 33,
+                          "methodName": "getMaxValueAsDouble",
+                          "declarationSignature": "getMaxValueAsDouble()",
+                          "innerMethodCalls": []
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "declaringType": "org.HdrHistogram.EncodableHistogram",
+            "methodSignature": "getStartTimeStamp()",
+            "methodName": "getStartTimeStamp",
+            "lineNumber": ["150"],
+            "fullExpression": "histogram.getStartTimeStamp()",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/EncodableHistogram.java",
+              "declarationStartLine": 25,
+              "declarationEndLine": 25,
+              "methodName": "getStartTimeStamp",
+              "declarationSignature": "getStartTimeStamp()",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "org.HdrHistogram.EncodableHistogram",
+            "methodSignature": "getEndTimeStamp()",
+            "methodName": "getEndTimeStamp",
+            "lineNumber": ["151"],
+            "fullExpression": "histogram.getEndTimeStamp()",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/EncodableHistogram.java",
+              "declarationStartLine": 29,
+              "declarationEndLine": 29,
+              "methodName": "getEndTimeStamp",
+              "declarationSignature": "getEndTimeStamp()",
+              "innerMethodCalls": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "declaringType": "org.HdrHistogram.HistogramLogWriter",
+      "methodSignature": "outputLegend()",
+      "methodName": "outputLegend",
+      "lineNumber": ["125"],
+      "fullExpression": "histogramLogWriter.outputLegend()",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/HistogramLogWriter.java",
+        "declarationStartLine": 187,
+        "declarationEndLine": 189,
+        "methodName": "outputLegend",
+        "declarationSignature": "outputLegend()",
+        "innerMethodCalls": []
+      }
+    },
+    {
+      "declaringType": "org.HdrHistogram.WriterReaderPhaser",
+      "methodSignature": "writerCriticalSectionEnter()",
+      "methodName": "writerCriticalSectionEnter",
+      "lineNumber": ["200", "403"],
+      "fullExpression": "recordingPhaser.writerCriticalSectionEnter()",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/WriterReaderPhaser.java",
+        "declarationStartLine": 73,
+        "declarationEndLine": 75,
+        "methodName": "writerCriticalSectionEnter",
+        "declarationSignature": "writerCriticalSectionEnter()",
+        "innerMethodCalls": []
+      }
+    },
+    {
+      "declaringType": "org.HdrHistogram.AbstractHistogram",
+      "methodSignature": "recordValue(long)",
+      "methodName": "recordValue",
+      "lineNumber": ["204"],
+      "fullExpression": "activeRecordingHistogram.recordValue(latency)",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+        "declarationStartLine": 345,
+        "declarationEndLine": 347,
+        "methodName": "recordValue",
+        "declarationSignature": "recordValue(long)",
+        "innerMethodCalls": [
+          {
+            "declaringType": "org.HdrHistogram.AbstractHistogram",
+            "methodSignature": "recordSingleValue(long)",
+            "methodName": "recordSingleValue",
+            "lineNumber": ["346"],
+            "fullExpression": "recordSingleValue(value)",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+              "declarationStartLine": 426,
+              "declarationEndLine": 437,
+              "methodName": "recordSingleValue",
+              "declarationSignature": "recordSingleValue(long)",
+              "innerMethodCalls": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "declaringType": "org.HdrHistogram.AbstractHistogram",
+      "methodSignature": "copyInto(org.HdrHistogram.AbstractHistogram)",
+      "methodName": "copyInto",
+      "lineNumber": ["242", "299"],
+      "fullExpression": "inactiveRawDataHistogram.copyInto(targetHistogram)",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+        "declarationStartLine": 537,
+        "declarationEndLine": 542,
+        "methodName": "copyInto",
+        "declarationSignature": "copyInto(org.HdrHistogram.AbstractHistogram)",
+        "innerMethodCalls": [
+          {
+            "declaringType": "org.HdrHistogram.AbstractHistogram",
+            "methodSignature": "reset()",
+            "methodName": "reset",
+            "lineNumber": ["538"],
+            "fullExpression": "targetHistogram.reset()",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+              "declarationStartLine": 486,
+              "declarationEndLine": 491,
+              "methodName": "reset",
+              "declarationSignature": "reset()",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "org.HdrHistogram.AbstractHistogram",
+            "methodSignature": "add(org.HdrHistogram.AbstractHistogram)",
+            "methodName": "add",
+            "lineNumber": ["539"],
+            "fullExpression": "targetHistogram.add(this)",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+              "declarationStartLine": 579,
+              "declarationEndLine": 616,
+              "methodName": "add",
+              "declarationSignature": "add(org.HdrHistogram.AbstractHistogram)",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "org.HdrHistogram.AbstractHistogram",
+            "methodSignature": "setEndTimeStamp(long)",
+            "methodName": "setEndTimeStamp",
+            "lineNumber": ["541"],
+            "fullExpression": "targetHistogram.setEndTimeStamp(this.endTimeStampMsec)",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+              "declarationStartLine": 1094,
+              "declarationEndLine": 1097,
+              "methodName": "setEndTimeStamp",
+              "declarationSignature": "setEndTimeStamp(long)",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "org.HdrHistogram.AbstractHistogram",
+            "methodSignature": "setStartTimeStamp(long)",
+            "methodName": "setStartTimeStamp",
+            "lineNumber": ["540"],
+            "fullExpression": "targetHistogram.setStartTimeStamp(this.startTimeStampMsec)",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+              "declarationStartLine": 1076,
+              "declarationEndLine": 1079,
+              "methodName": "setStartTimeStamp",
+              "declarationSignature": "setStartTimeStamp(long)",
+              "innerMethodCalls": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "declaringType": "org.HdrHistogram.AbstractHistogram",
+      "methodSignature": "reset()",
+      "methodName": "reset",
+      "lineNumber": ["443", "444"],
+      "fullExpression": "inactiveRawDataHistogram.reset()",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+        "declarationStartLine": 486,
+        "declarationEndLine": 491,
+        "methodName": "reset",
+        "declarationSignature": "reset()",
+        "innerMethodCalls": [
+          {
+            "declaringType": "org.HdrHistogram.AbstractHistogram",
+            "methodSignature": "setNormalizingIndexOffset(int)",
+            "methodName": "setNormalizingIndexOffset",
+            "lineNumber": ["490"],
+            "fullExpression": "setNormalizingIndexOffset(0)",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+              "declarationStartLine": 131,
+              "declarationEndLine": 131,
+              "methodName": "setNormalizingIndexOffset",
+              "declarationSignature": "setNormalizingIndexOffset(int)",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "org.HdrHistogram.AbstractHistogram",
+            "methodSignature": "clearCounts()",
+            "methodName": "clearCounts",
+            "lineNumber": ["487"],
+            "fullExpression": "clearCounts()",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+              "declarationStartLine": 141,
+              "declarationEndLine": 141,
+              "methodName": "clearCounts",
+              "declarationSignature": "clearCounts()",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "org.HdrHistogram.AbstractHistogram",
+            "methodSignature": "resetMaxValue(long)",
+            "methodName": "resetMaxValue",
+            "lineNumber": ["488"],
+            "fullExpression": "resetMaxValue(0)",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+              "declarationStartLine": 164,
+              "declarationEndLine": 166,
+              "methodName": "resetMaxValue",
+              "declarationSignature": "resetMaxValue(long)",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "org.HdrHistogram.AbstractHistogram",
+            "methodSignature": "resetMinNonZeroValue(long)",
+            "methodName": "resetMinNonZeroValue",
+            "lineNumber": ["489"],
+            "fullExpression": "resetMinNonZeroValue(Long.MAX_VALUE)",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+              "declarationStartLine": 179,
+              "declarationEndLine": 181,
+              "methodName": "resetMinNonZeroValue",
+              "declarationSignature": "resetMinNonZeroValue(long)",
+              "innerMethodCalls": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "declaringType": "org.HdrHistogram.Histogram",
+      "methodSignature": "getTotalCount()",
+      "methodName": "getTotalCount",
+      "lineNumber": [
+        "90",
+        "92",
+        "94",
+        "109",
+        "111",
+        "113",
+        "125",
+        "127",
+        "129",
+        "145",
+        "147",
+        "149",
+        "165",
+        "167",
+        "169",
+        "185",
+        "187",
+        "189",
+        "212",
+        "214",
+        "230",
+        "232",
+        "234"
+      ],
+      "fullExpression": "accumulatedHistogram.getTotalCount()",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/Histogram.java",
+        "declarationStartLine": 115,
+        "declarationEndLine": 118,
+        "methodName": "getTotalCount",
+        "declarationSignature": "getTotalCount()",
+        "innerMethodCalls": []
+      }
+    },
+    {
+      "declaringType": "org.HdrHistogram.AbstractHistogram",
+      "methodSignature": "setStartTimeStamp(long)",
+      "methodName": "setStartTimeStamp",
+      "lineNumber": ["84"],
+      "fullExpression": "intervalHistogram.setStartTimeStamp(intervalHistogram.getStartTimeStamp() - reportingStartTime)",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+        "declarationStartLine": 1076,
+        "declarationEndLine": 1079,
+        "methodName": "setStartTimeStamp",
+        "declarationSignature": "setStartTimeStamp(long)",
+        "innerMethodCalls": []
+      }
+    },
+    {
+      "declaringType": "org.HdrHistogram.AbstractHistogram",
+      "methodSignature": "outputPercentileDistribution(java.io.PrintStream, java.lang.Double)",
+      "methodName": "outputPercentileDistribution",
+      "lineNumber": ["69", "71"],
+      "fullExpression": "intervalHistogram.outputPercentileDistribution(System.out, 1000000.0)",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+        "declarationStartLine": 1476,
+        "declarationEndLine": 1479,
+        "methodName": "outputPercentileDistribution",
+        "declarationSignature": "outputPercentileDistribution(java.io.PrintStream, java.lang.Double)",
+        "innerMethodCalls": [
+          {
+            "declaringType": "org.HdrHistogram.AbstractHistogram",
+            "methodSignature": "outputPercentileDistribution(java.io.PrintStream, int, java.lang.Double)",
+            "methodName": "outputPercentileDistribution",
+            "lineNumber": ["1478"],
+            "fullExpression": "outputPercentileDistribution(printStream, 5, outputValueUnitScalingRatio)",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hdrhistogram.HdrHistogram/org/HdrHistogram/AbstractHistogram.java",
+              "declarationStartLine": 1501,
+              "declarationEndLine": 1505,
+              "methodName": "outputPercentileDistribution",
+              "declarationSignature": "outputPercentileDistribution(java.io.PrintStream, int, java.lang.Double)",
+              "innerMethodCalls": []
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

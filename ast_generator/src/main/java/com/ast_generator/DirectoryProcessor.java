@@ -51,6 +51,7 @@ public class DirectoryProcessor {
     private static boolean separateFiles;
     CombinedTypeSolver combinedSolver;
     MethodCallReporter methodReporter;
+    Map<String, String> moduleList;
 
     public DirectoryProcessor() {
     }
@@ -66,14 +67,23 @@ public class DirectoryProcessor {
         this.separateFiles = separateFiles;
     }
 
+    /**
+     * 
+     * @param directoryPath  the path to the directory to process
+     * @param astPath        the path to the directory to save the AST files
+     * @param dependencyMap  the map of dependencies to resolve
+     * @param importManager  the ImportManager to store the imports
+     * @param methodReporter the MethodCallReporter to store the method calls
+     * @param moduleList     the list of modules to process, this can be null
+     */
     public DirectoryProcessor(String directoryPath, Path astPath, Map<String, Dependency> dependencyMap,
-            ImportManager importManager, MethodCallReporter methodReporter) {
+            ImportManager importManager, MethodCallReporter methodReporter, Map<String, String> moduleList) {
         this.directoryPath = directoryPath;
         DirectoryProcessor.astPath = astPath;
         DirectoryProcessor.dependencyMap = dependencyMap;
         this.importManager = importManager;
         this.methodReporter = methodReporter;
-
+        this.moduleList = moduleList;
         initCombinedSolver();
     }
 
@@ -83,30 +93,70 @@ public class DirectoryProcessor {
 
         // Loop through each dependency and add it to the CombinedTypeSolver
         for (String dependencyPath : dependencyMap.keySet()) {
-
             Dependency dependency = dependencyMap.get(dependencyPath);
-            try {
-                String jarPathString = dependency.getJarPath(); // Assumes this is the path to the JAR file
-                System.out.println("Adding dependency: " + jarPathString);
-                // Add JarTypeSolver for each JAR file (external dependency)
-                combinedSolver.add(new JarTypeSolver(jarPathString));
-            } catch (Exception e) {
-                System.out.println("Failed to add dependency: " + dependencyPath);
-                e.printStackTrace();
+            Path jarPath = Paths.get(dependency.getJarPath());
+
+            if (Files.exists(jarPath)) {
+                try {
+                    System.out.println("Adding dependency: " + jarPath);
+                    // Add JarTypeSolver for each JAR file (external dependency)
+                    combinedSolver.add(new JarTypeSolver(jarPath.toString()));
+                } catch (Exception e) {
+                    System.out.println("Failed to add dependency: " + dependencyPath);
+                    e.printStackTrace();
+                }
+            } else {
+                System.out.println("Jar file does not exist, skipping: " + jarPath);
             }
         }
 
         // Add the project's source code to the CombinedTypeSolver
-        try {
-            combinedSolver.add(new JavaParserTypeSolver(new File(directoryPath + "/src/main/java")));
-            System.out.println("Added project source directory: " + directoryPath);
-        } catch (Exception e) {
-            System.out.println("Failed to add project source directory: " + directoryPath);
-            e.printStackTrace();
+        Path mainSrcPath = Paths.get(directoryPath, "src", "main", "java");
+        if (Files.exists(mainSrcPath) && Files.isDirectory(mainSrcPath)) {
+            try {
+                combinedSolver.add(new JavaParserTypeSolver(mainSrcPath.toFile()));
+                System.out.println("Added project source directory: " + mainSrcPath);
+            } catch (Exception e) {
+                System.out.println("Failed to add project source directory: " + mainSrcPath);
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Main project does not have a 'main/src/java' directory. Skipping: " + mainSrcPath);
+        }
+
+
+        if (moduleList.size() > 0) {
+            for (String module : moduleList.keySet()) {
+                String pomPath = moduleList.get(module);
+                // Assuming modulePath points to the pom.xml, we get the module's directory by
+                // navigating up.
+                String moduleDirPath = new File(pomPath).getParent();
+                try {
+                    String sourceDirPath = moduleDirPath + "/src/main/java";
+                    File sourceDir = new File(sourceDirPath);
+                    // Check if the source directory actually exists before adding it to the solver
+                    if (sourceDir.exists() && sourceDir.isDirectory()) {
+                        combinedSolver.add(new JavaParserTypeSolver(sourceDir));
+                        System.out.println("Added module source directory: " + sourceDirPath);
+                    } else {
+                        System.out.println("Source directory does not exist or is not a directory: " + sourceDirPath);
+                    }
+                } catch (Exception e) {
+                    System.out.println("Failed to add module source directory: " + moduleDirPath);
+                    e.printStackTrace();
+                }
+            }
+        }  else {
+            System.out.println("No modules to process, skipping");
         }
 
         // Configure the JavaSymbolSolver with the CombinedTypeSolver
         JavaSymbolSolver symbolSolver = new JavaSymbolSolver(combinedSolver);
+
+        // configuration.setLanguageLevel(ParserConfiguration.LanguageLevel.JAVA_8);
+        ParserConfiguration.LanguageLevel languageLevel = Utils.getLanguageLevelFromVersion(Settings.JAVA_VERSION);
+
+        StaticJavaParser.getParserConfiguration().setLanguageLevel(languageLevel);
         StaticJavaParser.getParserConfiguration().setSymbolResolver(symbolSolver);
     }
 
@@ -128,6 +178,7 @@ public class DirectoryProcessor {
     }
 
     private void processDirectory(Path directory) throws IOException {
+
         Files.walkFileTree(directory, new SimpleFileVisitor<Path>() {
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
@@ -150,7 +201,11 @@ public class DirectoryProcessor {
         try {
             // ! generate AST object
             CompilationUnit cu = StaticJavaParser.parse(path);
-
+            ParserConfiguration.LanguageLevel languageLevel = Utils.getLanguageLevelFromVersion(Settings.JAVA_VERSION);
+            // System.out.println("detected java version: " + Settings.JAVA_VERSION);
+            // System.out.println("constant located java level: " + languageLevel);
+            // System.out.println("using java level: " +
+            // StaticJavaParser.getParserConfiguration().getLanguageLevel());
             if (dependencyMap != null) {
                 analyzeSingleASTObject(cu, path);
             }
@@ -165,16 +220,18 @@ public class DirectoryProcessor {
             System.out.println("Error parsing file: " + path);
             e.printStackTrace();
         } catch (ParseProblemException e) {
-            System.out.print("Parse problem in file: " + sourceFilePath);
-            e.printStackTrace();
+            System.out.print("Possible template file, Parse problem in file: " + sourceFilePath);
+            // e.printStackTrace();
             // System.out.println(" Skipped");
         }
+
     }
 
     /*
      * this method analyze single AST object
      */
     private void analyzeSingleASTObject(CompilationUnit cu, Path path) {
+        System.out.println("Analyzing AST object: " + path);
         if (importManager != null) {
             analyzeASTObjectImport(cu, path);
         } else {
@@ -223,9 +280,7 @@ public class DirectoryProcessor {
                 int lineNumber = methodCall.getBegin().map(pos -> pos.line).orElse(-1);
                 String fullExpression = methodCall.toString();
                 String functionCallType = resolvedMethod.declaringType().getQualifiedName();
-                // System.out.println("Method call: " + methodCall.getName());
-                // System.out.println("Declaring type: " +
-                // resolvedMethod.declaringType().getQualifiedName());
+                
                 MethodSignatureKey key = new MethodSignatureKey(functionCallType, currentSignature);
                 if (!functionCallType.startsWith("java.") && !functionCallType.startsWith("javax.")) {
                     MethodCallEntry existingEntry = uniqueMethodCalls.get(key);
@@ -254,45 +309,52 @@ public class DirectoryProcessor {
                     e.printStackTrace();
                 }
 
+            } catch (StackOverflowError e) {
+                System.err.println("Stack overflow error caught. Consider reviewing recursive methods.");
+                // Log the error or take corrective action here.
+                // Be cautious about the JVM's state.
             }
         });
 
         methodReporter.addEntries(path.toString(), new ArrayList<>(uniqueMethodCalls.values()));
     }
 
-    private static String convertASTObjecttoJson(CompilationUnit cu, Path path) throws IOException {
-        StringWriter stringWriter = new StringWriter();
-        try (JsonGenerator jsonGenerator = Json.createGenerator(stringWriter)) {
-            JavaParserJsonSerializer serializer = new JavaParserJsonSerializer();
-            serializer.serialize(cu, jsonGenerator);
-        }
+    // private static String convertASTObjecttoJson(CompilationUnit cu, Path path)
+    // throws IOException {
+    // StringWriter stringWriter = new StringWriter();
+    // try (JsonGenerator jsonGenerator = Json.createGenerator(stringWriter)) {
+    // JavaParserJsonSerializer serializer = new JavaParserJsonSerializer();
+    // serializer.serialize(cu, jsonGenerator);
+    // }
 
-        String astJson = stringWriter.toString();
-        return astJson;
-    }
+    // String astJson = stringWriter.toString();
+    // return astJson;
+    // }
 
-    private static void saveASTJsonToFile(String sourceFilePath, String astJson)
-            throws IOException {
+    // private static void saveASTJsonToFile(String sourceFilePath, String astJson)
+    // throws IOException {
 
-        // if (separateFiles) {
-        // Replace .java extension with .json
-        Path dirPath = Path.of("CovSBOM_output/main");
-        if (!Files.exists(dirPath)) {
-            Files.createDirectories(dirPath);
-        }
-        Path filePath = dirPath.resolve(sourceFilePath.substring(0, sourceFilePath.length() - 5) + ".json");
-        if (!Files.exists(filePath.getParent())) {
-            Files.createDirectories(filePath.getParent());
-        }
+    // // if (separateFiles) {
+    // // Replace .java extension with .json
+    // Path dirPath = Path.of("CovSBOM_output/main");
+    // if (!Files.exists(dirPath)) {
+    // Files.createDirectories(dirPath);
+    // }
+    // Path filePath = dirPath.resolve(sourceFilePath.substring(0,
+    // sourceFilePath.length() - 5) + ".json");
+    // if (!Files.exists(filePath.getParent())) {
+    // Files.createDirectories(filePath.getParent());
+    // }
 
-        if (Files.exists(filePath)) {
-            Files.delete(filePath);
-        } else {
-            Files.createFile(filePath);
-        }
+    // if (Files.exists(filePath)) {
+    // Files.delete(filePath);
+    // } else {
+    // Files.createFile(filePath);
+    // }
 
-        // Convert the new JSON object to string and write to the file
-        // System.out.println("AST: " + astJson.length());
-        Files.writeString(filePath, astJson.toString(), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
-    }
+    // // Convert the new JSON object to string and write to the file
+    // // System.out.println("AST: " + astJson.length());
+    // Files.writeString(filePath, astJson.toString(), StandardOpenOption.CREATE,
+    // StandardOpenOption.WRITE);
+    // }
 }

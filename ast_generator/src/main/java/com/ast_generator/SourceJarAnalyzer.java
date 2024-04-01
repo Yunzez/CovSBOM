@@ -64,7 +64,7 @@ public class SourceJarAnalyzer {
         // Decompress the JAR file
         // decompressJar();
         decompressedPath = this.dependency.getSourceDecompressedPath();
-        System.out.println("Decompressed path: " + decompressedPath);
+        System.out.println("Analyze decompressed path of used dependency: " + decompressedPath);
         // Process the decompressed directory
         processDecompressedDirectory();
         System.out.println("Total third party method calls: " + totalCount + ", Success: " + successCount + ", Fail: "
@@ -251,7 +251,8 @@ public class SourceJarAnalyzer {
     /**
      * Dig into the internal method calls for recursive searching
      */
-    private void digFunctionCallEntries(MethodDeclarationInfo currentDeclarationInfo, int depth, Set<MethodSignatureKey> currentClassSignatureContext) {
+    private void digFunctionCallEntries(MethodDeclarationInfo currentDeclarationInfo, int depth,
+            Set<MethodSignatureKey> currentClassSignatureContext) {
 
         Boolean hasRelatedCall = false;
         if (depth > MAX_DIG_DEPTH && RESTRICT_DEPTH) {
@@ -289,7 +290,7 @@ public class SourceJarAnalyzer {
             CompilationUnit cu = parseResult.getResult().get();
 
             String packageLikePath = getPackageLikePathFromCU(cu);
-            
+
             // int finalDepth = depth;
             List<MethodCallEntry> lookForCalls = new ArrayList<>();
             targetPackages.stream().forEach(targetPackage -> {
@@ -299,12 +300,14 @@ public class SourceJarAnalyzer {
                     // System.out.println("---------");
                 }
             });
-            
+
             List<TypeDeclaration<?>> types = cu.getTypes();
 
             if (types.size() > 1) {
-                System.out.println("Warning: More than one type in the file: " + packageLikePath + " with types: " + types.toString());
-                digFunctionCallEntriesHelper(cu, lookForCalls, depth, currentClassSignatureContext);
+                // System.out.println(
+                        // "Warning: More than one type in the file: " + packageLikePath + " with types: " + types.size());
+                // digFunctionCallEntriesHelper(cu, lookForCalls, depth,
+                // currentClassSignatureContext);
                 for (TypeDeclaration<?> typeDeclaration : types) {
                     CompilationUnit newCompilationUnit = new CompilationUnit();
                     newCompilationUnit.addType(typeDeclaration.clone());
@@ -321,12 +324,13 @@ public class SourceJarAnalyzer {
      * Helper function to dig into the internal method calls
      * it loops thru the method declarations to find match
      */
-    private void digFunctionCallEntriesHelper(CompilationUnit cu, List<MethodCallEntry> lookForCalls, int depth, Set<MethodSignatureKey> currentClassSignatureContext) {
+    private void digFunctionCallEntriesHelper(CompilationUnit cu, List<MethodCallEntry> lookForCalls, int depth,
+            Set<MethodSignatureKey> currentClassSignatureContext) {
 
         if (lookForCalls.size() == 0) {
             return;
         }
-        List<TypeDeclaration<?>> types = cu.getTypes();
+
         if (depth > 50 && depth < 55) {
             System.out.println("look for calls: ");
             System.out.println(lookForCalls.toString());
@@ -360,7 +364,7 @@ public class SourceJarAnalyzer {
             for (MethodCallEntry lookForCall : lookForCalls) {
                 String methodKey = lookForCall.getDeclaringType() + "." + lookForCall.getMethodName()
                         + lookForCall.getMethodSignature();
-             
+
                 if (lookForCall.getMethodName().equals(name)
                         && lookForCall.getMethodSignature().equals(currentDeclarationSignature)) {
                     if (depth > 400 && depth < 405) {
@@ -382,7 +386,7 @@ public class SourceJarAnalyzer {
                         if (!currentClassSignatureContext.contains(callEntry.getMethodSignatureKey())) {
                             filteredCalls.add(callEntry);
                             currentClassSignatureContext.add(callEntry.getMethodSignatureKey());
-                        } 
+                        }
                     }
                     currentDeclarationInfo.addInnerMethodCalls(filteredCalls);
 
@@ -417,9 +421,12 @@ public class SourceJarAnalyzer {
         projectRoot.getSourceRoots()
                 .forEach(sourceRoot -> combinedSolver.add(new JavaParserTypeSolver(sourceRoot.getRoot())));
 
+        
+        // configuration.setLanguageLevel(ParserConfiguration.LanguageLevel.JAVA_8);
+        ParserConfiguration.LanguageLevel languageLevel = Utils.getLanguageLevelFromVersion(Settings.JAVA_VERSION);
+
         ParserConfiguration configuration = new ParserConfiguration()
-                .setSymbolResolver(new JavaSymbolSolver(combinedSolver));
-        configuration.setLanguageLevel(ParserConfiguration.LanguageLevel.JAVA_8);
+                .setSymbolResolver(new JavaSymbolSolver(combinedSolver)).setLanguageLevel(languageLevel);
 
         StaticJavaParser.setConfiguration(configuration);
 

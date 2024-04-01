@@ -188,7 +188,7 @@ public class MethodCallReporter {
                   
                     if (entry1.getValue().contains(entry.getDeclaringType())) {
                         matchedDependency = entry1.getKey();
-                        System.out.println("typetoJarReference.getValue(): " + entry1.getValue() + " allMethod.getDeclaringType(): " + entry.getDeclaringType());
+                        // System.out.println("typetoJarReference.getValue(): " + entry1.getValue() + " allMethod.getDeclaringType(): " + entry.getDeclaringType());
                         break;
                     }
                 }
@@ -200,6 +200,7 @@ public class MethodCallReporter {
                 }
             }
             // Generate JSON
+            System.out.println("Write to " + toFilePath);
             mapper.writeValue(new File(toFilePath), dependencyToMethodCallEntries);
             System.out.println("detected typeToJarReference, generate file based on dependencies");
         }

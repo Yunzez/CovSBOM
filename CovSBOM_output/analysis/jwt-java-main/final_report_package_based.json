@@ -1,0 +1,875 @@
+{
+  "Dependency: groupId=org.junit.jupiter, artifactId=junit-jupiter-api, version=5.7.0, jarPath=/Users/yunzezhao/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.7.0/junit-jupiter-api-5.7.0.jar": [
+    {
+      "declaringType": "org.junit.jupiter.api.Assertions",
+      "methodSignature": "assertThrows(java.lang.Class<T>, org.junit.jupiter.api.function.Executable)",
+      "methodName": "assertThrows",
+      "lineNumber": [
+        "164",
+        "171",
+        "178",
+        "185",
+        "192",
+        "199",
+        "204",
+        "264",
+        "271",
+        "278",
+        "285"
+      ],
+      "fullExpression": "assertThrows(IllegalArgumentException.class, () -> builder.withHeader(null))",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.junit.jupiter.junit-jupiter-api/org/junit/jupiter/api/Assertions.java",
+        "declarationStartLine": 3006,
+        "declarationEndLine": 3008,
+        "methodName": "assertThrows",
+        "declarationSignature": "assertThrows(java.lang.Class<T>, org.junit.jupiter.api.function.Executable)",
+        "innerMethodCalls": [
+          {
+            "declaringType": "org.junit.jupiter.api.AssertThrows",
+            "methodSignature": "assertThrows(java.lang.Class<T>, org.junit.jupiter.api.function.Executable)",
+            "methodName": "assertThrows",
+            "lineNumber": ["3007"],
+            "fullExpression": "AssertThrows.assertThrows(expectedType, executable)",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.junit.jupiter.junit-jupiter-api/org/junit/jupiter/api/AssertThrows.java",
+              "declarationStartLine": 36,
+              "declarationEndLine": 38,
+              "methodName": "assertThrows",
+              "declarationSignature": "assertThrows(java.lang.Class<T>, org.junit.jupiter.api.function.Executable)",
+              "innerMethodCalls": [
+                {
+                  "declaringType": "org.junit.jupiter.api.AssertThrows",
+                  "methodSignature": "assertThrows(java.lang.Class<T>, org.junit.jupiter.api.function.Executable, java.lang.Object)",
+                  "methodName": "assertThrows",
+                  "lineNumber": ["37"],
+                  "fullExpression": "assertThrows(expectedType, executable, (Object) null)",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.junit.jupiter.junit-jupiter-api/org/junit/jupiter/api/AssertThrows.java",
+                    "declarationStartLine": 50,
+                    "declarationEndLine": 72,
+                    "methodName": "assertThrows",
+                    "declarationSignature": "assertThrows(java.lang.Class<T>, org.junit.jupiter.api.function.Executable, java.lang.Object)",
+                    "innerMethodCalls": [
+                      {
+                        "declaringType": "org.junit.jupiter.api.function.Executable",
+                        "methodSignature": "execute()",
+                        "methodName": "execute",
+                        "lineNumber": ["55"],
+                        "fullExpression": "executable.execute()",
+                        "currentLayer": 3,
+                        "declarationInfo": {
+                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.junit.jupiter.junit-jupiter-api/org/junit/jupiter/api/function/Executable.java",
+                          "declarationStartLine": 47,
+                          "declarationEndLine": 47,
+                          "methodName": "execute",
+                          "declarationSignature": "execute()",
+                          "innerMethodCalls": []
+                        }
+                      },
+                      {
+                        "declaringType": "org.junit.jupiter.api.AssertionUtils",
+                        "methodSignature": "buildPrefix(java.lang.String)",
+                        "methodName": "buildPrefix",
+                        "lineNumber": ["63", "69"],
+                        "fullExpression": "buildPrefix(nullSafeGet(messageOrSupplier))",
+                        "currentLayer": 3,
+                        "declarationInfo": {
+                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.junit.jupiter.junit-jupiter-api/org/junit/jupiter/api/AssertionUtils.java",
+                          "declarationStartLine": 96,
+                          "declarationEndLine": 98,
+                          "methodName": "buildPrefix",
+                          "declarationSignature": "buildPrefix(java.lang.String)",
+                          "innerMethodCalls": []
+                        }
+                      },
+                      {
+                        "declaringType": "org.junit.jupiter.api.AssertionUtils",
+                        "methodSignature": "nullSafeGet(java.lang.Object)",
+                        "methodName": "nullSafeGet",
+                        "lineNumber": ["63", "69"],
+                        "fullExpression": "nullSafeGet(messageOrSupplier)",
+                        "currentLayer": 3,
+                        "declarationInfo": {
+                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.junit.jupiter.junit-jupiter-api/org/junit/jupiter/api/AssertionUtils.java",
+                          "declarationStartLine": 83,
+                          "declarationEndLine": 94,
+                          "methodName": "nullSafeGet",
+                          "declarationSignature": "nullSafeGet(java.lang.Object)",
+                          "innerMethodCalls": []
+                        }
+                      },
+                      {
+                        "declaringType": "org.junit.jupiter.api.AssertionUtils",
+                        "methodSignature": "getCanonicalName(java.lang.Class<?>)",
+                        "methodName": "getCanonicalName",
+                        "lineNumber": ["70"],
+                        "fullExpression": "getCanonicalName(expectedType)",
+                        "currentLayer": 3,
+                        "declarationInfo": {
+                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.junit.jupiter.junit-jupiter-api/org/junit/jupiter/api/AssertionUtils.java",
+                          "declarationStartLine": 100,
+                          "declarationEndLine": 109,
+                          "methodName": "getCanonicalName",
+                          "declarationSignature": "getCanonicalName(java.lang.Class<?>)",
+                          "innerMethodCalls": []
+                        }
+                      },
+                      {
+                        "declaringType": "org.junit.jupiter.api.AssertionUtils",
+                        "methodSignature": "format(java.lang.Object, java.lang.Object, java.lang.String)",
+                        "methodName": "format",
+                        "lineNumber": ["64"],
+                        "fullExpression": "format(expectedType, actualException.getClass(), \"Unexpected exception type thrown\")",
+                        "currentLayer": 3,
+                        "declarationInfo": {
+                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.junit.jupiter.junit-jupiter-api/org/junit/jupiter/api/AssertionUtils.java",
+                          "declarationStartLine": 111,
+                          "declarationEndLine": 113,
+                          "methodName": "format",
+                          "declarationSignature": "format(java.lang.Object, java.lang.Object, java.lang.String)",
+                          "innerMethodCalls": [
+                            {
+                              "declaringType": "org.junit.jupiter.api.AssertionUtils",
+                              "methodSignature": "formatValues(java.lang.Object, java.lang.Object)",
+                              "methodName": "formatValues",
+                              "lineNumber": ["112"],
+                              "fullExpression": "formatValues(expected, actual)",
+                              "currentLayer": 4,
+                              "declarationInfo": {
+                                "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.junit.jupiter.junit-jupiter-api/org/junit/jupiter/api/AssertionUtils.java",
+                                "declarationStartLine": 115,
+                                "declarationEndLine": 123,
+                                "methodName": "formatValues",
+                                "declarationSignature": "formatValues(java.lang.Object, java.lang.Object)",
+                                "innerMethodCalls": [
+                                  {
+                                    "declaringType": "org.junit.jupiter.api.AssertionUtils",
+                                    "methodSignature": "toString(java.lang.Object)",
+                                    "methodName": "toString",
+                                    "lineNumber": ["116", "117"],
+                                    "fullExpression": "toString(expected)",
+                                    "currentLayer": 5,
+                                    "declarationInfo": {
+                                      "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.junit.jupiter.junit-jupiter-api/org/junit/jupiter/api/AssertionUtils.java",
+                                      "declarationStartLine": 131,
+                                      "declarationEndLine": 136,
+                                      "methodName": "toString",
+                                      "declarationSignature": "toString(java.lang.Object)",
+                                      "innerMethodCalls": []
+                                    }
+                                  },
+                                  {
+                                    "declaringType": "org.junit.jupiter.api.AssertionUtils",
+                                    "methodSignature": "formatClassAndValue(java.lang.Object, java.lang.String)",
+                                    "methodName": "formatClassAndValue",
+                                    "lineNumber": ["119", "120"],
+                                    "fullExpression": "formatClassAndValue(expected, expectedString)",
+                                    "currentLayer": 5,
+                                    "declarationInfo": {
+                                      "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.junit.jupiter.junit-jupiter-api/org/junit/jupiter/api/AssertionUtils.java",
+                                      "declarationStartLine": 125,
+                                      "declarationEndLine": 129,
+                                      "methodName": "formatClassAndValue",
+                                      "declarationSignature": "formatClassAndValue(java.lang.Object, java.lang.String)",
+                                      "innerMethodCalls": [
+                                        {
+                                          "declaringType": "org.junit.jupiter.api.AssertionUtils",
+                                          "methodSignature": "toHash(java.lang.Object)",
+                                          "methodName": "toHash",
+                                          "lineNumber": ["126"],
+                                          "fullExpression": "toHash(value)",
+                                          "currentLayer": 6,
+                                          "declarationInfo": {
+                                            "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.junit.jupiter.junit-jupiter-api/org/junit/jupiter/api/AssertionUtils.java",
+                                            "declarationStartLine": 138,
+                                            "declarationEndLine": 140,
+                                            "methodName": "toHash",
+                                            "declarationSignature": "toHash(java.lang.Object)",
+                                            "innerMethodCalls": []
+                                          }
+                                        },
+                                        {
+                                          "declaringType": "org.junit.jupiter.api.AssertionUtils",
+                                          "methodSignature": "getClassName(java.lang.Object)",
+                                          "methodName": "getClassName",
+                                          "lineNumber": ["126"],
+                                          "fullExpression": "getClassName(value)",
+                                          "currentLayer": 6,
+                                          "declarationInfo": {
+                                            "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.junit.jupiter.junit-jupiter-api/org/junit/jupiter/api/AssertionUtils.java",
+                                            "declarationStartLine": 142,
+                                            "declarationEndLine": 145,
+                                            "methodName": "getClassName",
+                                            "declarationSignature": "getClassName(java.lang.Object)",
+                                            "innerMethodCalls": []
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "declaringType": "org.junit.jupiter.api.Assertions",
+      "methodSignature": "assertDoesNotThrow(org.junit.jupiter.api.function.Executable)",
+      "methodName": "assertDoesNotThrow",
+      "lineNumber": ["28", "53", "67", "81"],
+      "fullExpression": "assertDoesNotThrow(() -> {\n    String publicKeyContent = \"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAm5PpsWJJvL3W+N0wiLniRbbrKx5qhxob/1hEfEzCOQLwl8pbO5UiuTE7nhdvHyCmQhAexpKIL0PRpKwHEWNN/KOxAZ5xdSIZU6W44Inq/hkK5ugbCViV4ONnpz+I1XoDNAi4ITJVpIPyqu2r4C4BTAZnozca8fe7p6VYzECnP3OZT+ELota4TRy3G5W6WIFayftGuvx0dncJOgy6SUaNuUBs2t9KXFHmxfYCz78WLq3QWDz21f1siqib+qHAdH5aNlPAkpqyP2hPLoc8VHKKs+Eb0QlkpW9ZABoybrHCWnPI1C4mdLMQ4MWqEgKKWvqrjDZDBfRfk6U/VUDuneQ9ZwIDAQAB\";\n    String privateKeyContent = \"MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCbk+mxYkm8vdb43TCIueJFtusrHmqHGhv/WER8TMI5AvCXyls7lSK5MTueF28fIKZCEB7GkogvQ9GkrAcRY038o7EBnnF1IhlTpbjgier+GQrm6BsJWJXg42enP4jVegM0CLghMlWkg/Kq7avgLgFMBmejNxrx97unpVjMQKc/c5lP4Qui1rhNHLcblbpYgVrJ+0a6/HR2dwk6DLpJRo25QGza30pcUebF9gLPvxYurdBYPPbV/WyKqJv6ocB0flo2U8CSmrI/aE8uhzxUcoqz4RvRCWSlb1kAGjJuscJac8jULiZ0sxDgxaoSAopa+quMNkMF9F+TpT9VQO6d5D1nAgMBAAECggEATT58SiktyTtMb9WKkmgQc2KlkowQgjGxcu9FWZ3W1O2jvQmokIW0btSF8DFcZ80THzvXu+nnGeiHP0Z2X+i5QNWZPd+IH4slngVrLHjtpumSIyFcwyArkjP2M/D0pGFnE7+8hCb0pLEqnDlTHARben63mC70/uxsTIlo9EipgXPCOBDAd/QsE3dhlO4SbEmCJMQR6eV1B8an+40ZbhQCG8IO832jDiDYabS5tyOPgU2ahG5UhzqsfPFQBlgJ2ePPyXXYaQlS1Gj8OD3ISJbCSxiitejbKjSaGsjoBv+81lkd3vqOYSZQDMf02rSRwp57mFfZ3G7Yk9lS+Q8abmUsyQKBgQDUtzLp3O+1363sT8lAjO9zWEXAqWT38mNaBqjR5c3Kv18xzm9LjTd9GfEgYgFmN6fkr1I85ZI35wR6pKjjJwUVci6615N2ghhTrcw9f8/zD/IejVPmYYIUdfRQ9FTlvM/RhDRCiyd1k7xQ/uGfy+Swu4bSzypzHUYeVQ6Xv5c/YwKBgQC7PEjjkzcLjn0EJcgnW11Md+Yrvg9NBKJO2JdMXfwRhN2NDAobbshJqaZeffgrTfU8KuGLmGNPE7UFnxOGnIVdDQwvjhde4LWuL/R6n10zu3tCmqvxBx7yzSO1+Ldi5bT9VI04x/gnGPQn489p0GBNWrN3AmC+RFXOridoVItTLQKBgBu3HvgfpFADK+sdXjB97HkP6E65A4HW4CELuxVWJuEi3ClmJ1QluzQenC9G9b22xLZkLYfntYx5GjlMmQC3xc7MiNApZHpNaxQEEhd1PsgBrN9UNLlQvR0jXUjq/ODOIBnBavm8ndCRBjlbbFRgwZRRariu624CQ2+ST4twGCnXAoGBAKvajGhdgiOYWEULTKhbIsqCLoCtxSuC+lr2UACnLysBUb0ZdNlzGGEMVwjaBIPy3QmprjVL3LMDOp77QJfIaFxdEnc/q1HJXNiRaYt3ZLuL9HnQr8reJ1jiU0m+DMy4XCQ9jBW27Z0tOUS3w3Oy8AFwI9MzGoro+/1lOgR3vR3NAoGAdmP0aPZfFHM6mdtkKVmNjPM8BTYhok+pEBzntNosUGqIT2u+TPFDV8aTYEti6mIrMVTO1mHRoqi9VL0WDHRT3IqTn3JE+KR2fUlMSE/PqW8MJ+70EhelgJj+bL6iyecnPqdquES57DYoFkdvqtz0qNL2gdzK5ay55YWgYbk0szw=\";\n    KeyFactory kf = KeyFactory.getInstance(\"RSA\");\n    PKCS8EncodedKeySpec keySpecPKCS8 = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privateKeyContent));\n    PrivateKey privateKey = kf.generatePrivate(keySpecPKCS8);\n    X509EncodedKeySpec keySpecX509 = new X509EncodedKeySpec(Base64.getDecoder().decode(publicKeyContent));\n    RSAPublicKey publicKey = (RSAPublicKey) kf.generatePublic(keySpecX509);\n    KeyPair keyPair = new KeyPair(publicKey, privateKey);\n    algorithm = new RSAAlgorithm(\"RS512\", \"SHA512withRSA\", keyPair);\n})",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.junit.jupiter.junit-jupiter-api/org/junit/jupiter/api/Assertions.java",
+        "declarationStartLine": 3058,
+        "declarationEndLine": 3061,
+        "methodName": "assertDoesNotThrow",
+        "declarationSignature": "assertDoesNotThrow(org.junit.jupiter.api.function.Executable)",
+        "innerMethodCalls": [
+          {
+            "declaringType": "org.junit.jupiter.api.AssertDoesNotThrow",
+            "methodSignature": "assertDoesNotThrow(org.junit.jupiter.api.function.Executable)",
+            "methodName": "assertDoesNotThrow",
+            "lineNumber": ["3060"],
+            "fullExpression": "AssertDoesNotThrow.assertDoesNotThrow(executable)",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.junit.jupiter.junit-jupiter-api/org/junit/jupiter/api/AssertDoesNotThrow.java",
+              "declarationStartLine": 36,
+              "declarationEndLine": 38,
+              "methodName": "assertDoesNotThrow",
+              "declarationSignature": "assertDoesNotThrow(org.junit.jupiter.api.function.Executable)",
+              "innerMethodCalls": [
+                {
+                  "declaringType": "org.junit.jupiter.api.AssertDoesNotThrow",
+                  "methodSignature": "assertDoesNotThrow(org.junit.jupiter.api.function.Executable, java.lang.Object)",
+                  "methodName": "assertDoesNotThrow",
+                  "lineNumber": ["37"],
+                  "fullExpression": "assertDoesNotThrow(executable, (Object) null)",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.junit.jupiter.junit-jupiter-api/org/junit/jupiter/api/AssertDoesNotThrow.java",
+                    "declarationStartLine": 48,
+                    "declarationEndLine": 56,
+                    "methodName": "assertDoesNotThrow",
+                    "declarationSignature": "assertDoesNotThrow(org.junit.jupiter.api.function.Executable, java.lang.Object)",
+                    "innerMethodCalls": [
+                      {
+                        "declaringType": "org.junit.jupiter.api.function.Executable",
+                        "methodSignature": "execute()",
+                        "methodName": "execute",
+                        "lineNumber": ["50"],
+                        "fullExpression": "executable.execute()",
+                        "currentLayer": 3,
+                        "declarationInfo": {
+                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.junit.jupiter.junit-jupiter-api/org/junit/jupiter/api/function/Executable.java",
+                          "declarationStartLine": 47,
+                          "declarationEndLine": 47,
+                          "methodName": "execute",
+                          "declarationSignature": "execute()",
+                          "innerMethodCalls": []
+                        }
+                      },
+                      {
+                        "declaringType": "org.junit.jupiter.api.AssertDoesNotThrow",
+                        "methodSignature": "createAssertionFailedError(java.lang.Object, java.lang.Throwable)",
+                        "methodName": "createAssertionFailedError",
+                        "lineNumber": ["54"],
+                        "fullExpression": "createAssertionFailedError(messageOrSupplier, t)",
+                        "currentLayer": 3,
+                        "declarationInfo": {
+                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.junit.jupiter.junit-jupiter-api/org/junit/jupiter/api/AssertDoesNotThrow.java",
+                          "declarationStartLine": 80,
+                          "declarationEndLine": 84,
+                          "methodName": "createAssertionFailedError",
+                          "declarationSignature": "createAssertionFailedError(java.lang.Object, java.lang.Throwable)",
+                          "innerMethodCalls": [
+                            {
+                              "declaringType": "org.junit.jupiter.api.AssertionUtils",
+                              "methodSignature": "buildPrefix(java.lang.String)",
+                              "methodName": "buildPrefix",
+                              "lineNumber": ["81"],
+                              "fullExpression": "buildPrefix(nullSafeGet(messageOrSupplier))",
+                              "currentLayer": 4,
+                              "declarationInfo": {
+                                "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.junit.jupiter.junit-jupiter-api/org/junit/jupiter/api/AssertionUtils.java",
+                                "declarationStartLine": 96,
+                                "declarationEndLine": 98,
+                                "methodName": "buildPrefix",
+                                "declarationSignature": "buildPrefix(java.lang.String)",
+                                "innerMethodCalls": []
+                              }
+                            },
+                            {
+                              "declaringType": "org.junit.jupiter.api.AssertionUtils",
+                              "methodSignature": "nullSafeGet(java.lang.Object)",
+                              "methodName": "nullSafeGet",
+                              "lineNumber": ["81"],
+                              "fullExpression": "nullSafeGet(messageOrSupplier)",
+                              "currentLayer": 4,
+                              "declarationInfo": {
+                                "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.junit.jupiter.junit-jupiter-api/org/junit/jupiter/api/AssertionUtils.java",
+                                "declarationStartLine": 83,
+                                "declarationEndLine": 94,
+                                "methodName": "nullSafeGet",
+                                "declarationSignature": "nullSafeGet(java.lang.Object)",
+                                "innerMethodCalls": []
+                              }
+                            },
+                            {
+                              "declaringType": "org.junit.jupiter.api.AssertDoesNotThrow",
+                              "methodSignature": "buildSuffix(java.lang.String)",
+                              "methodName": "buildSuffix",
+                              "lineNumber": ["82"],
+                              "fullExpression": "buildSuffix(t.getMessage())",
+                              "currentLayer": 4,
+                              "declarationInfo": {
+                                "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.junit.jupiter.junit-jupiter-api/org/junit/jupiter/api/AssertDoesNotThrow.java",
+                                "declarationStartLine": 86,
+                                "declarationEndLine": 88,
+                                "methodName": "buildSuffix",
+                                "declarationSignature": "buildSuffix(java.lang.String)",
+                                "innerMethodCalls": []
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "Dependency: groupId=org.json, artifactId=json, version=20180130, jarPath=/Users/yunzezhao/.m2/repository/org/json/json/20180130/json-20180130.jar": [
+    {
+      "declaringType": "org.json.JSONObject",
+      "methodSignature": "toString()",
+      "methodName": "toString",
+      "lineNumber": ["26"],
+      "fullExpression": "new JSONObject(claims).toString()",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java",
+        "declarationStartLine": 2058,
+        "declarationEndLine": 2065,
+        "methodName": "toString",
+        "declarationSignature": "toString()",
+        "innerMethodCalls": [
+          {
+            "declaringType": "org.json.JSONObject",
+            "methodSignature": "toString(int)",
+            "methodName": "toString",
+            "lineNumber": ["2061"],
+            "fullExpression": "this.toString(0)",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java",
+              "declarationStartLine": 2093,
+              "declarationEndLine": 2098,
+              "methodName": "toString",
+              "declarationSignature": "toString(int)",
+              "innerMethodCalls": [
+                {
+                  "declaringType": "org.json.JSONObject",
+                  "methodSignature": "write(java.io.Writer, int, int)",
+                  "methodName": "write",
+                  "lineNumber": ["2096"],
+                  "fullExpression": "this.write(w, indentFactor, 0)",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java",
+                    "declarationStartLine": 2279,
+                    "declarationEndLine": 2332,
+                    "methodName": "write",
+                    "declarationSignature": "write(java.io.Writer, int, int)",
+                    "innerMethodCalls": [
+                      {
+                        "declaringType": "org.json.JSONObject",
+                        "methodSignature": "quote(java.lang.String)",
+                        "methodName": "quote",
+                        "lineNumber": ["2289", "2310"],
+                        "fullExpression": "quote(key)",
+                        "currentLayer": 3,
+                        "declarationInfo": {
+                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java",
+                          "declarationStartLine": 1743,
+                          "declarationEndLine": 1753,
+                          "methodName": "quote",
+                          "declarationSignature": "quote(java.lang.String)",
+                          "innerMethodCalls": [
+                            {
+                              "declaringType": "org.json.JSONObject",
+                              "methodSignature": "quote(java.lang.String, java.io.Writer)",
+                              "methodName": "quote",
+                              "lineNumber": ["1747"],
+                              "fullExpression": "quote(string, sw)",
+                              "currentLayer": 4,
+                              "declarationInfo": {
+                                "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java",
+                                "declarationStartLine": 1755,
+                                "declarationEndLine": 1812,
+                                "methodName": "quote",
+                                "declarationSignature": "quote(java.lang.String, java.io.Writer)",
+                                "innerMethodCalls": []
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "declaringType": "org.json.JSONObject",
+                        "methodSignature": "entrySet()",
+                        "methodName": "entrySet",
+                        "lineNumber": ["2287", "2301"],
+                        "fullExpression": "this.entrySet()",
+                        "currentLayer": 3,
+                        "declarationInfo": {
+                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java",
+                          "declarationStartLine": 907,
+                          "declarationEndLine": 909,
+                          "methodName": "entrySet",
+                          "declarationSignature": "entrySet()",
+                          "innerMethodCalls": []
+                        }
+                      },
+                      {
+                        "declaringType": "org.json.JSONObject",
+                        "methodSignature": "writeValue(java.io.Writer, java.lang.Object, int, int)",
+                        "methodName": "writeValue",
+                        "lineNumber": ["2295", "2316"],
+                        "fullExpression": "writeValue(writer, entry.getValue(), indentFactor, indent)",
+                        "currentLayer": 3,
+                        "declarationInfo": {
+                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java",
+                          "declarationStartLine": 2199,
+                          "declarationEndLine": 2245,
+                          "methodName": "writeValue",
+                          "declarationSignature": "writeValue(java.io.Writer, java.lang.Object, int, int)",
+                          "innerMethodCalls": [
+                            {
+                              "declaringType": "org.json.JSONObject",
+                              "methodSignature": "numberToString(java.lang.Number)",
+                              "methodName": "numberToString",
+                              "lineNumber": ["2213"],
+                              "fullExpression": "numberToString((Number) value)",
+                              "currentLayer": 4,
+                              "declarationInfo": {
+                                "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java",
+                                "declarationStartLine": 943,
+                                "declarationEndLine": 962,
+                                "methodName": "numberToString",
+                                "declarationSignature": "numberToString(java.lang.Number)",
+                                "innerMethodCalls": [
+                                  {
+                                    "declaringType": "org.json.JSONObject",
+                                    "methodSignature": "testValidity(java.lang.Object)",
+                                    "methodName": "testValidity",
+                                    "lineNumber": ["947"],
+                                    "fullExpression": "testValidity(number)",
+                                    "currentLayer": 5,
+                                    "declarationInfo": {
+                                      "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java",
+                                      "declarationStartLine": 2007,
+                                      "declarationEndLine": 2021,
+                                      "methodName": "testValidity",
+                                      "declarationSignature": "testValidity(java.lang.Object)",
+                                      "innerMethodCalls": []
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "declaringType": "org.json.JSONString",
+                              "methodSignature": "toJSONString()",
+                              "methodName": "toJSONString",
+                              "lineNumber": ["2206"],
+                              "fullExpression": "((JSONString) value).toJSONString()",
+                              "currentLayer": 4,
+                              "declarationInfo": {
+                                "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONString.java",
+                                "declarationStartLine": 17,
+                                "declarationEndLine": 17,
+                                "methodName": "toJSONString",
+                                "declarationSignature": "toJSONString()",
+                                "innerMethodCalls": []
+                              }
+                            },
+                            {
+                              "declaringType": "org.json.JSONArray",
+                              "methodSignature": "write(java.io.Writer, int, int)",
+                              "methodName": "write",
+                              "lineNumber": ["2232", "2238", "2240"],
+                              "fullExpression": "((JSONArray) value).write(writer, indentFactor, indent)",
+                              "currentLayer": 4,
+                              "declarationInfo": {
+                                "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONArray.java",
+                                "declarationStartLine": 1432,
+                                "declarationEndLine": 1475,
+                                "methodName": "write",
+                                "declarationSignature": "write(java.io.Writer, int, int)",
+                                "innerMethodCalls": [
+                                  {
+                                    "declaringType": "org.json.JSONArray",
+                                    "methodSignature": "length()",
+                                    "methodName": "length",
+                                    "lineNumber": ["1436"],
+                                    "fullExpression": "this.length()",
+                                    "currentLayer": 5,
+                                    "declarationInfo": {
+                                      "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONArray.java",
+                                      "declarationStartLine": 507,
+                                      "declarationEndLine": 509,
+                                      "methodName": "length",
+                                      "declarationSignature": "length()",
+                                      "innerMethodCalls": []
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "declaringType": "org.json.JSONObject",
+                        "methodSignature": "indent(java.io.Writer, int)",
+                        "methodName": "indent",
+                        "lineNumber": ["2308", "2325"],
+                        "fullExpression": "indent(writer, newindent)",
+                        "currentLayer": 3,
+                        "declarationInfo": {
+                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java",
+                          "declarationStartLine": 2247,
+                          "declarationEndLine": 2251,
+                          "methodName": "indent",
+                          "declarationSignature": "indent(java.io.Writer, int)",
+                          "innerMethodCalls": []
+                        }
+                      },
+                      {
+                        "declaringType": "org.json.JSONObject",
+                        "methodSignature": "length()",
+                        "methodName": "length",
+                        "lineNumber": ["2283"],
+                        "fullExpression": "this.length()",
+                        "currentLayer": 3,
+                        "declarationInfo": {
+                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java",
+                          "declarationStartLine": 916,
+                          "declarationEndLine": 918,
+                          "methodName": "length",
+                          "declarationSignature": "length()",
+                          "innerMethodCalls": []
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "declaringType": "org.json.JSONObject",
+      "methodSignature": "toMap()",
+      "methodName": "toMap",
+      "lineNumber": ["21"],
+      "fullExpression": "new JSONObject(decodedJSON).toMap()",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java",
+        "declarationStartLine": 2343,
+        "declarationEndLine": 2359,
+        "methodName": "toMap",
+        "declarationSignature": "toMap()",
+        "innerMethodCalls": [
+          {
+            "declaringType": "org.json.JSONObject",
+            "methodSignature": "entrySet()",
+            "methodName": "entrySet",
+            "lineNumber": ["2345"],
+            "fullExpression": "this.entrySet()",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java",
+              "declarationStartLine": 907,
+              "declarationEndLine": 909,
+              "methodName": "entrySet",
+              "declarationSignature": "entrySet()",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "org.json.JSONObject",
+            "methodSignature": "toMap()",
+            "methodName": "toMap",
+            "lineNumber": ["2350"],
+            "fullExpression": "((JSONObject) entry.getValue()).toMap()",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java",
+              "declarationStartLine": 2343,
+              "declarationEndLine": 2359,
+              "methodName": "toMap",
+              "declarationSignature": "toMap()",
+              "innerMethodCalls": [
+                {
+                  "declaringType": "org.json.JSONObject",
+                  "methodSignature": "entrySet()",
+                  "methodName": "entrySet",
+                  "lineNumber": ["2345"],
+                  "fullExpression": "this.entrySet()",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java",
+                    "declarationStartLine": 907,
+                    "declarationEndLine": 909,
+                    "methodName": "entrySet",
+                    "declarationSignature": "entrySet()",
+                    "innerMethodCalls": []
+                  }
+                },
+                {
+                  "declaringType": "org.json.JSONObject",
+                  "methodSignature": "toMap()",
+                  "methodName": "toMap",
+                  "lineNumber": ["2350"],
+                  "fullExpression": "((JSONObject) entry.getValue()).toMap()",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java",
+                    "declarationStartLine": 2343,
+                    "declarationEndLine": 2359,
+                    "methodName": "toMap",
+                    "declarationSignature": "toMap()",
+                    "innerMethodCalls": []
+                  }
+                },
+                {
+                  "declaringType": "org.json.JSONArray",
+                  "methodSignature": "toList()",
+                  "methodName": "toList",
+                  "lineNumber": ["2352"],
+                  "fullExpression": "((JSONArray) entry.getValue()).toList()",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONArray.java",
+                    "declarationStartLine": 1486,
+                    "declarationEndLine": 1500,
+                    "methodName": "toList",
+                    "declarationSignature": "toList()",
+                    "innerMethodCalls": []
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "declaringType": "org.json.JSONArray",
+            "methodSignature": "toList()",
+            "methodName": "toList",
+            "lineNumber": ["2352"],
+            "fullExpression": "((JSONArray) entry.getValue()).toList()",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONArray.java",
+              "declarationStartLine": 1486,
+              "declarationEndLine": 1500,
+              "methodName": "toList",
+              "declarationSignature": "toList()",
+              "innerMethodCalls": []
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "Dependency: groupId=org.hamcrest, artifactId=java-hamcrest, version=2.0.0.0, jarPath=/Users/yunzezhao/.m2/repository/org/hamcrest/java-hamcrest/2.0.0.0/java-hamcrest-2.0.0.0.jar": [
+    {
+      "declaringType": "org.hamcrest.CoreMatchers",
+      "methodSignature": "is(T)",
+      "methodName": "is",
+      "lineNumber": ["62", "76", "90", "97"],
+      "fullExpression": "is(expected)",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hamcrest.java-hamcrest/org/hamcrest/CoreMatchers.java",
+        "declarationStartLine": 113,
+        "declarationEndLine": 115,
+        "methodName": "is",
+        "declarationSignature": "is(T)",
+        "innerMethodCalls": [
+          {
+            "declaringType": "org.hamcrest.core.Is",
+            "methodSignature": "is(T)",
+            "methodName": "is",
+            "lineNumber": ["114"],
+            "fullExpression": "org.hamcrest.core.Is.is(value)",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hamcrest.java-hamcrest/org/hamcrest/core/Is.java",
+              "declarationStartLine": 60,
+              "declarationEndLine": 62,
+              "methodName": "is",
+              "declarationSignature": "is(T)",
+              "innerMethodCalls": [
+                {
+                  "declaringType": "org.hamcrest.core.IsEqual",
+                  "methodSignature": "equalTo(T)",
+                  "methodName": "equalTo",
+                  "lineNumber": ["61"],
+                  "fullExpression": "equalTo(value)",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hamcrest.java-hamcrest/org/hamcrest/core/IsEqual.java",
+                    "declarationStartLine": 86,
+                    "declarationEndLine": 88,
+                    "methodName": "equalTo",
+                    "declarationSignature": "equalTo(T)",
+                    "innerMethodCalls": []
+                  }
+                },
+                {
+                  "declaringType": "org.hamcrest.core.Is",
+                  "methodSignature": "is(org.hamcrest.Matcher<T>)",
+                  "methodName": "is",
+                  "lineNumber": ["61"],
+                  "fullExpression": "is(equalTo(value))",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hamcrest.java-hamcrest/org/hamcrest/core/Is.java",
+                    "declarationStartLine": 48,
+                    "declarationEndLine": 50,
+                    "methodName": "is",
+                    "declarationSignature": "is(org.hamcrest.Matcher<T>)",
+                    "innerMethodCalls": []
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "declaringType": "org.hamcrest.MatcherAssert",
+      "methodSignature": "assertThat(T, org.hamcrest.Matcher<? super T>)",
+      "methodName": "assertThat",
+      "lineNumber": ["62", "76", "90", "97"],
+      "fullExpression": "assertThat(signedBase64URLEncoded, is(expected))",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hamcrest.java-hamcrest/org/hamcrest/MatcherAssert.java",
+        "declarationStartLine": 5,
+        "declarationEndLine": 7,
+        "methodName": "assertThat",
+        "declarationSignature": "assertThat(T, org.hamcrest.Matcher<? super T>)",
+        "innerMethodCalls": [
+          {
+            "declaringType": "org.hamcrest.MatcherAssert",
+            "methodSignature": "assertThat(java.lang.String, T, org.hamcrest.Matcher<? super T>)",
+            "methodName": "assertThat",
+            "lineNumber": ["6"],
+            "fullExpression": "assertThat(\"\", actual, matcher)",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hamcrest.java-hamcrest/org/hamcrest/MatcherAssert.java",
+              "declarationStartLine": 9,
+              "declarationEndLine": 20,
+              "methodName": "assertThat",
+              "declarationSignature": "assertThat(java.lang.String, T, org.hamcrest.Matcher<? super T>)",
+              "innerMethodCalls": [
+                {
+                  "declaringType": "org.hamcrest.Description",
+                  "methodSignature": "appendDescriptionOf(org.hamcrest.SelfDescribing)",
+                  "methodName": "appendDescriptionOf",
+                  "lineNumber": ["12"],
+                  "fullExpression": "description.appendText(reason).appendText(\"\\nExpected: \").appendDescriptionOf(matcher)",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hamcrest.java-hamcrest/org/hamcrest/Description.java",
+                    "declarationStartLine": 51,
+                    "declarationEndLine": 54,
+                    "methodName": "appendDescriptionOf",
+                    "declarationSignature": "appendDescriptionOf(org.hamcrest.SelfDescribing)",
+                    "innerMethodCalls": []
+                  }
+                },
+                {
+                  "declaringType": "org.hamcrest.Matcher",
+                  "methodSignature": "matches(java.lang.Object)",
+                  "methodName": "matches",
+                  "lineNumber": ["10"],
+                  "fullExpression": "matcher.matches(actual)",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hamcrest.java-hamcrest/org/hamcrest/Matcher.java",
+                    "declarationStartLine": 35,
+                    "declarationEndLine": 35,
+                    "methodName": "matches",
+                    "declarationSignature": "matches(java.lang.Object)",
+                    "innerMethodCalls": []
+                  }
+                },
+                {
+                  "declaringType": "org.hamcrest.Description",
+                  "methodSignature": "appendText(java.lang.String)",
+                  "methodName": "appendText",
+                  "lineNumber": ["12", "12", "12"],
+                  "fullExpression": "description.appendText(reason).appendText(\"\\nExpected: \").appendDescriptionOf(matcher).appendText(\"\\n     but: \")",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hamcrest.java-hamcrest/org/hamcrest/Description.java",
+                    "declarationStartLine": 62,
+                    "declarationEndLine": 65,
+                    "methodName": "appendText",
+                    "declarationSignature": "appendText(java.lang.String)",
+                    "innerMethodCalls": []
+                  }
+                },
+                {
+                  "declaringType": "org.hamcrest.Matcher",
+                  "methodSignature": "describeMismatch(java.lang.Object, org.hamcrest.Description)",
+                  "methodName": "describeMismatch",
+                  "lineNumber": ["16"],
+                  "fullExpression": "matcher.describeMismatch(actual, description)",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hamcrest.java-hamcrest/org/hamcrest/Matcher.java",
+                    "declarationStartLine": 48,
+                    "declarationEndLine": 48,
+                    "methodName": "describeMismatch",
+                    "declarationSignature": "describeMismatch(java.lang.Object, org.hamcrest.Description)",
+                    "innerMethodCalls": []
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
