@@ -68,8 +68,6 @@ public class SourceJarAnalyzer {
         System.out.println("Total third party method calls: " + totalCount + ", Success: " + successCount + ", Fail: "
                 + failCount);
 
-        
-
     }
 
     /*
@@ -140,19 +138,22 @@ public class SourceJarAnalyzer {
                 String currentSignature = resolvedMethod.getSignature();
                 String fullExpression = methodCall.toString();
                 String functionCallType = resolvedMethod.declaringType().getQualifiedName();
-                if (fullExpression.contains("setDefaultSocketConfig")){
+                if (fullExpression.contains("setDefaultSocketConfig")) {
                     System.out.println("setDefaultSocketConfig: " + functionCallType + ": " + fullExpression);
                 }
-                if (fullExpression.contains("setDefaultMaxPerRoute")){
+                if (fullExpression.contains("setDefaultMaxPerRoute")) {
                     System.out.println("setDefaultMaxPerRoute: " + functionCallType + ": " + fullExpression);
                 }
-                // if (!functionCallType.startsWith("java.") && !functionCallType.startsWith("javax.")) {
-                //     if (!functionCallType.startsWith(dependency.getGroupId())) {
-                //         System.out.println("interesting functionCallType: " + functionCallType + "  " + dependency.getGroupId());
-                //     }
+                // if (!functionCallType.startsWith("java.") &&
+                // !functionCallType.startsWith("javax.")) {
+                // if (!functionCallType.startsWith(dependency.getGroupId())) {
+                // System.out.println("interesting functionCallType: " + functionCallType + " "
+                // + dependency.getGroupId());
+                // }
                 // }
                 // if (functionCallType.startsWith("com.google.guava")) {
-                //     System.out.println("Guava is calling: " + functionCallType + ": " + fullExpression);
+                // System.out.println("Guava is calling: " + functionCallType + ": " +
+                // fullExpression);
                 // }
 
                 MethodSignatureKey key = new MethodSignatureKey(functionCallType, currentSignature);
@@ -172,13 +173,14 @@ public class SourceJarAnalyzer {
                         successCount++;
                     } else {
                         // Update existing entry with new line number
-                        existingEntry.addLineNumber(lineNumber); // Ensure MethodCallEntry has a setter for lineNumber
+                        existingEntry.addLineNumber(lineNumber);
                     }
                 }
             } catch (UnsolvedSymbolException e) {
-                // System.out.println("Info: Unresolved method call to '" + e.getName() + " might be external.");
-                if (e.getName().contains("setDefaultSocketConfig")){
-                    System.out.println("cannot resolve setDefaultSocketConfig: " + e.getName() );
+                // System.out.println("Info: Unresolved method call to '" + e.getName() + "
+                // might be external.");
+                if (e.getName().contains("setDefaultSocketConfig")) {
+                    System.out.println("cannot resolve setDefaultSocketConfig: " + e.getName());
                 }
             } catch (UnsupportedOperationException e) {
                 // Log the issue but do not treat as critical error
@@ -252,9 +254,18 @@ public class SourceJarAnalyzer {
                     digFunctionCallEntries(currentDeclarationInfo, 1, currentClassSignatureContext);
                 }
             } catch (UnsolvedSymbolException e) {
+                // * when we fail to resolve, it means there are certain
                 System.out.println(
-                "Warning: Could not resolve method declaration: " +
-                methodDeclaration.getNameAsString() + " at: " + fullPath);
+                        "Warning: Could not resolve method declaration: " + packageLikePath + ", " +
+                                methodDeclaration.getNameAsString() + " at: " + fullPath);
+                System.out.println(" declaration: " + methodDeclaration.getDeclarationAsString());
+                System.out.println(e.getMessage());
+                if (methodDeclaration.getDeclarationAsString()
+                        .equals("public static T verify(T mock, VerificationMode mode)")
+                        || methodDeclaration.getDeclarationAsString()
+                                .contains("setToAttribute(ServletContext context, String key)")) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -283,7 +294,6 @@ public class SourceJarAnalyzer {
         }
 
         List<MethodCallEntry> internalTargetCalls = currentDeclarationInfo.getInnerMethodCalls();
-
 
         Set<String> targetPackages = currentDeclarationInfo.getAllDeclaringTypes();
 
@@ -358,18 +368,18 @@ public class SourceJarAnalyzer {
             int startLine = methodDeclaration.getBegin().map(pos -> pos.line).orElse(-1);
             int endLine = methodDeclaration.getEnd().map(pos -> pos.line).orElse(-1);
             String name = methodDeclaration.getName().asString();
-           
+
             // ! we have to resolve the method declaration to get the Qualified signature,
             ResolvedMethodDeclaration resolvedDeclaration = methodDeclaration.resolve();
             String currentDeclarationSignature = resolvedDeclaration.getSignature().toString();
-            
+
             for (MethodCallEntry lookForCall : lookForCalls) {
                 String methodKey = lookForCall.getDeclaringType() + "." + lookForCall.getMethodName()
                         + lookForCall.getMethodSignature();
 
                 if (lookForCall.getMethodName().equals(name)
                         && lookForCall.getMethodSignature().equals(currentDeclarationSignature)) {
-                  
+
                     MethodDeclarationInfo currentDeclarationInfo = new MethodDeclarationInfo(fullPath, startLine,
                             endLine,
                             name,
@@ -410,7 +420,7 @@ public class SourceJarAnalyzer {
 
     private void initCombinedSolver(String fullPath, ProjectRoot projectRoot) {
         CombinedTypeSolver combinedSolver = new CombinedTypeSolver();
-        combinedSolver.add(new ReflectionTypeSolver(false)); 
+        combinedSolver.add(new ReflectionTypeSolver(false));
         // Loop through each dependency and add it to the CombinedTypeSolver
         List<DependencyNode> dependencyNodes = dependency.getChildren();
         System.out.println("Adding sub dependencies: " + dependencyNodes.size());
@@ -432,20 +442,20 @@ public class SourceJarAnalyzer {
             }
         }
 
-        JavaSymbolSolver symbolSolver = new JavaSymbolSolver(combinedSolver);
-    
         projectRoot.getSourceRoots().forEach(sourceRoot -> {
             ParserConfiguration sourceRootConfiguration = sourceRoot.getParserConfiguration();
             ParserConfiguration.LanguageLevel languageLevel = Utils.getLanguageLevelFromVersion(Settings.JAVA_VERSION);
             sourceRootConfiguration.setLanguageLevel(languageLevel);
             combinedSolver.add(new JavaParserTypeSolver(sourceRoot.getRoot()));
+            JavaSymbolSolver symbolSolver = new JavaSymbolSolver(combinedSolver);
             sourceRootConfiguration.setSymbolResolver(symbolSolver);
-            
             sourceRoot.setParserConfiguration(sourceRootConfiguration);
         });
 
+        // * add the combined solver to the static parser in case we need to resolve
+        StaticJavaParser.setConfiguration(new ParserConfiguration().setSymbolResolver(new JavaSymbolSolver(combinedSolver)));
+        System.out.println("Combined solver initialized.");
     }
-    
 
     // * seperate the package like path from the compilation unit
     private String getPackageLikePathFromCU(CompilationUnit cu) {

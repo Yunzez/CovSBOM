@@ -2,6 +2,9 @@ package com.ast_generator;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,33 +28,34 @@ public class MavenDependencyTree {
     public static DependencyNode runMavenDependencyTree(String projectDir, Dependency packageInfo,
             Map<String, DependencyNode> dependencyMap) {
         System.out.println(System.getProperty("user.dir"));
-        System.out.println("Running maven dependency:tree " + projectDir);
+        System.out.println("Running maven dependency:tree for " + projectDir);
         List<String> mavenOutput = new ArrayList<>();
         try {
+            String outputPath = Paths.get(projectDir, "mvn_dependency_tree.txt").toString();
             ProcessBuilder processBuilder = new ProcessBuilder();
-            processBuilder.command("mvn", "-f", System.getProperty("user.dir") + "/" + projectDir, "dependency:tree");
+            processBuilder.command("mvn", "-f", projectDir, "dependency:tree",
+                                   "-DoutputFile=" + outputPath, "-DappendOutput=true");
             processBuilder.directory(new java.io.File(projectDir));
             Process process = processBuilder.start();
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                mavenOutput.add(line);
-                System.out.println(line);
-            }
-
             int exitCode = process.waitFor();
             System.out.println("\nExited with error code : " + exitCode);
+
+            // Read the output from the file
+            Path outputFilePath = Paths.get(outputPath);
+            mavenOutput = Files.readAllLines(outputFilePath);
+
+            // Optionally, delete the file after reading
+            // Files.delete(outputFilePath);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         DependencyNode rootNode = updateDependencyMapWithTreeOutput(mavenOutput, dependencyMap, packageInfo);
-
         return rootNode;
     }
+
 
     /**
      * 
@@ -83,6 +87,7 @@ public class MavenDependencyTree {
      * @return
      */
     public static DependencyNode buildDependencyTree(List<String> mavenTreeLines) {
+        System.out.println("mavenTreeLines: " + mavenTreeLines.toString());
         List<DependencyNode> nodes = new ArrayList<>();
         Stack<DependencyNode> nodeStack = new Stack<>();
         int start = 0;
@@ -142,16 +147,19 @@ public class MavenDependencyTree {
     }
 
     private static int getDepth(String line) {
-        int depth = 0;
-
+        int leadingSpaces = 0;
         for (char c : line.toCharArray()) {
-            if (c == '|' || c == '+' || c == '\\') {
-                depth++;
+            if (c == ' ' || c == '|' || c == '+' || c == '-' || c == '\\' || c == '/') {
+                leadingSpaces++;
+            } else {
+                break; // Stop counting spaces once you encounter a non-space character
             }
         }
-
-        return depth; // Adjust this based on the indentation pattern of your Maven output
+        // Assuming 3 spaces represent one level of indentation
+        int depth = leadingSpaces / 3;
+        return depth;
     }
+    
 
     private static Dependency getDependencyFromLine(String line) {
         String[] separatedLine = line.split(":");

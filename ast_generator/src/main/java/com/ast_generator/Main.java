@@ -146,7 +146,9 @@ public class Main {
             System.out.println("key: " + key + " value: " + dependencyMap.get(key).toString());
         }
 
-        
+        // if (test) {
+        //     return;
+        // }
         // ! generate ASTs for all java files in the application
         /*
          * +--------------------+
@@ -172,9 +174,7 @@ public class Main {
         System.out.println(" ------- end processing directory, start analyzing dependencies -------");
 
 
-        // if (test) {
-        //     return;
-        // }
+        
 
         /*
          * +------------------+
