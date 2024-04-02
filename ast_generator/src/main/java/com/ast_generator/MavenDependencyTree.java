@@ -85,28 +85,35 @@ public class MavenDependencyTree {
     public static DependencyNode buildDependencyTree(List<String> mavenTreeLines) {
         List<DependencyNode> nodes = new ArrayList<>();
         Stack<DependencyNode> nodeStack = new Stack<>();
+        int start = 0;
         DependencyNode root = null;
+        for (int i = 0; i< mavenTreeLines.size(); i++) {
+            String line = mavenTreeLines.get(i);
+            if (line.contains("+-")) {
+                System.out.println("start: " + i + " line: " + line);
+                start = i;
+                break;
+            }
+        }
 
+        int count = 0;
         for (String line : mavenTreeLines) {
+            count ++;
+            System.out.println("count: " + count + "start:" + start + " line: " + line);
+            
+            if (count == start) {
+                Dependency dependency = getDependencyFromLine(line);
+                DependencyNode node = new DependencyNode(dependency);
+                root = node;
+                nodeStack.push(node);
+            }
+
             if (!line.contains(":jar:"))
                 continue;
-
+            
             int depth = getDepth(line); // Implement this method to determine the depth based on leading spaces or
                                         // dashes
-
-            String[] separatedLine = line.split(":");
-            String artifactId = separatedLine[1].trim();
-            String groupId = separatedLine[0].trim();
-            String version = separatedLine[3].trim();
-
-            groupId = groupId.split(" ")[groupId.split(" ").length - 1];
-
-            String mavenPathBase = System.getProperty("user.home") + "/.m2/repository/"
-                    + groupId.replace('.', '/') + "/" + artifactId + "/" + version
-                    + "/" + artifactId + "-" + version;
-
-            Dependency dependency = new Dependency(groupId, artifactId, version, mavenPathBase + ".jar",
-                    mavenPathBase + "-sources.jar");
+            Dependency dependency = getDependencyFromLine(line);
 
             DependencyNode node = new DependencyNode(dependency);
 
@@ -120,7 +127,6 @@ public class MavenDependencyTree {
             }
 
             if (nodeStack.isEmpty()) {
-                // Root node
                 root = node;
             } else {
                 // Add the current node as a child of the node at the top of the stack
@@ -130,7 +136,8 @@ public class MavenDependencyTree {
             nodeStack.push(node);
         }
 
-        System.out.println("root: " + root.toConsoleString());
+        System.out.println("root: ");
+        System.out.println( root.toConsoleString());
         return root; // Return the root of the tree
     }
 
@@ -144,6 +151,24 @@ public class MavenDependencyTree {
         }
 
         return depth; // Adjust this based on the indentation pattern of your Maven output
+    }
+
+    private static Dependency getDependencyFromLine(String line) {
+        String[] separatedLine = line.split(":");
+        String artifactId = separatedLine[1].trim();
+        String groupId = separatedLine[0].trim();
+        String version = separatedLine[3].trim();
+
+        groupId = groupId.split(" ")[groupId.split(" ").length - 1];
+
+        String mavenPathBase = System.getProperty("user.home") + "/.m2/repository/"
+                + groupId.replace('.', '/') + "/" + artifactId + "/" + version
+                + "/" + artifactId + "-" + version;
+
+        Dependency dependency = new Dependency(groupId, artifactId, version, mavenPathBase + ".jar",
+                mavenPathBase + "-sources.jar");
+
+        return dependency;
     }
 
 }

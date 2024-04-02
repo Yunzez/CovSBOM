@@ -40,6 +40,15 @@ public class DependencyNode extends Dependency{
         return children;
     }
 
+    public List<DependencyNode> toList() {
+        List<DependencyNode> list = new ArrayList<>();
+        list.add(this);
+        for (DependencyNode child : children) {
+            list.addAll(child.toList());
+        }
+        return list;
+    }
+
     public void setChildren(List<DependencyNode> children) {
         this.children = children;
     }

@@ -36,6 +36,7 @@ import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSol
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JarTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
+import com.github.javaparser.resolution.UnsolvedSymbolException;
 import com.github.javaparser.resolution.declarations.ResolvedMethodDeclaration;
 import com.github.javaparser.serialization.JavaParserJsonSerializer;
 import java.io.File;
@@ -89,7 +90,7 @@ public class DirectoryProcessor {
 
     private void initCombinedSolver() {
         this.combinedSolver = new CombinedTypeSolver();
-        combinedSolver.add(new ReflectionTypeSolver()); // Still useful for resolving standard Java types
+        combinedSolver.add(new ReflectionTypeSolver(false)); 
 
         // Loop through each dependency and add it to the CombinedTypeSolver
         for (String dependencyPath : dependencyMap.keySet()) {
@@ -218,8 +219,6 @@ public class DirectoryProcessor {
             e.printStackTrace();
         } catch (ParseProblemException e) {
             System.out.print("Possible template file, Parse problem in file: " + sourceFilePath);
-            // e.printStackTrace();
-            // System.out.println(" Skipped");
         }
 
     }
@@ -297,19 +296,23 @@ public class DirectoryProcessor {
                         existingEntry.addLineNumber(lineNumber); // Ensure MethodCallEntry has a setter for lineNumber
                     }
                 }
-            } catch (Exception e) {
-                if (methodCall.getName().toString().equals("setTrustStorePassword")) {
-                    System.out.println("setTrustStorePassword: " + methodCall.getName());
-                    // this.methodReporter.addEntry(path.toString(), "unknown_delcare_type",
-                    // methodCall.getNameAsString());
-                    System.err.println("Failed to resolve method call: " + methodCall.getName());
-                    e.printStackTrace();
-                }
-
-            } catch (StackOverflowError e) {
+            }  catch (UnsolvedSymbolException e) {
+                // System.out.println("Info: Unresolved method call to '" + e.getName());
+                // e.printStackTrace();
+            }
+            catch (StackOverflowError e) {
                 System.err.println("Stack overflow error caught. Consider reviewing recursive methods.");
                 // Log the error or take corrective action here.
                 // Be cautious about the JVM's state.
+            } catch (Exception e) {
+                // if (methodCall.getName().toString().equals("setTrustStorePassword")) {
+                    // System.out.println("setTrustStorePassword: " + methodCall.getName());
+                    // this.methodReporter.addEntry(path.toString(), "unknown_delcare_type",
+                    // methodCall.getNameAsString());
+                    System.err.println("General exception: Failed to resolve method call: " + methodCall.getName());
+                    // e.printStackTrace();
+                // }
+
             }
         });
 

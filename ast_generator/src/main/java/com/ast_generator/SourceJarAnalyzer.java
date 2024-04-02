@@ -140,6 +140,12 @@ public class SourceJarAnalyzer {
                 String currentSignature = resolvedMethod.getSignature();
                 String fullExpression = methodCall.toString();
                 String functionCallType = resolvedMethod.declaringType().getQualifiedName();
+                if (fullExpression.contains("setDefaultSocketConfig")){
+                    System.out.println("setDefaultSocketConfig: " + functionCallType + ": " + fullExpression);
+                }
+                if (fullExpression.contains("setDefaultMaxPerRoute")){
+                    System.out.println("setDefaultMaxPerRoute: " + functionCallType + ": " + fullExpression);
+                }
                 // if (!functionCallType.startsWith("java.") && !functionCallType.startsWith("javax.")) {
                 //     if (!functionCallType.startsWith(dependency.getGroupId())) {
                 //         System.out.println("interesting functionCallType: " + functionCallType + "  " + dependency.getGroupId());
@@ -170,7 +176,10 @@ public class SourceJarAnalyzer {
                     }
                 }
             } catch (UnsolvedSymbolException e) {
-                System.out.println("Info: Unresolved method call to '" + e.getName() + " might be external.");
+                // System.out.println("Info: Unresolved method call to '" + e.getName() + " might be external.");
+                if (e.getName().contains("setDefaultSocketConfig")){
+                    System.out.println("cannot resolve setDefaultSocketConfig: " + e.getName() );
+                }
             } catch (UnsupportedOperationException e) {
                 // Log the issue but do not treat as critical error
                 // System.out.println("Warning: UnsupportedOperationException encountered.
@@ -243,9 +252,9 @@ public class SourceJarAnalyzer {
                     digFunctionCallEntries(currentDeclarationInfo, 1, currentClassSignatureContext);
                 }
             } catch (UnsolvedSymbolException e) {
-                // System.out.println(
-                // "Warning: Could not resolve method declaration: " +
-                // methodDeclaration.getNameAsString());
+                System.out.println(
+                "Warning: Could not resolve method declaration: " +
+                methodDeclaration.getNameAsString() + " at: " + fullPath);
             }
         }
     }
@@ -349,11 +358,11 @@ public class SourceJarAnalyzer {
             int startLine = methodDeclaration.getBegin().map(pos -> pos.line).orElse(-1);
             int endLine = methodDeclaration.getEnd().map(pos -> pos.line).orElse(-1);
             String name = methodDeclaration.getName().asString();
-
+           
             // ! we have to resolve the method declaration to get the Qualified signature,
             ResolvedMethodDeclaration resolvedDeclaration = methodDeclaration.resolve();
             String currentDeclarationSignature = resolvedDeclaration.getSignature().toString();
-
+            
             for (MethodCallEntry lookForCall : lookForCalls) {
                 String methodKey = lookForCall.getDeclaringType() + "." + lookForCall.getMethodName()
                         + lookForCall.getMethodSignature();
@@ -401,7 +410,7 @@ public class SourceJarAnalyzer {
 
     private void initCombinedSolver(String fullPath, ProjectRoot projectRoot) {
         CombinedTypeSolver combinedSolver = new CombinedTypeSolver();
-
+        combinedSolver.add(new ReflectionTypeSolver(false)); 
         // Loop through each dependency and add it to the CombinedTypeSolver
         List<DependencyNode> dependencyNodes = dependency.getChildren();
         System.out.println("Adding sub dependencies: " + dependencyNodes.size());
@@ -422,20 +431,21 @@ public class SourceJarAnalyzer {
                 dependency.setIsValid(false);
             }
         }
-        combinedSolver.add(new ReflectionTypeSolver());
 
-        projectRoot.getSourceRoots()
-                .forEach(sourceRoot -> combinedSolver.add(new JavaParserTypeSolver(sourceRoot.getRoot())));
-
-
-        ParserConfiguration.LanguageLevel languageLevel = Utils.getLanguageLevelFromVersion(Settings.JAVA_VERSION);
-
-        ParserConfiguration configuration = new ParserConfiguration()
-                .setSymbolResolver(new JavaSymbolSolver(combinedSolver)).setLanguageLevel(languageLevel);
-
-        StaticJavaParser.setConfiguration(configuration);
+        JavaSymbolSolver symbolSolver = new JavaSymbolSolver(combinedSolver);
+    
+        projectRoot.getSourceRoots().forEach(sourceRoot -> {
+            ParserConfiguration sourceRootConfiguration = sourceRoot.getParserConfiguration();
+            ParserConfiguration.LanguageLevel languageLevel = Utils.getLanguageLevelFromVersion(Settings.JAVA_VERSION);
+            sourceRootConfiguration.setLanguageLevel(languageLevel);
+            combinedSolver.add(new JavaParserTypeSolver(sourceRoot.getRoot()));
+            sourceRootConfiguration.setSymbolResolver(symbolSolver);
+            
+            sourceRoot.setParserConfiguration(sourceRootConfiguration);
+        });
 
     }
+    
 
     // * seperate the package like path from the compilation unit
     private String getPackageLikePathFromCU(CompilationUnit cu) {

@@ -32,7 +32,13 @@ public class DependencyAnalyzer {
 
         // this steps will decompressed all the jars iin the dependencyMap
         // we will also update the dependency's attribute sourceDecompressedPath
-        this.jarDecompressedPaths = Utils.decompressAllJars(dependencyMap.values(), "decompressed");
+
+        List<DependencyNode> dependencies = new ArrayList<DependencyNode>();
+        for (DependencyNode dependency : dependencyMap.values()) {
+            dependencies.addAll(dependency.toList());
+        }
+
+        this.jarDecompressedPaths = Utils.decompressAllJars(dependencies, "decompressed");
         System.out.println("jarDecompressedPaths: " + jarDecompressedPaths.toString());
         // * find all required jar and save the results in typeToJarLookup
         findRequiredJars();
@@ -43,6 +49,7 @@ public class DependencyAnalyzer {
         }
         System.out.println("total unique types: " + methodCallReporter.getUniqueTypes().size());
         System.out.println("unresolved types: " + unresolvedTypes.size());
+        System.out.println(unresolvedTypes.toString());
 
         // * only analyze jars that are used in the program
         for (DependencyNode dependency : typeToJarLookup.keySet()) {
@@ -72,6 +79,7 @@ public class DependencyAnalyzer {
                     || declaringType.startsWith(methodCallReporter.getParentPackageName())) {
                 continue;
             }
+            
             unresolvedTypes.add(declaringType);
             findJarPathForType(declaringType);
         }
@@ -88,7 +96,6 @@ public class DependencyAnalyzer {
 
         for (String jarDecompressedPath : jarDecompressedPaths) {
             Path potentialPath = Paths.get("decompressed/" + jarDecompressedPath, filePath);
-            File potentialFile = new File("decompressed/" + jarDecompressedPath, filePath);
             if (Files.exists(potentialPath)) {
                 // Assuming dependencyMap keys are artifactIds and Dependency objects have a
                 // method getArtifactId()
