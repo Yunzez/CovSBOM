@@ -10,7 +10,7 @@ import javax.json.JsonObject;
 
 public class ImportManager {
     private Set<String> thirdPartyImports;
-    Map<String, Dependency> dependencyMap;
+    Map<String, DependencyNode> dependencyMap;
     Path sourceRootPath;
     FunctionSignatureExtractor extractor;
 
@@ -18,7 +18,7 @@ public class ImportManager {
         this.thirdPartyImports = new HashSet<>();
     }
 
-    public ImportManager(Map<String, Dependency> dependencyMap, Path sourceRootPath) {
+    public ImportManager(Map<String, DependencyNode> dependencyMap, Path sourceRootPath) {
         this.sourceRootPath = sourceRootPath;
         this.thirdPartyImports = new HashSet<>();
         this.dependencyMap = dependencyMap;

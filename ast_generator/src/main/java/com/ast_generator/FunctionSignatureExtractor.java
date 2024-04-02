@@ -11,7 +11,7 @@ import java.util.Set;
 public class FunctionSignatureExtractor {
 
     private Set<String> methodSignatures;
-    private Map<String, Dependency> dependencyMap;
+    private Map<String, DependencyNode> dependencyMap;
     private Set<String> importSet;
     private Set<String> thirdPartyImports;
 
@@ -19,7 +19,7 @@ public class FunctionSignatureExtractor {
         this.methodSignatures = new HashSet<>();
     }
 
-    public FunctionSignatureExtractor(Map<String, Dependency> dependencyMap) {
+    public FunctionSignatureExtractor(Map<String, DependencyNode> dependencyMap) {
         this.methodSignatures = new HashSet<>();
         this.dependencyMap = dependencyMap;
         this.importSet = new HashSet<>();

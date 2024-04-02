@@ -1,8 +1,12 @@
 package com.ast_generator;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-
+import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+// @JsonPropertyOrder({ "declaringType", "methodSignature", "methodName", "lineNumber", "fullExpression", "currentLayer", "declarationInfo" })
 public class MethodDeclarationInfo {
 
     private String sourceFilePath;
@@ -72,5 +76,15 @@ public class MethodDeclarationInfo {
 
     public String toString() {
         return sourceFilePath + ":" + declarationStartLine + "-" + declarationEndLine + " " + methodName;
+    }
+
+    @JsonIgnore
+    public Set<String> getAllDeclaringTypes() {
+        Set<String> declaringTypes = new HashSet<>();
+        declaringTypes.add(methodName);
+        for (MethodCallEntry entry : innerMethodCalls) {
+            declaringTypes.add(entry.getDeclaringType());
+        }
+        return declaringTypes;
     }
 }

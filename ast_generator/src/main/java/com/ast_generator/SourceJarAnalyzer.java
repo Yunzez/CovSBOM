@@ -32,7 +32,7 @@ import com.github.javaparser.ast.body.CallableDeclaration.Signature;
 
 public class SourceJarAnalyzer {
     private Path jarPath;
-    private Dependency dependency;
+    private DependencyNode dependency;
     private String decompressedPath;
     private Collection<String> targetPackages;
     private List<ParseResult<CompilationUnit>> currentParseResults;
@@ -51,7 +51,7 @@ public class SourceJarAnalyzer {
     int failCount = 0;
 
     // Unified constructor
-    public SourceJarAnalyzer(Dependency dependency, Collection<String> targetPackages, MethodCallReporter reporter,
+    public SourceJarAnalyzer(DependencyNode dependency, Collection<String> targetPackages, MethodCallReporter reporter,
             String decompressDir) {
         this.dependency = dependency;
         this.jarPath = Paths.get(dependency.getSourceJarPath());
@@ -61,14 +61,14 @@ public class SourceJarAnalyzer {
     }
 
     public void analyze() throws IOException {
-        // Decompress the JAR file
-        // decompressJar();
         decompressedPath = this.dependency.getSourceDecompressedPath();
         System.out.println("Analyze decompressed path of used dependency: " + decompressedPath);
         // Process the decompressed directory
         processDecompressedDirectory();
         System.out.println("Total third party method calls: " + totalCount + ", Success: " + successCount + ", Fail: "
                 + failCount);
+
+        
 
     }
 
@@ -97,9 +97,6 @@ public class SourceJarAnalyzer {
             iterateParseResults(parseResults);
             // Process each ParseResult to get CompilationUnit
         }
-        // System.out.println("------ Completed processing of project source roots with
-        // roots number: "
-        // + projectRoot.getSourceRoots().size() + "------");
     }
 
     private void iterateParseResults(List<ParseResult<CompilationUnit>> parseResults) {
@@ -143,6 +140,14 @@ public class SourceJarAnalyzer {
                 String currentSignature = resolvedMethod.getSignature();
                 String fullExpression = methodCall.toString();
                 String functionCallType = resolvedMethod.declaringType().getQualifiedName();
+                // if (!functionCallType.startsWith("java.") && !functionCallType.startsWith("javax.")) {
+                //     if (!functionCallType.startsWith(dependency.getGroupId())) {
+                //         System.out.println("interesting functionCallType: " + functionCallType + "  " + dependency.getGroupId());
+                //     }
+                // }
+                // if (functionCallType.startsWith("com.google.guava")) {
+                //     System.out.println("Guava is calling: " + functionCallType + ": " + fullExpression);
+                // }
 
                 MethodSignatureKey key = new MethodSignatureKey(functionCallType, currentSignature);
                 if (!functionCallType.startsWith("java.") && !functionCallType.startsWith("javax.")) {
@@ -165,15 +170,12 @@ public class SourceJarAnalyzer {
                     }
                 }
             } catch (UnsolvedSymbolException e) {
-                // Log unresolved method calls; these might be external methods which are
-                // acceptable
-                // System.out.println("Info: Unresolved method call to '" + e.getName() + "'
-                // might be external and is therefore acceptable.");
+                System.out.println("Info: Unresolved method call to '" + e.getName() + " might be external.");
             } catch (UnsupportedOperationException e) {
                 // Log the issue but do not treat as critical error
                 // System.out.println("Warning: UnsupportedOperationException encountered.
                 // Method may not be supported for resolution: " + e.getMessage());
-                failCount++;
+
             } catch (IllegalStateException e) {
                 // System.err.println("Warning: Failed to resolve a type due to an
                 // IllegalStateException. " +
@@ -254,7 +256,6 @@ public class SourceJarAnalyzer {
     private void digFunctionCallEntries(MethodDeclarationInfo currentDeclarationInfo, int depth,
             Set<MethodSignatureKey> currentClassSignatureContext) {
 
-        Boolean hasRelatedCall = false;
         if (depth > MAX_DIG_DEPTH && RESTRICT_DEPTH) {
             return;
         }
@@ -273,11 +274,9 @@ public class SourceJarAnalyzer {
         }
 
         List<MethodCallEntry> internalTargetCalls = currentDeclarationInfo.getInnerMethodCalls();
-        Set<String> targetPackages = new HashSet<>();
 
-        for (MethodCallEntry callEntry : internalTargetCalls) {
-            targetPackages.add(callEntry.getDeclaringType());
-        }
+
+        Set<String> targetPackages = currentDeclarationInfo.getAllDeclaringTypes();
 
         for (ParseResult<CompilationUnit> parseResult : this.currentParseResults) {
             if (!parseResult.isSuccessful() || !parseResult.getResult().isPresent()) {
@@ -296,18 +295,12 @@ public class SourceJarAnalyzer {
             targetPackages.stream().forEach(targetPackage -> {
                 if (packageLikePath.startsWith(targetPackage)) {
                     lookForCalls.addAll(filterCallsForPackage(targetPackage, internalTargetCalls));
-                    // System.out.println("all internal calls: " + internalTargetCalls.toString());
-                    // System.out.println("---------");
                 }
             });
 
             List<TypeDeclaration<?>> types = cu.getTypes();
 
             if (types.size() > 1) {
-                // System.out.println(
-                        // "Warning: More than one type in the file: " + packageLikePath + " with types: " + types.size());
-                // digFunctionCallEntriesHelper(cu, lookForCalls, depth,
-                // currentClassSignatureContext);
                 for (TypeDeclaration<?> typeDeclaration : types) {
                     CompilationUnit newCompilationUnit = new CompilationUnit();
                     newCompilationUnit.addType(typeDeclaration.clone());
@@ -367,10 +360,7 @@ public class SourceJarAnalyzer {
 
                 if (lookForCall.getMethodName().equals(name)
                         && lookForCall.getMethodSignature().equals(currentDeclarationSignature)) {
-                    if (depth > 400 && depth < 405) {
-                        System.out.println("Found method: " + name + " in type: " + currentDeclarationSignature);
-                    }
-                    // System.out.println("Found method: " + name + " in type: " + packageLikePath);
+                  
                     MethodDeclarationInfo currentDeclarationInfo = new MethodDeclarationInfo(fullPath, startLine,
                             endLine,
                             name,
@@ -410,19 +400,34 @@ public class SourceJarAnalyzer {
      */
 
     private void initCombinedSolver(String fullPath, ProjectRoot projectRoot) {
-        // System.out.println("Init combined solver for root path " + fullPath + " with
-        // roots number "
-        // + projectRoot.getSourceRoots().size());
-
         CombinedTypeSolver combinedSolver = new CombinedTypeSolver();
 
+        // Loop through each dependency and add it to the CombinedTypeSolver
+        List<DependencyNode> dependencyNodes = dependency.getChildren();
+        System.out.println("Adding sub dependencies: " + dependencyNodes.size());
+        for (DependencyNode dependency : dependencyNodes) {
+            Path jarPath = Paths.get(dependency.getJarPath());
+
+            if (Files.exists(jarPath)) {
+                try {
+                    System.out.println("Adding dependency: " + jarPath);
+                    // Add JarTypeSolver for each JAR file (external dependency)
+                    combinedSolver.add(new JarTypeSolver(jarPath.toString()));
+                } catch (Exception e) {
+                    System.out.println("Failed to add dependency: " + jarPath.toString());
+                    e.printStackTrace();
+                }
+            } else {
+                System.out.println("Jar file does not exist, skipping: " + jarPath);
+                dependency.setIsValid(false);
+            }
+        }
         combinedSolver.add(new ReflectionTypeSolver());
-        // combinedSolver.add(new JavaParserTypeSolver(new File(fullPath)));
+
         projectRoot.getSourceRoots()
                 .forEach(sourceRoot -> combinedSolver.add(new JavaParserTypeSolver(sourceRoot.getRoot())));
 
-        
-        // configuration.setLanguageLevel(ParserConfiguration.LanguageLevel.JAVA_8);
+
         ParserConfiguration.LanguageLevel languageLevel = Utils.getLanguageLevelFromVersion(Settings.JAVA_VERSION);
 
         ParserConfiguration configuration = new ParserConfiguration()

@@ -3,6 +3,7 @@ package com.ast_generator;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -11,10 +12,21 @@ import java.util.regex.Pattern;
 
 public class MavenDependencyTree {
 
-    public static List<String> runMavenDependencyTree(String projectDir) {
+    /**
+     * this method will run the maven dependency:tree command and parse the output
+     * to get the dependencies and dependencies tree
+     * 
+     * @param projectDir    - the directory of the project to run the maven
+     *                      dependency:tree command
+     * @param packageInfo   - the root package info for filtering dependencies
+     * @param dependencyMap - the map to update with the dependencies
+     * @return
+     */
+    public static DependencyNode runMavenDependencyTree(String projectDir, Dependency packageInfo,
+            Map<String, DependencyNode> dependencyMap) {
         System.out.println(System.getProperty("user.dir"));
         System.out.println("Running maven dependency:tree " + projectDir);
-        List<String> dependencies = new ArrayList<>();
+        List<String> mavenOutput = new ArrayList<>();
         try {
             ProcessBuilder processBuilder = new ProcessBuilder();
             processBuilder.command("mvn", "-f", System.getProperty("user.dir") + "/" + projectDir, "dependency:tree");
@@ -25,7 +37,7 @@ public class MavenDependencyTree {
 
             String line;
             while ((line = reader.readLine()) != null) {
-                dependencies.add(line);
+                mavenOutput.add(line);
                 System.out.println(line);
             }
 
@@ -35,7 +47,10 @@ public class MavenDependencyTree {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return dependencies;
+
+        DependencyNode rootNode = updateDependencyMapWithTreeOutput(mavenOutput, dependencyMap, packageInfo);
+
+        return rootNode;
     }
 
     /**
@@ -44,41 +59,29 @@ public class MavenDependencyTree {
      * @param dependencyMap - the map to update with the dependencies
      * @param packageInfo   - the root package info for filtering dependencies
      */
-    public static void updateDependencyMapWithTreeOutput(List<String> mavenTree, Map<String, Dependency> dependencyMap,
+    public static DependencyNode updateDependencyMapWithTreeOutput(List<String> mavenTree,
+            Map<String, DependencyNode> dependencyMap,
             Dependency packageInfo) {
 
-        buildDependencyTree(mavenTree);
-        for (String line : mavenTree) {
-            System.out.println("line: " + line);
+        DependencyNode rootNode = buildDependencyTree(mavenTree);
+        List<DependencyNode> mainDependencies = rootNode.getChildren();
+        for (DependencyNode dependencyNode : mainDependencies) {
+            // System.out.println("dependency: " + dependencyNode.toString());
 
-            if (line.contains(":jar:")) {
-                String[] separatedLine = line.split(":");
-                String artifactId = separatedLine[1].trim();
-                String groupId = separatedLine[0].trim();
-                String version = separatedLine[3].trim();
+            String key = dependencyNode.getGroupId() + ":" + dependencyNode.getArtifactId();
 
-                groupId = groupId.split(" ")[groupId.split(" ").length - 1];
-
-                if (groupId.startsWith(packageInfo.getGroupId())) {
-                    continue;
-                }
-
-                String key = groupId + ":" + artifactId;
-
-                // Correcting the mavenPathBase construction
-                String mavenPathBase = System.getProperty("user.home") + "/.m2/repository/"
-                        + groupId.replace('.', '/') + "/" + artifactId + "/" + version
-                        + "/" + artifactId + "-" + version;
-
-                Dependency dependency = new Dependency(groupId, artifactId, version, mavenPathBase + ".jar",
-                        mavenPathBase + "-sources.jar");
-                dependencyMap.put(key, dependency);
-
-                // System.out.println("parsed dependency: " + dependency.toString());
-            }
+            dependencyMap.put(key, dependencyNode);
         }
+
+        return rootNode;
     }
 
+    /**
+     * Build a dependency tree from the output of the maven dependency:tree command
+     * 
+     * @param mavenTreeLines - the output of the maven dependency:tree command
+     * @return
+     */
     public static DependencyNode buildDependencyTree(List<String> mavenTreeLines) {
         List<DependencyNode> nodes = new ArrayList<>();
         Stack<DependencyNode> nodeStack = new Stack<>();
@@ -90,7 +93,6 @@ public class MavenDependencyTree {
 
             int depth = getDepth(line); // Implement this method to determine the depth based on leading spaces or
                                         // dashes
-            System.out.println("line: " + line + " depth: " + depth);
 
             String[] separatedLine = line.split(":");
             String artifactId = separatedLine[1].trim();
@@ -107,7 +109,7 @@ public class MavenDependencyTree {
                     mavenPathBase + "-sources.jar");
 
             DependencyNode node = new DependencyNode(dependency);
-            
+
             // Add node to the list of all nodes
             nodes.add(node);
 
@@ -127,8 +129,8 @@ public class MavenDependencyTree {
 
             nodeStack.push(node);
         }
-       
-        System.out.println("root: "+ root.toString());
+
+        System.out.println("root: " + root.toConsoleString());
         return root; // Return the root of the tree
     }
 

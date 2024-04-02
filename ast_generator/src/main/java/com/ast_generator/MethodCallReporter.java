@@ -20,7 +20,7 @@ public class MethodCallReporter {
     private Map<String, List<MethodCallEntry>> reportMap = new HashMap<>();
     private Map<MethodSignatureKey, MethodDeclarationInfo> uniqueMethodDeclarations = new HashMap<>();
     private String parentPackageName;
-    private Map<Dependency, Set<String>> typeToJarReference;
+    private Map<DependencyNode, Set<String>> typeToJarReference;
 
     // Add a method call entry
     public void addEntry(String fileName, String declaringType, String methodName, int lineNumber,
@@ -58,6 +58,10 @@ public class MethodCallReporter {
             return false;
         }
 
+        if (declaringType.contains("jetty.http")) {
+            System.out.println("jetty.http type: " + declaringType);
+        }
+
         Boolean ret = false;
 
         // checking if the method is already in the reportMap
@@ -75,7 +79,7 @@ public class MethodCallReporter {
         return ret;
     }
 
-    public void setTypeToJarReference(Map<Dependency, Set<String>> typeToJarReference) {
+    public void setTypeToJarReference(Map<DependencyNode, Set<String>> typeToJarReference) {
         this.typeToJarReference = typeToJarReference;
     }
 
@@ -184,7 +188,7 @@ public class MethodCallReporter {
             Map<Dependency, List<MethodCallEntry>> dependencyToMethodCallEntries = new HashMap<>();
             for (MethodCallEntry entry : allMethodDeclarationInfos) {
                 Dependency matchedDependency = null;
-                for (Map.Entry<Dependency, Set<String>> entry1 : typeToJarReference.entrySet()) {
+                for (Map.Entry<DependencyNode, Set<String>> entry1 : typeToJarReference.entrySet()) {
                   
                     if (entry1.getValue().contains(entry.getDeclaringType())) {
                         matchedDependency = entry1.getKey();

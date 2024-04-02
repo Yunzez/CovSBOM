@@ -12,18 +12,18 @@ import java.util.Map;
 import java.util.Set;
 
 public class DependencyAnalyzer {
-    private Map<String, Dependency> dependencyMap;
+    private Map<String, DependencyNode> dependencyMap;
     private MethodCallReporter methodCallReporter;
     private Set<String> unresolvedTypes = new HashSet<String>();
     private List<String> jarDecompressedPaths = new ArrayList<String>();
     // * Map of jarPath to a set of types that are found in the jar
     // * Key: jarPath, Value: Set of types
-    private Map<Dependency, Set<String>> typeToJarLookup = new HashMap<Dependency, Set<String>>();
+    private Map<DependencyNode, Set<String>> typeToJarLookup = new HashMap<DependencyNode, Set<String>>();
 
     public DependencyAnalyzer() {
     }
 
-    public DependencyAnalyzer(Map<String, Dependency> dependencyMap, MethodCallReporter methodCallReporter) {
+    public DependencyAnalyzer(Map<String, DependencyNode> dependencyMap, MethodCallReporter methodCallReporter) {
         this.dependencyMap = dependencyMap;
         this.methodCallReporter = methodCallReporter;
     }
@@ -37,13 +37,15 @@ public class DependencyAnalyzer {
         // * find all required jar and save the results in typeToJarLookup
         findRequiredJars();
 
-        System.out.println("typeToJarLookup: " + typeToJarLookup.toString());
+        System.out.println("typeToJarLookup: ");
+        for (DependencyNode dependency : typeToJarLookup.keySet()) {
+            System.out.println(dependency.toString() + ": " + typeToJarLookup.get(dependency).toString());
+        }
         System.out.println("total unique types: " + methodCallReporter.getUniqueTypes().size());
         System.out.println("unresolved types: " + unresolvedTypes.size());
 
         // * only analyze jars that are used in the program
-        for (Dependency dependency : typeToJarLookup.keySet()) {
-            // String jarPath = dependency.getSourceJarPath();
+        for (DependencyNode dependency : typeToJarLookup.keySet()) {
             // * we get all the parth we need to analyze for this jar
             Set<String> types = typeToJarLookup.get(dependency);
             SourceJarAnalyzer sourceJarAnalyzer = new SourceJarAnalyzer(dependency,
@@ -63,7 +65,6 @@ public class DependencyAnalyzer {
      * Find all required jars and save the results in typeToJarLookup
      */
     private void findRequiredJars() {
-        Map<String, List<MethodCallEntry>> reportMap = methodCallReporter.getReportMap();
         List<String> uniqueTypes = methodCallReporter.getUniqueTypes();
 
         for (String declaringType : uniqueTypes) {
@@ -91,7 +92,7 @@ public class DependencyAnalyzer {
             if (Files.exists(potentialPath)) {
                 // Assuming dependencyMap keys are artifactIds and Dependency objects have a
                 // method getArtifactId()
-                Dependency matchedDependency = findDependencyForDecompressedPath(jarDecompressedPath);
+                DependencyNode matchedDependency = findDependencyForDecompressedPath(jarDecompressedPath);
                 if (matchedDependency != null) {
                     if (typeToJarLookup.get(matchedDependency) == null) {
                         typeToJarLookup.put(matchedDependency, new HashSet<String>());
@@ -106,7 +107,7 @@ public class DependencyAnalyzer {
         }
     }
 
-    private Dependency findDependencyForDecompressedPath(String decompressedPath) {
+    private DependencyNode findDependencyForDecompressedPath(String decompressedPath) {
         // Implement logic to find the matching Dependency object based on
         // decompressedPath
         // This might involve naming conventions or additional metadata stored during

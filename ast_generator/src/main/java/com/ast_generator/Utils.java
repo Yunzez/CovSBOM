@@ -156,7 +156,7 @@ public class Utils {
      * @return A list of strings representing the paths to the decompressed
      *         subdirectories for each dependency
      */
-    public static List<String> decompressAllJars(Collection<Dependency> collection, String stringPath) {
+    public static List<String> decompressAllJars(Collection<DependencyNode> collection, String stringPath) {
         List<String> decompressSubDirName = new ArrayList<String>();
         Path decompressedParentPath = Paths.get(stringPath);
 

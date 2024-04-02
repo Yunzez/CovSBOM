@@ -40,6 +40,7 @@ public class Main {
     private static String outputFolderName = "CovSBOM_output";
 
     private static boolean test = true;
+
     public static void main(String[] args) throws IOException {
 
         // ! Check for --process-directory argument
@@ -129,28 +130,23 @@ public class Main {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        Map<String, Dependency> dependencyMap = new HashMap<String,Dependency>();
+
         Map<String, String> moduleList = DependencyProcessor.parsePomForModules(inferredPomPath);
         System.out.println("java version: " + DependencyProcessor.getJavaVersion());
         Settings.setJavaVersion(DependencyProcessor.getJavaVersion());
-       
 
         System.out.println("moduleList: " + moduleList.toString());
-        
-        List<String> mavenTree = MavenDependencyTree.runMavenDependencyTree(rootDirectoryPath);
         Dependency packageInfo = DependencyProcessor.getPackageInfo();
-        MavenDependencyTree.updateDependencyMapWithTreeOutput(mavenTree, dependencyMap, packageInfo);
+        Map<String, DependencyNode> dependencyMap = new HashMap<String, DependencyNode>();
+        DependencyNode rootNode = MavenDependencyTree.runMavenDependencyTree(rootDirectoryPath, packageInfo,
+                dependencyMap);
 
-        // if(test) {
-        //     return;
-        // }
-
-        System.out.println("total dependencies: " + dependencyMap.size());
-        for(String key: dependencyMap.keySet()){
+        System.out.println("main project dependencies: " + dependencyMap.size());
+        for (String key : dependencyMap.keySet()) {
             System.out.println("key: " + key + " value: " + dependencyMap.get(key).toString());
         }
+
         
-      
         // ! generate ASTs for all java files in the application
         /*
          * +--------------------+
@@ -171,9 +167,14 @@ public class Main {
 
         // importManager.printImports();
         methodCallReporter.generateThirdPartyTypeJsonReport(
-            "CovSBOM_output/analysis/" + outputProjectFolderPath
-                    + "/method_calls.json");
+                "CovSBOM_output/analysis/" + outputProjectFolderPath
+                        + "/method_calls.json");
         System.out.println(" ------- end processing directory, start analyzing dependencies -------");
+
+
+        // if (test) {
+        //     return;
+        // }
 
         /*
          * +------------------+
@@ -192,8 +193,8 @@ public class Main {
 
         methodCallReporter
                 .generateThirdPartyTypeJsonReportBasedonPackage(
-                    "CovSBOM_output/analysis/" + outputProjectFolderPath
-                    + "/final_report_package_based.json");
+                        "CovSBOM_output/analysis/" + outputProjectFolderPath
+                                + "/final_report_package_based.json");
 
         System.out.println("End of analysis");
     }

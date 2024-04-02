@@ -156,6 +156,9 @@ public class DependencyProcessor {
         return moduleMap;
     }
 
+    /** 
+     * This method parses the `pom.xml` file for a Maven project and returns a `Dependency` object representing the project.
+     */
     public static Dependency parseProjectInfo(String pomFilePath) {
         Dependency projectInfo = null;
 

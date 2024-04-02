@@ -3,47 +3,57 @@ package com.ast_generator;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DependencyNode {
-    private Dependency dependency;
+public class DependencyNode extends Dependency{
+    private String groupId;
+    private String artifactId;
+    private String version;
+    private String jarPath;
+    private String sourceJarPath;
     private List<DependencyNode> children = new ArrayList<>();
 
-    public DependencyNode(Dependency dependency) {
-        this.dependency = dependency;
-    }
+    // * isValid is used to mark if the dependency has source jar
+    private Boolean isValid = true;
 
-    public DependencyNode(Dependency dependency, List<DependencyNode> children) {
-        this.dependency = dependency;
-        this.children = children;
-    }
-
-    // Constructor
     public DependencyNode(String groupId, String artifactId, String version, String jarPath, String sourceJarPath) {
-      this.dependency = new Dependency(groupId, artifactId, version, jarPath, sourceJarPath);
+        super(groupId, artifactId, version, jarPath, sourceJarPath);
+        this.groupId = groupId;
+        this.artifactId = artifactId;
+        this.version = version;
+        this.jarPath = jarPath;
+        this.sourceJarPath = sourceJarPath;
     }
 
-    // Getters and setters
+    public DependencyNode(Dependency dependency) {
+        super(dependency.getGroupId(), dependency.getArtifactId(), dependency.getVersion(), dependency.getJarPath(), dependency.getSourceJarPath());
+        this.artifactId = dependency.getArtifactId();
+        this.groupId = dependency.getGroupId();
+        this.version = dependency.getVersion();
+        this.jarPath = dependency.getJarPath();
+        this.sourceJarPath = dependency.getSourceJarPath();
+    }
+
     public void addChild(DependencyNode child) {
         children.add(child);
-    }
-
-    public Dependency getDependency() {
-        return dependency;
     }
 
     public List<DependencyNode> getChildren() {
         return children;
     }
 
-    public void setDependency(Dependency dependency) {
-        this.dependency = dependency;
-    }
-
     public void setChildren(List<DependencyNode> children) {
         this.children = children;
     }
 
-    @Override
-    public String toString() {
+    public void setIsValid (Boolean valid) {
+        this.isValid = valid;
+    }
+
+    public Boolean getIsValid() {
+        return isValid;
+    }
+
+
+    public String toConsoleString() {
         return buildString("", true);
     }
 
@@ -53,11 +63,11 @@ public class DependencyNode {
         
         builder.append(prefix)
                .append(isTail ? "└── " : "├── ")
-               .append(dependency.getGroupId())
+               .append(groupId)
                .append(":")
-               .append(dependency.getArtifactId())
+               .append(artifactId)
                .append(":")
-               .append(dependency.getVersion());
+               .append(version);
 
         int i = 0;
         for (DependencyNode child : children) {

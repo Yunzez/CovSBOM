@@ -46,7 +46,7 @@ import java.io.File;
 public class DirectoryProcessor {
     private String directoryPath;
     private static Path astPath;
-    private static Map<String, Dependency> dependencyMap;
+    private static Map<String, DependencyNode> dependencyMap;
     private ImportManager importManager;
     private static boolean separateFiles;
     CombinedTypeSolver combinedSolver;
@@ -76,7 +76,7 @@ public class DirectoryProcessor {
      * @param methodReporter the MethodCallReporter to store the method calls
      * @param moduleList     the list of modules to process, this can be null
      */
-    public DirectoryProcessor(String directoryPath, Path astPath, Map<String, Dependency> dependencyMap,
+    public DirectoryProcessor(String directoryPath, Path astPath, Map<String, DependencyNode> dependencyMap,
             ImportManager importManager, MethodCallReporter methodReporter, Map<String, String> moduleList) {
         this.directoryPath = directoryPath;
         DirectoryProcessor.astPath = astPath;
@@ -93,7 +93,7 @@ public class DirectoryProcessor {
 
         // Loop through each dependency and add it to the CombinedTypeSolver
         for (String dependencyPath : dependencyMap.keySet()) {
-            Dependency dependency = dependencyMap.get(dependencyPath);
+            DependencyNode dependency = dependencyMap.get(dependencyPath);
             Path jarPath = Paths.get(dependency.getJarPath());
 
             if (Files.exists(jarPath)) {
@@ -107,6 +107,7 @@ public class DirectoryProcessor {
                 }
             } else {
                 System.out.println("Jar file does not exist, skipping: " + jarPath);
+                dependency.setIsValid(false);
             }
         }
 
@@ -178,17 +179,18 @@ public class DirectoryProcessor {
     }
 
     private void processDirectory(Path directory) throws IOException {
-
+        final int[] count = {0}; // Declare count as final or effectively final
         Files.walkFileTree(directory, new SimpleFileVisitor<Path>() {
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                 if (file.toString().endsWith(".java")) {
                     processSingleJavaFile(file.toString());
+                    count[0]++; // Increment count
                 }
                 return FileVisitResult.CONTINUE;
             }
         });
-
+        System.out.println("Processed " + count[0] + " Java files.");
     }
 
     private void processSingleJavaFile(String sourceFilePath) {
@@ -201,11 +203,6 @@ public class DirectoryProcessor {
         try {
             // ! generate AST object
             CompilationUnit cu = StaticJavaParser.parse(path);
-            ParserConfiguration.LanguageLevel languageLevel = Utils.getLanguageLevelFromVersion(Settings.JAVA_VERSION);
-            // System.out.println("detected java version: " + Settings.JAVA_VERSION);
-            // System.out.println("constant located java level: " + languageLevel);
-            // System.out.println("using java level: " +
-            // StaticJavaParser.getParserConfiguration().getLanguageLevel());
             if (dependencyMap != null) {
                 analyzeSingleASTObject(cu, path);
             }
