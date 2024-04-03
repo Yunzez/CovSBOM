@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.ast_generator.Utils.DependencyCollector;
+
 public class DependencyAnalyzer {
     private Map<String, DependencyNode> dependencyMap;
     private MethodCallReporter methodCallReporter;
@@ -35,7 +37,7 @@ public class DependencyAnalyzer {
 
         List<DependencyNode> dependencies = new ArrayList<DependencyNode>();
         for (DependencyNode dependency : dependencyMap.values()) {
-            dependencies.addAll(dependency.toList());
+            dependencies.addAll(DependencyCollector.collectAllDependencies(dependency));
         }
 
         this.jarDecompressedPaths = Utils.decompressAllJars(dependencies, "decompressed");
@@ -55,7 +57,7 @@ public class DependencyAnalyzer {
         for (DependencyNode dependency : typeToJarLookup.keySet()) {
             // * we get all the parth we need to analyze for this jar
             Set<String> types = typeToJarLookup.get(dependency);
-            SourceJarAnalyzer sourceJarAnalyzer = new SourceJarAnalyzer(dependency,
+            SourceJarAnalyzer sourceJarAnalyzer = new SourceJarAnalyzer(dependency, dependencies,
                     types, methodCallReporter, "decompressed");
 
             try {
@@ -79,7 +81,7 @@ public class DependencyAnalyzer {
                     || declaringType.startsWith(methodCallReporter.getParentPackageName())) {
                 continue;
             }
-            
+
             unresolvedTypes.add(declaringType);
             findJarPathForType(declaringType);
         }

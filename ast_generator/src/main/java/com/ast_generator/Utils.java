@@ -307,4 +307,31 @@ public class Utils {
         }
     }
 
+
+    /**
+     * Collects all dependencies of a given root node and returns them in a set.
+     */
+    public class DependencyCollector {
+
+        public static Set<DependencyNode> collectAllDependencies(DependencyNode rootNode) {
+            Set<DependencyNode> allDependencies = new HashSet<>();
+            collectDependenciesRecursive(rootNode, allDependencies);
+            return allDependencies;
+        }
+    
+        private static void collectDependenciesRecursive(DependencyNode node, Set<DependencyNode> allDependencies) {
+            if (node == null || allDependencies.contains(node)) {
+                return; // Base case: node is null or already processed
+            }
+    
+            // Process current node
+            allDependencies.add(node);
+    
+            // Recursively process all children
+            for (DependencyNode child : node.getChildren()) {
+                collectDependenciesRecursive(child, allDependencies);
+            }
+        }
+    }
+
 }

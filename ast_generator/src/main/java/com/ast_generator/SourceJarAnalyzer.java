@@ -1,6 +1,7 @@
 package com.ast_generator;
 
 import java.io.*;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.file.*;
 import java.util.*;
@@ -16,6 +17,7 @@ import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.expr.MethodCallExpr;
+import com.github.javaparser.resolution.TypeSolver;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
 import com.github.javaparser.resolution.declarations.ResolvedMethodDeclaration;
 import com.github.javaparser.symbolsolver.JavaSymbolSolver;
@@ -33,13 +35,14 @@ import com.github.javaparser.ast.body.CallableDeclaration.Signature;
 public class SourceJarAnalyzer {
     private Path jarPath;
     private DependencyNode dependency;
+    private List<DependencyNode> allDependencies;
     private String decompressedPath;
     private Collection<String> targetPackages;
     private List<ParseResult<CompilationUnit>> currentParseResults;
+    private String packageName;
     // * this is the packages we will be tracking again when we loop thru internal
     // methods
     private Path decompressDir;
-    CombinedTypeSolver combinedSolver;
     MethodCallReporter methodCallReporter;
 
     // ! max recursion depth for digging into method calls
@@ -50,24 +53,31 @@ public class SourceJarAnalyzer {
     int successCount = 0;
     int failCount = 0;
 
+    int declarationResolveFailureCount = 0;
+
     // Unified constructor
-    public SourceJarAnalyzer(DependencyNode dependency, Collection<String> targetPackages, MethodCallReporter reporter,
+    public SourceJarAnalyzer(DependencyNode dependency, List<DependencyNode> allDependencies,
+            Collection<String> targetPackages, MethodCallReporter reporter,
             String decompressDir) {
         this.dependency = dependency;
         this.jarPath = Paths.get(dependency.getSourceJarPath());
+        this.packageName = dependency.getGroupId();
         this.targetPackages = targetPackages; // Accepts any Collection<String>
         this.decompressDir = Paths.get(decompressDir);
         this.methodCallReporter = reporter;
+        this.allDependencies = allDependencies;
     }
 
     public void analyze() throws IOException {
         decompressedPath = this.dependency.getSourceDecompressedPath();
+        System.out.println(" - - - - - - - - - - - - - ");
         System.out.println("Analyze decompressed path of used dependency: " + decompressedPath);
         // Process the decompressed directory
         processDecompressedDirectory();
         System.out.println("Total third party method calls: " + totalCount + ", Success: " + successCount + ", Fail: "
                 + failCount);
 
+        System.out.println("Total declaration resolve failure: " + declarationResolveFailureCount);
     }
 
     /*
@@ -138,12 +148,7 @@ public class SourceJarAnalyzer {
                 String currentSignature = resolvedMethod.getSignature();
                 String fullExpression = methodCall.toString();
                 String functionCallType = resolvedMethod.declaringType().getQualifiedName();
-                if (fullExpression.contains("setDefaultSocketConfig")) {
-                    System.out.println("setDefaultSocketConfig: " + functionCallType + ": " + fullExpression);
-                }
-                if (fullExpression.contains("setDefaultMaxPerRoute")) {
-                    System.out.println("setDefaultMaxPerRoute: " + functionCallType + ": " + fullExpression);
-                }
+
                 // if (!functionCallType.startsWith("java.") &&
                 // !functionCallType.startsWith("javax.")) {
                 // if (!functionCallType.startsWith(dependency.getGroupId())) {
@@ -158,6 +163,10 @@ public class SourceJarAnalyzer {
 
                 MethodSignatureKey key = new MethodSignatureKey(functionCallType, currentSignature);
                 if (!functionCallType.startsWith("java.") && !functionCallType.startsWith("javax.")) {
+                    if (!functionCallType.contains(dependency.getGroupId())) {
+                        System.out.println("external functionCallType: " + functionCallType + " "
+                                + dependency.getGroupId());
+                    }
                     MethodCallEntry existingEntry = uniqueMethodCalls.get(key);
                     if (existingEntry == null) {
                         // Add new entry if it doesn't exist
@@ -228,7 +237,9 @@ public class SourceJarAnalyzer {
                 // * providing higher accuracy
                 ResolvedMethodDeclaration resolvedDeclaration = methodDeclaration.resolve();
                 String currentDeclarationSignature = resolvedDeclaration.getSignature().toString();
-
+                if (currentDeclarationSignature.contains("javax")) {
+                    System.out.println(currentDeclarationSignature + " " + fullPath);
+                }
                 int startLine = methodDeclaration.getBegin().map(pos -> pos.line).orElse(-1);
                 int endLine = methodDeclaration.getEnd().map(pos -> pos.line).orElse(-1);
                 String name = methodDeclaration.getName().asString();
@@ -254,18 +265,19 @@ public class SourceJarAnalyzer {
                     digFunctionCallEntries(currentDeclarationInfo, 1, currentClassSignatureContext);
                 }
             } catch (UnsolvedSymbolException e) {
+                declarationResolveFailureCount++;
                 // * when we fail to resolve, it means there are certain
                 System.out.println(
                         "Warning: Could not resolve method declaration: " + packageLikePath + ", " +
                                 methodDeclaration.getNameAsString() + " at: " + fullPath);
                 System.out.println(" declaration: " + methodDeclaration.getDeclarationAsString());
                 System.out.println(e.getMessage());
-                if (methodDeclaration.getDeclarationAsString()
-                        .equals("public static T verify(T mock, VerificationMode mode)")
-                        || methodDeclaration.getDeclarationAsString()
-                                .contains("setToAttribute(ServletContext context, String key)")) {
-                    e.printStackTrace();
-                }
+                // if (methodDeclaration.getDeclarationAsString()
+                // .contains("addMapping(PathSpec pathSpec, WebSocketCreator creator)")
+                // || methodDeclaration.getDeclarationAsString()
+                // .contains("setToAttribute(ServletContext context, String key)")) {
+                // e.printStackTrace();
+                // }
             }
         }
     }
@@ -420,16 +432,38 @@ public class SourceJarAnalyzer {
 
     private void initCombinedSolver(String fullPath, ProjectRoot projectRoot) {
         CombinedTypeSolver combinedSolver = new CombinedTypeSolver();
-        combinedSolver.add(new ReflectionTypeSolver(false));
+        combinedSolver.add(new ReflectionTypeSolver(true));
         // Loop through each dependency and add it to the CombinedTypeSolver
+
         List<DependencyNode> dependencyNodes = dependency.getChildren();
-        System.out.println("Adding sub dependencies: " + dependencyNodes.size());
-        for (DependencyNode dependency : dependencyNodes) {
+       
+
+        // for (DependencyNode dependency : dependencyNodes) {
+        // Path jarPath = Paths.get(dependency.getJarPath());
+
+        // if (Files.exists(jarPath)) {
+        // try {
+        // System.out.println("Adding sub dependency: " + jarPath);
+        // // Add JarTypeSolver for each JAR file (external dependency)
+        // combinedSolver.add(new JarTypeSolver(jarPath.toString()));
+        // } catch (Exception e) {
+        // System.out.println("Failed to add dependency: " + jarPath.toString());
+        // e.printStackTrace();
+        // }
+        // } else {
+        // System.out.println("Jar file does not exist, skipping: " + jarPath);
+        // dependency.setIsValid(false);
+        // }
+        // }
+
+        // * here we are adding all dependencies due to maven tree's structure
+        System.out.println("Adding sub dependencies: " + allDependencies.size());
+        for (DependencyNode dependency : allDependencies) {
             Path jarPath = Paths.get(dependency.getJarPath());
 
             if (Files.exists(jarPath)) {
                 try {
-                    System.out.println("Adding dependency: " + jarPath);
+                    // System.out.println("Adding dependency: " + jarPath);
                     // Add JarTypeSolver for each JAR file (external dependency)
                     combinedSolver.add(new JarTypeSolver(jarPath.toString()));
                 } catch (Exception e) {
@@ -446,15 +480,38 @@ public class SourceJarAnalyzer {
             ParserConfiguration sourceRootConfiguration = sourceRoot.getParserConfiguration();
             ParserConfiguration.LanguageLevel languageLevel = Utils.getLanguageLevelFromVersion(Settings.JAVA_VERSION);
             sourceRootConfiguration.setLanguageLevel(languageLevel);
+
             combinedSolver.add(new JavaParserTypeSolver(sourceRoot.getRoot()));
             JavaSymbolSolver symbolSolver = new JavaSymbolSolver(combinedSolver);
+
             sourceRootConfiguration.setSymbolResolver(symbolSolver);
-            sourceRoot.setParserConfiguration(sourceRootConfiguration);
+
+            // sourceRoot.setParserConfiguration(sourceRootConfiguration);
         });
 
         // * add the combined solver to the static parser in case we need to resolve
-        StaticJavaParser.setConfiguration(new ParserConfiguration().setSymbolResolver(new JavaSymbolSolver(combinedSolver)));
+        // StaticJavaParser.setConfiguration(new
+        // ParserConfiguration().setSymbolResolver(new
+        // JavaSymbolSolver(combinedSolver)));
         System.out.println("Combined solver initialized.");
+
+        // ! testing purposes only
+        // try {
+        //     Field field = CombinedTypeSolver.class.getDeclaredField("elements");
+        //     field.setAccessible(true);
+        //     List<TypeSolver> solvers = (List<TypeSolver>) field.get(combinedSolver);
+
+        //     for (TypeSolver solver : solvers) {
+        //         if (solver instanceof JarTypeSolver) {
+        //             System.out.println("JarTypeSolver: " + ((JarTypeSolver) solver).getClass());
+        //         } else {
+        //             System.out.println("TypeSolver: " + solver.getClass());
+        //         }
+        //     }
+        // } catch (NoSuchFieldException | IllegalAccessException e) {
+        //     e.printStackTrace();
+        // }
+
     }
 
     // * seperate the package like path from the compilation unit
@@ -478,4 +535,5 @@ public class SourceJarAnalyzer {
                 .filter(call -> targetPackage.equals(call.getDeclaringType()))
                 .collect(Collectors.toList());
     }
+
 }
