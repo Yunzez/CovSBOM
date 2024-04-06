@@ -18,6 +18,9 @@ public class DependencyAnalyzer {
     private MethodCallReporter methodCallReporter;
     private Set<String> unresolvedTypes = new HashSet<String>();
     private List<String> jarDecompressedPaths = new ArrayList<String>();
+    Map<DependencyNode, HashSet<MethodSignatureKey>> loadingBuffer = new HashMap<DependencyNode, HashSet<MethodSignatureKey>>();
+    Map<DependencyNode, HashSet<MethodSignatureKey>> doneBuffer = new HashMap<DependencyNode, HashSet<MethodSignatureKey>>();
+
     // * Map of jarPath to a set of types that are found in the jar
     // * Key: jarPath, Value: Set of types
     private Map<DependencyNode, Set<String>> typeToJarLookup = new HashMap<DependencyNode, Set<String>>();
@@ -40,8 +43,13 @@ public class DependencyAnalyzer {
             dependencies.addAll(DependencyCollector.collectAllDependencies(dependency));
         }
 
+        // * initialize buffers
+        MethodCallBuffer loadingBuffer = new MethodCallBuffer(dependencies);
+        MethodCallBuffer doneBuffer = new MethodCallBuffer(dependencies);
+        // decompress all jars
         this.jarDecompressedPaths = Utils.decompressAllJars(dependencies, "decompressed");
-        System.out.println("jarDecompressedPaths: " + jarDecompressedPaths.toString());
+        // System.out.println("jarDecompressedPaths: " +
+        // jarDecompressedPaths.toString());
         // * find all required jar and save the results in typeToJarLookup
         findRequiredJars();
 
@@ -53,11 +61,12 @@ public class DependencyAnalyzer {
         System.out.println("unresolved types: " + unresolvedTypes.size());
         System.out.println(unresolvedTypes.toString());
 
-        // * only analyze jars that are used in the program
+        // * only analyze jars that are used in the program and gather loading buffer
         for (DependencyNode dependency : typeToJarLookup.keySet()) {
             // * we get all the parth we need to analyze for this jar
             Set<String> types = typeToJarLookup.get(dependency);
-            SourceJarAnalyzer sourceJarAnalyzer = new SourceJarAnalyzer(dependency, dependencies,
+            SourceJarAnalyzer sourceJarAnalyzer = new SourceJarAnalyzer(dependency, dependencies, loadingBuffer,
+                    doneBuffer,
                     types, methodCallReporter, "decompressed");
 
             try {
@@ -67,13 +76,64 @@ public class DependencyAnalyzer {
             }
         }
 
+        int faultCatchCount = 0;
+        while (loadingBuffer.size() > 0) {
+           
+
+            System.out.println("***");
+            System.out.println("processing loading buffer: " + faultCatchCount);
+            System.out.println("***");
+            faultCatchCount++;
+            for (DependencyNode dependency : loadingBuffer.getKeys()) {
+                
+                 // * we update the jarPath for type for reporter here
+                for (MethodCallEntry methodCallEntry : loadingBuffer.getMethodCalls(dependency)) {
+                    String declaringType = methodCallEntry.getDeclaringType();
+                    findJarPathForType(declaringType);
+                }
+
+                // * we get all the types we need to analyze for this jar
+                Set<String> types = new HashSet<String>();
+                
+                loadingBuffer.getMethodCalls(dependency).forEach(methodSignatureKey -> {
+                    if(dependency.getArtifactId().equals("freemarker")) {
+                        System.out.println("freemarker methodSignatureKey: " + methodSignatureKey.toString());
+                    }
+                    types.add(methodSignatureKey.getDeclaringType());
+                });
+
+                if (types.size() == 0) {
+                    continue;
+                }
+
+                SourceJarAnalyzer sourceJarAnalyzer = new SourceJarAnalyzer(dependency, dependencies, loadingBuffer,
+                        doneBuffer,
+                        types, methodCallReporter, "decompressed");
+                sourceJarAnalyzer.setExtendedAnalysis(true); // enable subdependency analysing
+                try {
+                    sourceJarAnalyzer.analyze();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (faultCatchCount > 4) {
+                System.out.println("pause operation: " + faultCatchCount);
+                break;
+            }
+        }
+
+        System.out.println(loadingBuffer.toString());
         methodCallReporter.setTypeToJarReference(typeToJarLookup);
+        System.out.println(typeToJarLookup.toString());
     }
 
     /**
      * Find all required jars and save the results in typeToJarLookup
      */
     private void findRequiredJars() {
+
+        // first layer unique types
         List<String> uniqueTypes = methodCallReporter.getUniqueTypes();
 
         for (String declaringType : uniqueTypes) {
@@ -121,7 +181,6 @@ public class DependencyAnalyzer {
         // decompressedPath
         // This might involve naming conventions or additional metadata stored during
         // decompression
-        // Example return statement (replace with actual logic)
         return dependencyMap.values().stream()
                 .filter(dependency -> decompressedPath.contains(dependency.getArtifactId()))
                 .findFirst()

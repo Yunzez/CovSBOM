@@ -17,6 +17,7 @@ import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.expr.MethodCallExpr;
+import com.github.javaparser.resolution.SymbolResolver;
 import com.github.javaparser.resolution.TypeSolver;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
 import com.github.javaparser.resolution.declarations.ResolvedMethodDeclaration;
@@ -34,15 +35,19 @@ import com.github.javaparser.ast.body.CallableDeclaration.Signature;
 
 public class SourceJarAnalyzer {
     private Path jarPath;
+    private JavaSymbolSolver symbolSolver;
     private DependencyNode dependency;
     private List<DependencyNode> allDependencies;
     private String decompressedPath;
     private Collection<String> targetPackages;
     private List<ParseResult<CompilationUnit>> currentParseResults;
     private String packageName;
+    private MethodCallBuffer loadingBuffer;
+    private MethodCallBuffer doneBuffer;
     // * this is the packages we will be tracking again when we loop thru internal
     // methods
     private Path decompressDir;
+    private boolean extendedAnalysis = false;
     MethodCallReporter methodCallReporter;
 
     // ! max recursion depth for digging into method calls
@@ -57,7 +62,10 @@ public class SourceJarAnalyzer {
 
     // Unified constructor
     public SourceJarAnalyzer(DependencyNode dependency, List<DependencyNode> allDependencies,
-            Collection<String> targetPackages, MethodCallReporter reporter,
+            MethodCallBuffer loadingBuffer,
+            MethodCallBuffer doneBuffer,
+            Collection<String> targetPackages,
+            MethodCallReporter reporter,
             String decompressDir) {
         this.dependency = dependency;
         this.jarPath = Paths.get(dependency.getSourceJarPath());
@@ -66,6 +74,8 @@ public class SourceJarAnalyzer {
         this.decompressDir = Paths.get(decompressDir);
         this.methodCallReporter = reporter;
         this.allDependencies = allDependencies;
+        this.loadingBuffer = loadingBuffer;
+        this.doneBuffer = doneBuffer;
     }
 
     public void analyze() throws IOException {
@@ -80,6 +90,20 @@ public class SourceJarAnalyzer {
         System.out.println("Total declaration resolve failure: " + declarationResolveFailureCount);
     }
 
+    /**
+     * Set the extended analysis flag, when set to true, the analyzer will skip
+     * addDeclarationInfoForMethodinType in processCompilationUnit
+     * addDeclarationInfoForMethodinType should only be used in the first layer of
+     * dependency analysis
+     * for subdependency analysis, we should set this flag to true
+     * 
+     * @function processCompilationUnit
+     * @param extendedAnalysis
+     */
+    public void setExtendedAnalysis(boolean extendedAnalysis) {
+        this.extendedAnalysis = extendedAnalysis;
+    }
+
     /*
      * Process the decompressed directory to find Java files and analyze them
      */
@@ -91,7 +115,6 @@ public class SourceJarAnalyzer {
 
         Path projectRoot = Paths.get(fullPath);
         ProjectRoot projectRootForSolving = new SymbolSolverCollectionStrategy().collect(projectRoot);
-
         initCombinedSolver(fullPath, projectRootForSolving);
 
         analyzeDecompressedJar(projectRootForSolving);
@@ -110,25 +133,69 @@ public class SourceJarAnalyzer {
     private void iterateParseResults(List<ParseResult<CompilationUnit>> parseResults) {
         this.currentParseResults = parseResults; // ! remember this current list of results
         for (ParseResult<CompilationUnit> parseResult : parseResults) {
-
             if (parseResult.isSuccessful() && parseResult.getResult().isPresent()) {
-                if (parseResult.isSuccessful() && parseResult.getResult().isPresent()) {
-                    CompilationUnit cu = parseResult.getResult().get();
-                    // cu.getStorage().ifPresent(storage -> System.out.println("------ Checking Java
-                    // file: " + storage.getFileName() + " --------"));
-                    String currentPath = cu.getStorage().get().getPath().toString();
-                    currentPath = currentPath.split(decompressedPath)[1].substring(1);
+                CompilationUnit cu = parseResult.getResult().get();
+                String filePath = cu.getStorage().get().getPath().toString();
 
-                    String packageLikePath = currentPath.replace(File.separator, ".") // Replace file separators with
-                                                                                      // dots
-                            .replaceAll(".java$", "");
+                // * check if the current path is in the target package
+                filePath = filePath.split(decompressedPath)[1].substring(1);
 
-                    targetPackages.stream().forEach(targetPackage -> {
-                        if (packageLikePath.startsWith(targetPackage)) {
-                            processCompilationUnit(cu);
-                        }
-                    });
-                }
+                String basePackageLikePath = filePath.replace(File.separator, ".") // Replace file separators with
+                                                                                   // dots
+                        .replaceAll(".java$", "");
+                // if (matchesTargetPackage(basePackageLikePath)) {
+                //     // if (decompressedPath.equals("org.freemarker.freemarker")) {
+                //     // System.out.println("base package like path, freemarker: " +
+                //     // basePackageLikePath + " " + targetPackages.toString() );
+                //     // }
+                //     processCompilationUnit(cu);
+                // }
+
+                // * we will get all the classes of this CU, and loop thru them to find the
+                // * required packages, this help us finding all sub-class
+                processTypes(cu.getTypes(), basePackageLikePath, cu.getStorage().get().getPath(), true);
+
+            }
+        }
+
+    }
+
+    private boolean matchesTargetPackage(String packageLikePath) {
+        boolean hasMatch = targetPackages.stream()
+                .anyMatch(targetPackage -> packageLikePath.startsWith(targetPackage.trim()));
+        if (decompressedPath.equals("org.freemarker.freemarker")) {
+            System.out.println(
+                    "Checking target package: " + packageLikePath + " - " + targetPackages.toString() + " " + hasMatch);
+        }
+        return hasMatch;
+
+    }
+
+    /**
+     * Recursively process inner classes for one file
+     * 
+     * @param types               - the list of types to process
+     * @param basePackageLikePath - the package like path of the base type
+     * @param filePath            - the path object of the file
+     * @param isTopLevel          - whether the types are top level or inner classes
+     */
+    private void processTypes(List<TypeDeclaration<?>> types, String basePackageLikePath, Path filePath,
+            boolean isTopLevel) {
+        for (TypeDeclaration<?> type : types) {
+            // Construct the package-like path for this type
+            String typePath = isTopLevel ? basePackageLikePath : basePackageLikePath + "." + type.getNameAsString();
+            if (matchesTargetPackage(typePath)) {
+                System.out.println("Processing " + typePath);
+                processTypeDeclaration(type, typePath, filePath.toString());
+            }
+
+            // Recursively process member types for inner classes
+            if (!type.getMembers().isEmpty()) {
+                type.getMembers().stream()
+                        .filter(member -> member instanceof TypeDeclaration)
+                        .map(member -> (TypeDeclaration<?>) member)
+                        .forEach(memberType -> processTypes(Collections.singletonList(memberType), typePath, filePath,
+                                false));
             }
         }
     }
@@ -149,24 +216,14 @@ public class SourceJarAnalyzer {
                 String fullExpression = methodCall.toString();
                 String functionCallType = resolvedMethod.declaringType().getQualifiedName();
 
-                // if (!functionCallType.startsWith("java.") &&
-                // !functionCallType.startsWith("javax.")) {
-                // if (!functionCallType.startsWith(dependency.getGroupId())) {
-                // System.out.println("interesting functionCallType: " + functionCallType + " "
-                // + dependency.getGroupId());
-                // }
-                // }
-                // if (functionCallType.startsWith("com.google.guava")) {
-                // System.out.println("Guava is calling: " + functionCallType + ": " +
-                // fullExpression);
-                // }
-
                 MethodSignatureKey key = new MethodSignatureKey(functionCallType, currentSignature);
                 if (!functionCallType.startsWith("java.") && !functionCallType.startsWith("javax.")) {
-                    if (!functionCallType.contains(dependency.getGroupId())) {
-                        System.out.println("external functionCallType: " + functionCallType + " "
-                                + dependency.getGroupId());
-                    }
+
+                    // if (!functionCallType.contains(dependency.getGroupId())) {
+                    // System.out.println("external functionCallType: " + functionCallType + " "
+                    // + dependency.getGroupId());
+                    // }
+
                     MethodCallEntry existingEntry = uniqueMethodCalls.get(key);
                     if (existingEntry == null) {
                         // Add new entry if it doesn't exist
@@ -220,15 +277,45 @@ public class SourceJarAnalyzer {
         return new ArrayList<>(uniqueMethodCalls.values());
     }
 
-    /*
+    private void processTypeDeclaration(TypeDeclaration<?> tp, String typePath, String fullPath) {
+        System.out.println("Processing type: " + typePath);
+        System.out.println("fullPath: " + fullPath);
+        if (decompressedPath.equals("org.freemarker.freemarker")) {
+            System.out.println("processTypeDeclaration freemarker: " + decompressedPath);
+        }
+        List<MethodDeclaration> methodDeclarations = tp.findAll(MethodDeclaration.class);
+        if (methodDeclarations.size() > 0) {
+            processMethodDeclarationForCUorTP(methodDeclarations, fullPath, typePath);
+        }
+    }
+
+    /**
      * Process the first level of method calls
+     * 
+     * @param cu       the compilation unit to process
+     * @param typePath the package like path of the type (only if it's an inner
+     *                 class, otherwise null)
      */
     private void processCompilationUnit(CompilationUnit cu) {
+        if (decompressedPath.equals("org.freemarker.freemarker")) {
+            System.out.println("processCompilationUnit freemarker: " + decompressedPath);
+        }
         String fullPath = cu.getStorage().get().getPath().toString();
         String packageLikePath = getPackageLikePathFromCU(cu);
 
         List<MethodDeclaration> methodDeclarations = cu.findAll(MethodDeclaration.class);
+        processMethodDeclarationForCUorTP(methodDeclarations, fullPath, packageLikePath);
+    }
 
+    /**
+     * Process the method declarations for the current compilation unit or type
+     * 
+     * @param methodDeclarations the list of method declarations to process
+     * @param fullPath           the full path of the compilation unit
+     * @param packageLikePath    the package like path of the compilation unit
+     */
+    private void processMethodDeclarationForCUorTP(List<MethodDeclaration> methodDeclarations, String fullPath,
+            String packageLikePath) {
         for (MethodDeclaration methodDeclaration : methodDeclarations) {
             // Initialize MethodDeclarationInfo for the current method declaration
             try {
@@ -256,8 +343,40 @@ public class SourceJarAnalyzer {
                 // * add the method calls to the currentDeclarationInfo
                 currentDeclarationInfo.addInnerMethodCalls(currentCallEntries);
 
-                Boolean pass = methodCallReporter.addDeclarationInfoForMethodinType(packageLikePath,
-                        currentDeclarationInfo);
+                boolean pass = false;
+                // * if it's extended analysis, we shall not go in to methodCallReporter for
+                // reference
+                if (!extendedAnalysis) {
+                    pass = methodCallReporter.addDeclarationInfoForMethodinType(packageLikePath,
+                            currentDeclarationInfo);
+                } else {
+                    List<Boolean> passList = new ArrayList<>();
+                    passList.add(pass);
+
+                    List<MethodCallEntry> foundMethodCalls = new ArrayList<>();
+                    Set<MethodCallEntry> testEntries = loadingBuffer.getMethodCalls(dependency);
+                    for (MethodCallEntry entry : testEntries) {
+                        System.out.println(" entry to resolve: " + entry.getDeclaringType());
+                    }
+                    loadingBuffer.getMethodCalls(dependency).stream().forEach(call -> {
+                        System.out.println("comparing:  " + call.getMethodSignatureKey().getMethodSignature() + " "
+                                + currentDeclarationSignature);
+                        if (call.getMethodSignatureKey().getMethodSignature().equals(currentDeclarationSignature)) {
+                            passList.set(0, true);
+                            System.out.println("Found target for extended analysis: " + packageLikePath + ", "
+                                    + methodDeclaration.getNameAsString());
+                            call.setDeclarationInfo(currentDeclarationInfo);
+                            doneBuffer.addMethodCall(call);
+                            foundMethodCalls.add(call);
+                        }
+                    });
+
+                    foundMethodCalls.stream().forEach(call -> {
+                        loadingBuffer.removeMethodCall(call);
+                    });
+
+                    pass = passList.get(0);
+                }
 
                 if (pass) {
                     // * start digging
@@ -272,12 +391,7 @@ public class SourceJarAnalyzer {
                                 methodDeclaration.getNameAsString() + " at: " + fullPath);
                 System.out.println(" declaration: " + methodDeclaration.getDeclarationAsString());
                 System.out.println(e.getMessage());
-                // if (methodDeclaration.getDeclarationAsString()
-                // .contains("addMapping(PathSpec pathSpec, WebSocketCreator creator)")
-                // || methodDeclaration.getDeclarationAsString()
-                // .contains("setToAttribute(ServletContext context, String key)")) {
-                // e.printStackTrace();
-                // }
+
             }
         }
     }
@@ -321,11 +435,13 @@ public class SourceJarAnalyzer {
 
             String packageLikePath = getPackageLikePathFromCU(cu);
 
-            // int finalDepth = depth;
+            // * collect calls that can be found and put to done buffer
+            // * put calls that are not in the target package into loading buffer
             List<MethodCallEntry> lookForCalls = new ArrayList<>();
             targetPackages.stream().forEach(targetPackage -> {
                 if (packageLikePath.startsWith(targetPackage)) {
-                    lookForCalls.addAll(filterCallsForPackage(targetPackage, internalTargetCalls));
+                    lookForCalls.addAll(filterCallsForPackage(targetPackage,
+                            internalTargetCalls));
                 }
             });
 
@@ -405,6 +521,12 @@ public class SourceJarAnalyzer {
                     for (MethodCallEntry callEntry : currentCallEntries) {
                         callEntry.setCurrentLayer(depth);
                         if (!currentClassSignatureContext.contains(callEntry.getMethodSignatureKey())) {
+
+                            // if (!callEntry.getDeclaringType().contains(dependency.getGroupId())) {
+                            // System.out.println("add external functionCallType to context: " +
+                            // callEntry.getDeclaringType() + " "
+                            // + dependency.getGroupId());
+                            // }
                             filteredCalls.add(callEntry);
                             currentClassSignatureContext.add(callEntry.getMethodSignatureKey());
                         }
@@ -433,28 +555,6 @@ public class SourceJarAnalyzer {
     private void initCombinedSolver(String fullPath, ProjectRoot projectRoot) {
         CombinedTypeSolver combinedSolver = new CombinedTypeSolver();
         combinedSolver.add(new ReflectionTypeSolver(true));
-        // Loop through each dependency and add it to the CombinedTypeSolver
-
-        List<DependencyNode> dependencyNodes = dependency.getChildren();
-       
-
-        // for (DependencyNode dependency : dependencyNodes) {
-        // Path jarPath = Paths.get(dependency.getJarPath());
-
-        // if (Files.exists(jarPath)) {
-        // try {
-        // System.out.println("Adding sub dependency: " + jarPath);
-        // // Add JarTypeSolver for each JAR file (external dependency)
-        // combinedSolver.add(new JarTypeSolver(jarPath.toString()));
-        // } catch (Exception e) {
-        // System.out.println("Failed to add dependency: " + jarPath.toString());
-        // e.printStackTrace();
-        // }
-        // } else {
-        // System.out.println("Jar file does not exist, skipping: " + jarPath);
-        // dependency.setIsValid(false);
-        // }
-        // }
 
         // * here we are adding all dependencies due to maven tree's structure
         System.out.println("Adding sub dependencies: " + allDependencies.size());
@@ -482,34 +582,34 @@ public class SourceJarAnalyzer {
             sourceRootConfiguration.setLanguageLevel(languageLevel);
 
             combinedSolver.add(new JavaParserTypeSolver(sourceRoot.getRoot()));
+
             JavaSymbolSolver symbolSolver = new JavaSymbolSolver(combinedSolver);
 
             sourceRootConfiguration.setSymbolResolver(symbolSolver);
 
-            // sourceRoot.setParserConfiguration(sourceRootConfiguration);
         });
 
         // * add the combined solver to the static parser in case we need to resolve
-        // StaticJavaParser.setConfiguration(new
-        // ParserConfiguration().setSymbolResolver(new
-        // JavaSymbolSolver(combinedSolver)));
+        StaticJavaParser
+                .setConfiguration(new ParserConfiguration().setSymbolResolver(new JavaSymbolSolver(combinedSolver)));
+        this.symbolSolver = new JavaSymbolSolver(combinedSolver);
         System.out.println("Combined solver initialized.");
 
         // ! testing purposes only
         // try {
-        //     Field field = CombinedTypeSolver.class.getDeclaredField("elements");
-        //     field.setAccessible(true);
-        //     List<TypeSolver> solvers = (List<TypeSolver>) field.get(combinedSolver);
+        // Field field = CombinedTypeSolver.class.getDeclaredField("elements");
+        // field.setAccessible(true);
+        // List<TypeSolver> solvers = (List<TypeSolver>) field.get(combinedSolver);
 
-        //     for (TypeSolver solver : solvers) {
-        //         if (solver instanceof JarTypeSolver) {
-        //             System.out.println("JarTypeSolver: " + ((JarTypeSolver) solver).getClass());
-        //         } else {
-        //             System.out.println("TypeSolver: " + solver.getClass());
-        //         }
-        //     }
+        // for (TypeSolver solver : solvers) {
+        // if (solver instanceof JarTypeSolver) {
+        // System.out.println("JarTypeSolver: " + ((JarTypeSolver) solver).getClass());
+        // } else {
+        // System.out.println("TypeSolver: " + solver.getClass());
+        // }
+        // }
         // } catch (NoSuchFieldException | IllegalAccessException e) {
-        //     e.printStackTrace();
+        // e.printStackTrace();
         // }
 
     }
@@ -531,9 +631,33 @@ public class SourceJarAnalyzer {
      */
     private List<MethodCallEntry> filterCallsForPackage(String targetPackage,
             List<MethodCallEntry> internalTargetCalls) {
-        return internalTargetCalls.stream()
-                .filter(call -> targetPackage.equals(call.getDeclaringType()))
+
+        List<MethodCallEntry> internCallEntries = internalTargetCalls.stream()
+                .filter(call -> {
+                    if (targetPackage.equals(call.getDeclaringType())) {
+                        // System.out.println(" type: " + call.getDeclaringType() + " added to done");
+                        doneBuffer.addMethodCall(call);
+                        loadingBuffer.removeMethodCall(call);
+                        return true;
+                    } else {
+                        // only add to loading buffer if it's not already in done buffer
+                        if (!doneBuffer.hasMethodCall(call)) {
+                            // System.out
+                            // .println("type: " + call.getDeclaringType() + " added to loading ");
+                            loadingBuffer.addMethodCall(call);
+                        }
+                        return false;
+                    }
+                })
                 .collect(Collectors.toList());
+
+        // System.out.println("not internal calls for this dependency: " +
+        // loadingBuffer.size(dependency));
+        // System.out.println("not internal calls total: " + loadingBuffer.size());
+        Set<MethodCallEntry> otherCallsToResolve = loadingBuffer.getMethodCalls(dependency);
+        internCallEntries.addAll(otherCallsToResolve);
+
+        return internCallEntries;
     }
 
 }

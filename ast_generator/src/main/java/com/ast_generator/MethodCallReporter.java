@@ -17,8 +17,10 @@ import java.util.Map;
 import java.util.Set;
 
 public class MethodCallReporter {
+
+    // Map of file name to list of method call entries
     private Map<String, List<MethodCallEntry>> reportMap = new HashMap<>();
-    private Map<MethodSignatureKey, MethodDeclarationInfo> uniqueMethodDeclarations = new HashMap<>();
+    private Map<MethodSignatureKey, MethodCallEntry> uniqueMethodCalls = new HashMap<>();
     private String parentPackageName;
     private Map<DependencyNode, Set<String>> typeToJarReference;
 
@@ -27,16 +29,15 @@ public class MethodCallReporter {
             String fullExpression, String singature, String newPackageName) {
         reportMap.putIfAbsent(fileName, new ArrayList<>());
         MethodCallEntry entry = new MethodCallEntry(declaringType, methodName, lineNumber, fullExpression, singature);
-        MethodSignatureKey lookupKey = new MethodSignatureKey(entry.getDeclaringType(), entry.getMethodSignature());
-        uniqueMethodDeclarations.putIfAbsent(new MethodSignatureKey(declaringType, singature), entry.getDeclarationInfo());
+        uniqueMethodCalls.putIfAbsent(new MethodSignatureKey(declaringType, singature), entry);
 
         reportMap.get(fileName).add(entry);
     }
 
     public void addEntry(String fileName, MethodCallEntry entry) {
         reportMap.putIfAbsent(fileName, new ArrayList<>());
-        MethodSignatureKey lookupKey = new MethodSignatureKey(entry.getDeclaringType(), entry.getMethodSignature());
-        uniqueMethodDeclarations.putIfAbsent(new MethodSignatureKey(entry.getDeclaringType(), entry.getMethodSignature()), entry.getDeclarationInfo());
+        uniqueMethodCalls.putIfAbsent(new MethodSignatureKey(entry.getDeclaringType(), entry.getMethodSignature()),
+                entry);
         // reportMap.get(fileName).add(uniqueMethodDeclarations.get(lookupKey));
         reportMap.get(fileName).add(entry);
     }
@@ -58,15 +59,12 @@ public class MethodCallReporter {
             return false;
         }
 
-        if (declaringType.contains("jetty.http")) {
-            System.out.println("jetty.http type: " + declaringType);
-        }
-
         Boolean ret = false;
 
-        // checking if the method is already in the reportMap
+        // checking if the method is already in the reportMap, we only analyze function 
         for (List<MethodCallEntry> entries : reportMap.values()) {
             for (MethodCallEntry entry : entries) {
+                // System.out.println("test type check in reporter: " + entry.getDeclaringType());
                 if (entry.getDeclaringType().equals(declaringType)) {
 
                     if (entry.getMethodSignature().equals(declarationSignature)) {
@@ -104,10 +102,21 @@ public class MethodCallReporter {
         return reportMap;
     }
 
+    /**
+     * get the main project name
+     * 
+     * @return The main package name of the project
+     */
     public String getParentPackageName() {
         return parentPackageName;
     }
 
+    /**
+     * Get a list of unique types from the report map in the First Layer (Main
+     * project)
+     * 
+     * @return List of unique types
+     */
     public List<String> getUniqueTypes() {
         Set<String> uniqueTypes = new HashSet<>();
         for (List<MethodCallEntry> entries : reportMap.values()) {
@@ -160,7 +169,7 @@ public class MethodCallReporter {
         ObjectMapper mapper = new ObjectMapper();
 
         // if (typeToJarReference == null) {
-        Map<MethodSignatureKey, MethodCallEntry> uniqueMethodDeclarations = new HashMap<>();
+        Map<MethodSignatureKey, MethodCallEntry> uniqueMethodCalls = new HashMap<>();
         for (List<MethodCallEntry> entries : reportMap.values()) {
             for (MethodCallEntry entry : entries) {
                 if (!(entry.getDeclaringType().startsWith("java.") ||
@@ -169,15 +178,15 @@ public class MethodCallReporter {
 
                     MethodSignatureKey key = new MethodSignatureKey(entry.getDeclaringType(),
                             entry.getMethodSignature());
-                    uniqueMethodDeclarations.putIfAbsent(key, entry);
+                    uniqueMethodCalls.putIfAbsent(key, entry);
                 }
             }
         }
 
-        System.out.println("uniqueMethodDeclarations: " + uniqueMethodDeclarations.size());
+        System.out.println("uniqueMethodDeclarations: " + uniqueMethodCalls.size());
         // Now you have a map of unique method declarations, you can convert it to a
         // list or directly use it for JSON generation
-        List<MethodCallEntry> allMethodDeclarationInfos = new ArrayList<>(uniqueMethodDeclarations.values());
+        List<MethodCallEntry> allMethodDeclarationInfos = new ArrayList<>(uniqueMethodCalls.values());
 
         // Generate JSON
         if (typeToJarReference == null) {
@@ -189,10 +198,11 @@ public class MethodCallReporter {
             for (MethodCallEntry entry : allMethodDeclarationInfos) {
                 Dependency matchedDependency = null;
                 for (Map.Entry<DependencyNode, Set<String>> entry1 : typeToJarReference.entrySet()) {
-                  
+
                     if (entry1.getValue().contains(entry.getDeclaringType())) {
                         matchedDependency = entry1.getKey();
-                        // System.out.println("typetoJarReference.getValue(): " + entry1.getValue() + " allMethod.getDeclaringType(): " + entry.getDeclaringType());
+                        // System.out.println("typetoJarReference.getValue(): " + entry1.getValue() + "
+                        // allMethod.getDeclaringType(): " + entry.getDeclaringType());
                         break;
                     }
                 }

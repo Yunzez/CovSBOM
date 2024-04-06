@@ -138,6 +138,8 @@ public class Main {
         System.out.println("moduleList: " + moduleList.toString());
         Dependency packageInfo = DependencyProcessor.getPackageInfo();
         Map<String, DependencyNode> dependencyMap = new HashMap<String, DependencyNode>();
+
+        // this operation updates the dependencyMap, key: groupId:artifactId, value: dependencyNode
         DependencyNode rootNode = MavenDependencyTree.runMavenDependencyTree(rootDirectoryPath, packageInfo,
                 dependencyMap);
 

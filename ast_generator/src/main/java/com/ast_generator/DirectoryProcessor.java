@@ -319,42 +319,4 @@ public class DirectoryProcessor {
         methodReporter.addEntries(path.toString(), new ArrayList<>(uniqueMethodCalls.values()));
     }
 
-    // private static String convertASTObjecttoJson(CompilationUnit cu, Path path)
-    // throws IOException {
-    // StringWriter stringWriter = new StringWriter();
-    // try (JsonGenerator jsonGenerator = Json.createGenerator(stringWriter)) {
-    // JavaParserJsonSerializer serializer = new JavaParserJsonSerializer();
-    // serializer.serialize(cu, jsonGenerator);
-    // }
-
-    // String astJson = stringWriter.toString();
-    // return astJson;
-    // }
-
-    // private static void saveASTJsonToFile(String sourceFilePath, String astJson)
-    // throws IOException {
-
-    // // if (separateFiles) {
-    // // Replace .java extension with .json
-    // Path dirPath = Path.of("CovSBOM_output/main");
-    // if (!Files.exists(dirPath)) {
-    // Files.createDirectories(dirPath);
-    // }
-    // Path filePath = dirPath.resolve(sourceFilePath.substring(0,
-    // sourceFilePath.length() - 5) + ".json");
-    // if (!Files.exists(filePath.getParent())) {
-    // Files.createDirectories(filePath.getParent());
-    // }
-
-    // if (Files.exists(filePath)) {
-    // Files.delete(filePath);
-    // } else {
-    // Files.createFile(filePath);
-    // }
-
-    // // Convert the new JSON object to string and write to the file
-    // // System.out.println("AST: " + astJson.length());
-    // Files.writeString(filePath, astJson.toString(), StandardOpenOption.CREATE,
-    // StandardOpenOption.WRITE);
-    // }
 }

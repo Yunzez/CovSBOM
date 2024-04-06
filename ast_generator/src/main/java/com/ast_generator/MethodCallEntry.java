@@ -71,7 +71,7 @@ public class MethodCallEntry {
     }
 
     public String toString() {
-        return declaringType + "." + methodName + "-" + methodSignature;
+        return "type: "+ declaringType + " -name:  " + methodName + " -signature: " + methodSignature;
     }
 
     public MethodSignatureKey getMethodSignatureKey() {
