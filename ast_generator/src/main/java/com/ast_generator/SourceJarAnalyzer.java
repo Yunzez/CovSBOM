@@ -31,7 +31,6 @@ import com.github.javaparser.utils.ProjectRoot;
 import com.github.javaparser.utils.SourceRoot;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
-import com.github.javaparser.ast.body.CallableDeclaration.Signature;
 
 public class SourceJarAnalyzer {
     private Path jarPath;
@@ -82,6 +81,15 @@ public class SourceJarAnalyzer {
         decompressedPath = this.dependency.getSourceDecompressedPath();
         System.out.println(" - - - - - - - - - - - - - ");
         System.out.println("Analyze decompressed path of used dependency: " + decompressedPath);
+        System.out.println(loadingBuffer.getMethodCalls(dependency).size() + " method calls in loading buffer.");
+
+        // test
+        if (decompressedPath.equals("com.google.code.gson.gson")) {
+            for (MethodCallEntry entry : loadingBuffer.getMethodCalls(dependency)) {
+                System.out.println("Loading buffer: " + entry.getDeclaringType() + " " + entry.getMethodName());
+            }
+        }
+
         // Process the decompressed directory
         processDecompressedDirectory();
         System.out.println("Total third party method calls: " + totalCount + ", Success: " + successCount + ", Fail: "
@@ -92,12 +100,12 @@ public class SourceJarAnalyzer {
 
     /**
      * Set the extended analysis flag, when set to true, the analyzer will skip
-     * addDeclarationInfoForMethodinType in processCompilationUnit
+     * addDeclarationInfoForMethodinType in processMethodDeclarationForCUorTP
      * addDeclarationInfoForMethodinType should only be used in the first layer of
      * dependency analysis
      * for subdependency analysis, we should set this flag to true
      * 
-     * @function processCompilationUnit
+     * @function processMethodDeclarationForCUorTP
      * @param extendedAnalysis
      */
     public void setExtendedAnalysis(boolean extendedAnalysis) {
@@ -143,13 +151,6 @@ public class SourceJarAnalyzer {
                 String basePackageLikePath = filePath.replace(File.separator, ".") // Replace file separators with
                                                                                    // dots
                         .replaceAll(".java$", "");
-                // if (matchesTargetPackage(basePackageLikePath)) {
-                //     // if (decompressedPath.equals("org.freemarker.freemarker")) {
-                //     // System.out.println("base package like path, freemarker: " +
-                //     // basePackageLikePath + " " + targetPackages.toString() );
-                //     // }
-                //     processCompilationUnit(cu);
-                // }
 
                 // * we will get all the classes of this CU, and loop thru them to find the
                 // * required packages, this help us finding all sub-class
@@ -162,14 +163,16 @@ public class SourceJarAnalyzer {
 
     private boolean matchesTargetPackage(String packageLikePath) {
         boolean hasMatch = targetPackages.stream()
-                .anyMatch(targetPackage -> packageLikePath.startsWith(targetPackage.trim()));
-        if (decompressedPath.equals("org.freemarker.freemarker")) {
+                .anyMatch(targetPackage -> packageLikePath.startsWith(targetPackage.trim()) || 
+                                           targetPackage.startsWith(packageLikePath.trim()));
+        if (decompressedPath.equals("com.google.code.gson.gson") && packageLikePath.contains("TypeAdapter")) {
             System.out.println(
-                    "Checking target package: " + packageLikePath + " - " + targetPackages.toString() + " " + hasMatch);
+                    "Checking google target package: " + packageLikePath + " - " +
+                            targetPackages.toString() + " " + hasMatch);
         }
         return hasMatch;
-
     }
+    
 
     /**
      * Recursively process inner classes for one file
@@ -181,11 +184,20 @@ public class SourceJarAnalyzer {
      */
     private void processTypes(List<TypeDeclaration<?>> types, String basePackageLikePath, Path filePath,
             boolean isTopLevel) {
+        if (basePackageLikePath.contains("com.google.gson.TypeAdapter")) {
+            System.out.println("Processing types: " + types.size() + " in " + filePath.toString());
+        }
         for (TypeDeclaration<?> type : types) {
             // Construct the package-like path for this type
             String typePath = isTopLevel ? basePackageLikePath : basePackageLikePath + "." + type.getNameAsString();
+            if (typePath.contains("TypeAdapter") && typePath.contains("com.google.gson.TypeAdapter")) {
+                System.out.println("TypeAdapter Processing " + typePath);
+                // type.getMembers().stream().forEach(member -> {
+                // System.out.println("Member: " + member.toString());
+                // });
+            }
+
             if (matchesTargetPackage(typePath)) {
-                System.out.println("Processing " + typePath);
                 processTypeDeclaration(type, typePath, filePath.toString());
             }
 
@@ -219,11 +231,6 @@ public class SourceJarAnalyzer {
                 MethodSignatureKey key = new MethodSignatureKey(functionCallType, currentSignature);
                 if (!functionCallType.startsWith("java.") && !functionCallType.startsWith("javax.")) {
 
-                    // if (!functionCallType.contains(dependency.getGroupId())) {
-                    // System.out.println("external functionCallType: " + functionCallType + " "
-                    // + dependency.getGroupId());
-                    // }
-
                     MethodCallEntry existingEntry = uniqueMethodCalls.get(key);
                     if (existingEntry == null) {
                         // Add new entry if it doesn't exist
@@ -250,38 +257,35 @@ public class SourceJarAnalyzer {
                 }
             } catch (UnsupportedOperationException e) {
                 // Log the issue but do not treat as critical error
-                // System.out.println("Warning: UnsupportedOperationException encountered.
-                // Method may not be supported for resolution: " + e.getMessage());
+                System.out.println(
+                        "Warning: UnsupportedOperationException encountered. Method may not be supported for resolution: "
+                                + e.getMessage());
 
             } catch (IllegalStateException e) {
-                // System.err.println("Warning: Failed to resolve a type due to an
-                // IllegalStateException. " +
-                // "This may indicate a complex type usage not fully supported. " +
-                // "Details: " + e.getMessage());
+                System.err.println("Warning: Failed to resolve a type due to an IllegalStateException. " +
+                        "This may indicate a complex type usage not fully supported. " +
+                        "Details: " + e.getMessage());
                 failCount++;
             } catch (RuntimeException e) {
-                // if (e.getMessage().contains("cannot be resolved")) {
-                // // Log but do not increment failCount for unresolved external methods
-                // System.out.println("Info: The method '" + e.getMessage().split("'")[1] + "'
-                // cannot be resolved, possibly due to being an external dependency.");
-                // } else {
-                // // For other RuntimeExceptions, log as error and increment failCount
-                // System.err.println("Error: Unexpected RuntimeException encountered: " +
-                // e.getMessage());
-                // failCount++;
-                // }
+                // Log but do not increment failCount for unresolved external methods
+                if (e.getMessage().contains("cannot be resolved")) {
+                    System.out.println("Warning: The method '" + e.getMessage().split("'")[1]
+                            + "'cannot be resolved, possibly due to being an external dependency.");
+                } else {
+                    System.err.println("Error: Unexpected RuntimeException encountered: " +
+                            e.getMessage());
+                    failCount++;
+                }
             }
         }
-
-        // Convert the map values to a list to return
         return new ArrayList<>(uniqueMethodCalls.values());
     }
 
     private void processTypeDeclaration(TypeDeclaration<?> tp, String typePath, String fullPath) {
         System.out.println("Processing type: " + typePath);
         System.out.println("fullPath: " + fullPath);
-        if (decompressedPath.equals("org.freemarker.freemarker")) {
-            System.out.println("processTypeDeclaration freemarker: " + decompressedPath);
+        if (decompressedPath.equals("com.google.gson")) {
+            System.out.println("processTypeDeclaration gson: " + decompressedPath);
         }
         List<MethodDeclaration> methodDeclarations = tp.findAll(MethodDeclaration.class);
         if (methodDeclarations.size() > 0) {
@@ -356,11 +360,16 @@ public class SourceJarAnalyzer {
                     List<MethodCallEntry> foundMethodCalls = new ArrayList<>();
                     Set<MethodCallEntry> testEntries = loadingBuffer.getMethodCalls(dependency);
                     for (MethodCallEntry entry : testEntries) {
-                        System.out.println(" entry to resolve: " + entry.getDeclaringType());
+                        if (entry.getDeclaringType().contains("com.google.gson.TypeAdapter")) {
+                            System.out.println(" entry to resolve: " + entry.getDeclaringType());
+                        }
                     }
                     loadingBuffer.getMethodCalls(dependency).stream().forEach(call -> {
-                        System.out.println("comparing:  " + call.getMethodSignatureKey().getMethodSignature() + " "
-                                + currentDeclarationSignature);
+                        if (dependency.getArtifactId().equals("gson")) {
+                            System.out.println("comparing:  " + call.getMethodSignatureKey().getMethodSignature() + " "
+                                    + currentDeclarationSignature);
+                        }
+
                         if (call.getMethodSignatureKey().getMethodSignature().equals(currentDeclarationSignature)) {
                             passList.set(0, true);
                             System.out.println("Found target for extended analysis: " + packageLikePath + ", "
@@ -406,11 +415,6 @@ public class SourceJarAnalyzer {
             return;
         }
         depth++;
-
-        if (depth > 50 && depth < 55) {
-            System.out.println("Warning, Depth reached: " + depth);
-            System.out.println(currentDeclarationInfo.toString());
-        }
 
         if (depth == 55) {
             System.out.println(currentDeclarationInfo.toString());
@@ -642,8 +646,12 @@ public class SourceJarAnalyzer {
                     } else {
                         // only add to loading buffer if it's not already in done buffer
                         if (!doneBuffer.hasMethodCall(call)) {
-                            // System.out
-                            // .println("type: " + call.getDeclaringType() + " added to loading ");
+                            if (call.getDeclaringType().contains("com.google.gson.TypeAdapter")) {
+                                System.out
+                                        .println("gson methodSignatureKey: " + call.getMethodSignatureKey().toString());
+                                System.out
+                                        .println("type: " + call.getDeclaringType() + " added to loading ");
+                            }
                             loadingBuffer.addMethodCall(call);
                         }
                         return false;

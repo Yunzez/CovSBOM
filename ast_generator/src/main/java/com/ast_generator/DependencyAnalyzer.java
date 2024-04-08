@@ -96,9 +96,6 @@ public class DependencyAnalyzer {
                 Set<String> types = new HashSet<String>();
                 
                 loadingBuffer.getMethodCalls(dependency).forEach(methodSignatureKey -> {
-                    if(dependency.getArtifactId().equals("freemarker")) {
-                        System.out.println("freemarker methodSignatureKey: " + methodSignatureKey.toString());
-                    }
                     types.add(methodSignatureKey.getDeclaringType());
                 });
 
@@ -117,7 +114,7 @@ public class DependencyAnalyzer {
                 }
             }
 
-            if (faultCatchCount > 4) {
+            if (faultCatchCount > 6) {
                 System.out.println("pause operation: " + faultCatchCount);
                 break;
             }

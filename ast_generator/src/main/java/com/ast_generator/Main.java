@@ -169,14 +169,11 @@ public class Main {
         // * process the directory
         processor.processDirectory();
 
-        // importManager.printImports();
         methodCallReporter.generateThirdPartyTypeJsonReport(
                 "CovSBOM_output/analysis/" + outputProjectFolderPath
                         + "/method_calls.json");
         System.out.println(" ------- end processing directory, start analyzing dependencies -------");
 
-
-        
 
         /*
          * +------------------+
