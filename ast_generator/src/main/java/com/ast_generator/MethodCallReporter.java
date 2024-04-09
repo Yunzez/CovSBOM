@@ -16,6 +16,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * This class is responsible for storing and generating the method call report
+ * for a given project
+ */
 public class MethodCallReporter {
 
     // Map of file name to list of method call entries
@@ -24,7 +28,18 @@ public class MethodCallReporter {
     private String parentPackageName;
     private Map<DependencyNode, Set<String>> typeToJarReference;
 
-    // Add a method call entry
+    /**
+     * Add a method call entry to the report map
+     * 
+     * @param fileName       The name of the file where the method call is made
+     * @param declaringType  The type that declares the method
+     * @param methodName     The name of the method
+     * @param lineNumber     The line number where the method call is made
+     * @param fullExpression The full expression of the method call
+     * @param singature      The signature of the method
+     * @param newPackageName The package name of the project
+     * @see MethodCallEntry
+     */
     public void addEntry(String fileName, String declaringType, String methodName, int lineNumber,
             String fullExpression, String singature, String newPackageName) {
         reportMap.putIfAbsent(fileName, new ArrayList<>());
@@ -34,6 +49,13 @@ public class MethodCallReporter {
         reportMap.get(fileName).add(entry);
     }
 
+    /**
+     * Add a method call entry to the report map
+     * 
+     * @param fileName The name of the file where the method call is made
+     * @param entry    The method call entry object
+     * @see MethodCallEntry
+     */
     public void addEntry(String fileName, MethodCallEntry entry) {
         reportMap.putIfAbsent(fileName, new ArrayList<>());
         uniqueMethodCalls.putIfAbsent(new MethodSignatureKey(entry.getDeclaringType(), entry.getMethodSignature()),
@@ -42,6 +64,13 @@ public class MethodCallReporter {
         reportMap.get(fileName).add(entry);
     }
 
+    /**
+     * Add a list of method call entries to the report map
+     * 
+     * @param fileName The name of the file where the method call is made
+     * @param entries  The list of method call entries
+     * @see MethodCallEntry
+     */
     public void addEntries(String fileName, List<MethodCallEntry> entries) {
         reportMap.putIfAbsent(fileName, new ArrayList<>());
         for (MethodCallEntry entry : entries) {
@@ -49,10 +78,24 @@ public class MethodCallReporter {
         }
     }
 
+    /**
+     * Set the package name of the project
+     * 
+     * @param parentPackageName
+     */
     public void setParentPackageName(String parentPackageName) {
         this.parentPackageName = parentPackageName;
     }
 
+    /**
+     * Add a declaration info for a method in a type in the first layer of the
+     * reporter
+     * 
+     * @param declaringType   The type that declares the method
+     * @param declarationInfo The declaration info object of the method
+     * @see MethodDeclarationInfo
+     * @return True if the declaration info is added successfully, false otherwise
+     */
     public boolean addDeclarationInfoForMethodinType(String declaringType, MethodDeclarationInfo declarationInfo) {
         String declarationSignature = declarationInfo.getDeclarationSignature();
         if (declaringType.startsWith("java.") || declaringType.startsWith("javax.")) {
@@ -61,10 +104,11 @@ public class MethodCallReporter {
 
         Boolean ret = false;
 
-        // checking if the method is already in the reportMap, we only analyze function 
+        // checking if the method is already in the reportMap, we only analyze function
         for (List<MethodCallEntry> entries : reportMap.values()) {
             for (MethodCallEntry entry : entries) {
-                // System.out.println("test type check in reporter: " + entry.getDeclaringType());
+                // System.out.println("test type check in reporter: " +
+                // entry.getDeclaringType());
                 if (entry.getDeclaringType().equals(declaringType)) {
 
                     if (entry.getMethodSignature().equals(declarationSignature)) {

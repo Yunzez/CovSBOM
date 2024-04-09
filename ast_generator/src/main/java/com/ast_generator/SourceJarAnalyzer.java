@@ -158,7 +158,6 @@ public class SourceJarAnalyzer {
 
             }
         }
-
     }
 
     private boolean matchesTargetPackage(String packageLikePath) {
@@ -192,9 +191,6 @@ public class SourceJarAnalyzer {
             String typePath = isTopLevel ? basePackageLikePath : basePackageLikePath + "." + type.getNameAsString();
             if (typePath.contains("TypeAdapter") && typePath.contains("com.google.gson.TypeAdapter")) {
                 System.out.println("TypeAdapter Processing " + typePath);
-                // type.getMembers().stream().forEach(member -> {
-                // System.out.println("Member: " + member.toString());
-                // });
             }
 
             if (matchesTargetPackage(typePath)) {
@@ -506,9 +502,6 @@ public class SourceJarAnalyzer {
             String currentDeclarationSignature = resolvedDeclaration.getSignature().toString();
 
             for (MethodCallEntry lookForCall : lookForCalls) {
-                String methodKey = lookForCall.getDeclaringType() + "." + lookForCall.getMethodName()
-                        + lookForCall.getMethodSignature();
-
                 if (lookForCall.getMethodName().equals(name)
                         && lookForCall.getMethodSignature().equals(currentDeclarationSignature)) {
 
@@ -525,12 +518,6 @@ public class SourceJarAnalyzer {
                     for (MethodCallEntry callEntry : currentCallEntries) {
                         callEntry.setCurrentLayer(depth);
                         if (!currentClassSignatureContext.contains(callEntry.getMethodSignatureKey())) {
-
-                            // if (!callEntry.getDeclaringType().contains(dependency.getGroupId())) {
-                            // System.out.println("add external functionCallType to context: " +
-                            // callEntry.getDeclaringType() + " "
-                            // + dependency.getGroupId());
-                            // }
                             filteredCalls.add(callEntry);
                             currentClassSignatureContext.add(callEntry.getMethodSignatureKey());
                         }
@@ -659,9 +646,6 @@ public class SourceJarAnalyzer {
                 })
                 .collect(Collectors.toList());
 
-        // System.out.println("not internal calls for this dependency: " +
-        // loadingBuffer.size(dependency));
-        // System.out.println("not internal calls total: " + loadingBuffer.size());
         Set<MethodCallEntry> otherCallsToResolve = loadingBuffer.getMethodCalls(dependency);
         internCallEntries.addAll(otherCallsToResolve);
 

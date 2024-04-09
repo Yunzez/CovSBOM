@@ -31,22 +31,44 @@ public class MavenDependencyTree {
         System.out.println("Running maven dependency:tree for " + projectDir);
         List<String> mavenOutput = new ArrayList<>();
         try {
-            String outputPath = Paths.get(projectDir, "mvn_dependency_tree.txt").toString();
-            ProcessBuilder processBuilder = new ProcessBuilder();
-            processBuilder.command("mvn", "-f", projectDir, "dependency:tree",
-                                   "-DoutputFile=" + outputPath, "-DappendOutput=true");
-            processBuilder.directory(new java.io.File(projectDir));
-            Process process = processBuilder.start();
+            // String outputPath = Paths.get(projectDir, "mvn_dependency_tree.txt").toString();
+            // ProcessBuilder processBuilder = new ProcessBuilder();
+            // processBuilder.command("mvn", "-f", projectDir, "dependency:tree",
+            //                        "-DoutputFile=" + outputPath, "-DappendOutput=true");
+            // processBuilder.directory(new java.io.File(projectDir));
+            // Process process = processBuilder.start();
 
-            int exitCode = process.waitFor();
-            System.out.println("\nExited with error code : " + exitCode);
+            // int exitCode = process.waitFor();
+            // System.out.println("\nExited with error code : " + exitCode);
 
-            // Read the output from the file
-            Path outputFilePath = Paths.get(outputPath);
-            mavenOutput = Files.readAllLines(outputFilePath);
+            // // Read the output from the file
+            // Path outputFilePath = Paths.get(outputPath);
+            // mavenOutput = Files.readAllLines(outputFilePath);
 
             // Optionally, delete the file after reading
             // Files.delete(outputFilePath);
+
+            Path projectPath = Paths.get(projectDir).toAbsolutePath();
+            // Define the output file path
+            Path outputPath = projectPath.resolve("mvn_dependency_tree.txt");
+            
+            // Execute the Maven command
+            ProcessBuilder processBuilder = new ProcessBuilder();
+            processBuilder.command("mvn", "-f", projectPath.toString(), "dependency:tree", "-DoutputFile=" + outputPath.toString(), "-DappendOutput=true");
+            processBuilder.directory(new java.io.File(projectDir));
+            Process process = processBuilder.start();
+            int exitCode = process.waitFor();
+            System.out.println("\nExited with error code : " + exitCode);
+    
+            // Read the output from the file
+            mavenOutput = Files.readAllLines(outputPath);
+    
+            // delete the file after reading
+            Files.delete(outputPath);
+    
+            DependencyNode rootNode = updateDependencyMapWithTreeOutput(mavenOutput, dependencyMap, packageInfo);
+            return rootNode;
+    
 
         } catch (Exception e) {
             e.printStackTrace();
