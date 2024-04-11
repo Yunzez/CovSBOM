@@ -21,8 +21,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -30,6 +32,7 @@ import java.util.Set;
 import java.lang.Object;
 
 public class Utils {
+    private Set<Dependency> unclearDependencies = new HashSet<Dependency>();
 
     // Private constructor to prevent instantiation
     private Utils() {
@@ -280,6 +283,7 @@ public class Utils {
     }
 
     public static ParserConfiguration.LanguageLevel getLanguageLevelFromVersion(String version) {
+        System.out.println("Java version: " + version);
         switch (version) {
             case "1.8":
                 return ParserConfiguration.LanguageLevel.JAVA_8;
@@ -307,7 +311,6 @@ public class Utils {
         }
     }
 
-
     /**
      * Collects all dependencies of a given root node and returns them in a set.
      */
@@ -318,15 +321,15 @@ public class Utils {
             collectDependenciesRecursive(rootNode, allDependencies);
             return allDependencies;
         }
-    
+
         private static void collectDependenciesRecursive(DependencyNode node, Set<DependencyNode> allDependencies) {
             if (node == null || allDependencies.contains(node)) {
                 return; // Base case: node is null or already processed
             }
-    
+
             // Process current node
             allDependencies.add(node);
-    
+
             // Recursively process all children
             for (DependencyNode child : node.getChildren()) {
                 collectDependenciesRecursive(child, allDependencies);

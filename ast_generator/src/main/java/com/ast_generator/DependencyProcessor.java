@@ -124,32 +124,16 @@ public class DependencyProcessor {
                 javaVersion = findJavaVersionInCompilerPlugin(doc);
             }
 
-            NodeList modulesList = doc.getElementsByTagName("modules");
-
-            if (modulesList.getLength() > 0) {
-                for (int i = 0; i < modulesList.getLength(); i++) {
-                    Node modulesNode = modulesList.item(i);
-                    if (modulesNode.getNodeType() == Node.ELEMENT_NODE) {
-                        Element modulesElement = (Element) modulesNode;
-                        NodeList moduleNodes = modulesElement.getElementsByTagName("module");
-                        for (int j = 0; j < moduleNodes.getLength(); j++) {
-                            Node moduleNode = moduleNodes.item(j);
-                            if (moduleNode.getNodeType() == Node.ELEMENT_NODE) {
-                                Element moduleElement = (Element) moduleNode;
-                                String moduleName = moduleElement.getTextContent();
-                                // Assuming modules are located directly under the project root
-                                String modulePomPath = Paths.get(pomFilePath).getParent().resolve(moduleName)
-                                        .resolve("pom.xml").toString();
-
-                                // Check if the module's pom.xml file exists
-                                if (new File(modulePomPath).exists()) {
-                                    moduleMap.put(moduleName, modulePomPath);
-                                }
-                            }
-                        }
-                    }
-                }
+            if (javaVersion == null) {
+                javaVersion = findJavaVersionInCustomProperties(doc);
             }
+
+            if (javaVersion == null) {
+                System.out.println("Warning: Java version not found in pom.xml, defaulting to 1.8");
+                javaVersion = "1.8"; // Default to 1.8 if not found
+            }
+
+            moduleMap = MavenModuleParser.parseAllPomForMavenModules(pomFilePath);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -241,6 +225,23 @@ public class DependencyProcessor {
         }
         return null;
     }
+
+    private static String findJavaVersionInCustomProperties(Document doc) {
+        NodeList propertiesList = doc.getElementsByTagName("properties");
+        if (propertiesList.getLength() > 0) {
+            Node propertiesNode = propertiesList.item(0); // Assuming one <properties> section
+            if (propertiesNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element properties = (Element) propertiesNode;
+                // Try to find custom property names used in the project
+                String enforcedVersion = getTextContentByTagName(properties, "version.java.enforced");
+                String targetVersion = getTextContentByTagName(properties, "version.java.target");
+                // Prioritize enforcedVersion if available
+                return (enforcedVersion != null) ? enforcedVersion : targetVersion;
+            }
+        }
+        return null;
+    }
+    
 
     private static String getTextContentByTagName(Element parent, String tagName) {
         NodeList nodes = parent.getElementsByTagName(tagName);

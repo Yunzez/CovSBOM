@@ -7,8 +7,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,58 +28,96 @@ public class MavenDependencyTree {
      * @return
      */
     public static DependencyNode runMavenDependencyTree(String projectDir, Dependency packageInfo,
-            Map<String, DependencyNode> dependencyMap) {
+            Map<String, DependencyNode> dependencyMap, Map<String, String> moduleList) {
+
         System.out.println(System.getProperty("user.dir"));
         System.out.println("Running maven dependency:tree for " + projectDir);
         List<String> mavenOutput = new ArrayList<>();
         try {
-            // String outputPath = Paths.get(projectDir, "mvn_dependency_tree.txt").toString();
-            // ProcessBuilder processBuilder = new ProcessBuilder();
-            // processBuilder.command("mvn", "-f", projectDir, "dependency:tree",
-            //                        "-DoutputFile=" + outputPath, "-DappendOutput=true");
-            // processBuilder.directory(new java.io.File(projectDir));
-            // Process process = processBuilder.start();
-
-            // int exitCode = process.waitFor();
-            // System.out.println("\nExited with error code : " + exitCode);
-
-            // // Read the output from the file
-            // Path outputFilePath = Paths.get(outputPath);
-            // mavenOutput = Files.readAllLines(outputFilePath);
-
-            // Optionally, delete the file after reading
-            // Files.delete(outputFilePath);
-
             Path projectPath = Paths.get(projectDir).toAbsolutePath();
             // Define the output file path
             Path outputPath = projectPath.resolve("mvn_dependency_tree.txt");
-            
+
             // Execute the Maven command
-            ProcessBuilder processBuilder = new ProcessBuilder();
-            processBuilder.command("mvn", "-f", projectPath.toString(), "dependency:tree", "-DoutputFile=" + outputPath.toString(), "-DappendOutput=true");
-            processBuilder.directory(new java.io.File(projectDir));
-            Process process = processBuilder.start();
-            int exitCode = process.waitFor();
-            System.out.println("\nExited with error code : " + exitCode);
-    
-            // Read the output from the file
-            mavenOutput = Files.readAllLines(outputPath);
-    
+            System.out.println(moduleList.size());
+            if (moduleList != null && moduleList.size() > 0) {
+                System.out.println("run mvn dependency:tree for multi-module project");
+                String basePath = System.getProperty("user.dir");
+                String scriptName = "mavenDependencyTreeRunner.sh";
+                // Assuming the script is now located in src/main/java/com/ast_generator/
+
+                // ! warning, this is temporary, we need to find a better way to locate the
+                // script
+                String scriptRelativePath = "ast_generator/src/main/java/com/ast_generator/" + scriptName;
+
+                String scriptPath = Paths.get(basePath, scriptRelativePath).toString();
+                String bashCommand = "bash " + scriptPath + " " + projectPath.toString() + " " + outputPath.toString();
+                System.out.println("bashCommand: " + bashCommand);
+                for (String modulePath : moduleList.values()) {
+                    // If modulePath is absolute, convert it to relative by subtracting projectDir
+                    // part
+                    Path absoluteModulePath = Paths.get(modulePath).toAbsolutePath();
+                    Path relativeModulePath = Paths.get(projectDir).toAbsolutePath().relativize(absoluteModulePath);
+                    bashCommand += " " + relativeModulePath;
+                }
+
+                // Execute the command
+                ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", bashCommand);
+                processBuilder.directory(Paths.get(projectDir).toFile()); // Ensure we're in the correct directory
+                Process process = processBuilder.start();
+
+                System.out.println("the project is large, please wait for the process to finish");
+                // Output the process's output
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        System.out.println(line);
+                    }
+                }
+
+                // Reading standard error
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        System.err.println(line); // Print standard error
+                    }
+                }
+
+                int exitCode = process.waitFor();
+                System.out.println("Script exited with error code : " + exitCode);
+                mavenOutput = Files.readAllLines(outputPath);
+            } else {
+                System.out.println("run mvn dependency:tree for single module project");
+                ProcessBuilder processBuilder = new ProcessBuilder();
+                processBuilder.command("mvn", "-f", projectPath.toString(), "dependency:tree",
+                        "-DoutputFile=" + outputPath.toString(), "-DappendOutput=true");
+                processBuilder.directory(new java.io.File(projectDir));
+                Process process = processBuilder.start();
+                int exitCode = process.waitFor();
+                System.out.println("\nExited with error code : " + exitCode);
+
+                // Read the output from the file
+                mavenOutput = Files.readAllLines(outputPath);
+
+                Files.delete(outputPath);
+
+            }
+
             // delete the file after reading
-            Files.delete(outputPath);
-    
-            DependencyNode rootNode = updateDependencyMapWithTreeOutput(mavenOutput, dependencyMap, packageInfo);
+
+            DependencyNode rootNode = updateDependencyMapWithTreeOutput(mavenOutput, dependencyMap, packageInfo,
+                    moduleList != null && moduleList.size() > 0);
             return rootNode;
-    
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        DependencyNode rootNode = updateDependencyMapWithTreeOutput(mavenOutput, dependencyMap, packageInfo);
+        DependencyNode rootNode = updateDependencyMapWithTreeOutput(mavenOutput, dependencyMap,
+                packageInfo, moduleList != null && moduleList.size() > 0);
         return rootNode;
-    }
 
+    }
 
     /**
      * 
@@ -87,9 +127,16 @@ public class MavenDependencyTree {
      */
     public static DependencyNode updateDependencyMapWithTreeOutput(List<String> mavenTree,
             Map<String, DependencyNode> dependencyMap,
-            Dependency packageInfo) {
+            Dependency packageInfo,
+            Boolean isMultiModuleProject) {
+        DependencyNode rootNode;
+        if (isMultiModuleProject) {
+            System.out.println("multi-module project, use simple parse");
+            rootNode = simpleBuildTree(mavenTree);
+        } else {
+            rootNode = buildDependencyTree(mavenTree);
+        }
 
-        DependencyNode rootNode = buildDependencyTree(mavenTree);
         List<DependencyNode> mainDependencies = rootNode.getChildren();
         for (DependencyNode dependencyNode : mainDependencies) {
             // System.out.println("dependency: " + dependencyNode.toString());
@@ -102,6 +149,26 @@ public class MavenDependencyTree {
         return rootNode;
     }
 
+    public static DependencyNode simpleBuildTree(List<String> mavenTreeLines) {
+        Dependency rootDependency = new Dependency("main.project.groupId", "test", "version", "N/A", "N/A");
+        DependencyNode rootNode = new DependencyNode(rootDependency);
+        Set<Dependency> dependencies = new HashSet<>(); // remove duplicates
+        for (String line : mavenTreeLines) {
+            // Assuming each dependency line can be identified and parsed
+            if (line.contains(":jar:")) {
+                Dependency dependency = getDependencyFromLine(line);
+                dependencies.add(dependency);
+            }
+        }
+
+        for (Dependency dependency : dependencies) {
+            DependencyNode node = new DependencyNode(dependency);
+            rootNode.addChild(node);
+        }
+
+        return rootNode;
+    }
+
     /**
      * Build a dependency tree from the output of the maven dependency:tree command
      * 
@@ -109,15 +176,15 @@ public class MavenDependencyTree {
      * @return
      */
     public static DependencyNode buildDependencyTree(List<String> mavenTreeLines) {
-        System.out.println("mavenTreeLines: " + mavenTreeLines.toString());
+        // System.out.println("mavenTreeLines: " + mavenTreeLines.toString());
         List<DependencyNode> nodes = new ArrayList<>();
         Stack<DependencyNode> nodeStack = new Stack<>();
         int start = 0;
         DependencyNode root = null;
-        for (int i = 0; i< mavenTreeLines.size(); i++) {
+        for (int i = 0; i < mavenTreeLines.size(); i++) {
             String line = mavenTreeLines.get(i);
             if (line.contains("+-")) {
-                System.out.println("start: " + i + " line: " + line);
+                // System.out.println("start: " + i + " line: " + line);
                 start = i;
                 break;
             }
@@ -125,9 +192,9 @@ public class MavenDependencyTree {
 
         int count = 0;
         for (String line : mavenTreeLines) {
-            count ++;
-            System.out.println("count: " + count + "start:" + start + " line: " + line);
-            
+            count++;
+            // System.out.println("count: " + count + "start:" + start + " line: " + line);
+
             if (count == start) {
                 Dependency dependency = getDependencyFromLine(line);
                 DependencyNode node = new DependencyNode(dependency);
@@ -137,7 +204,7 @@ public class MavenDependencyTree {
 
             if (!line.contains(":jar:"))
                 continue;
-            
+
             int depth = getDepth(line); // Implement this method to determine the depth based on leading spaces or
                                         // dashes
             Dependency dependency = getDependencyFromLine(line);
@@ -148,7 +215,6 @@ public class MavenDependencyTree {
             nodes.add(node);
 
             // Adjust stack based on the current node's depth
-            System.out.println("nodeStack.size(): " + nodeStack.size() + " depth: " + depth);
             while (nodeStack.size() > depth) {
                 nodeStack.pop();
             }
@@ -164,7 +230,7 @@ public class MavenDependencyTree {
         }
 
         System.out.println("root: ");
-        System.out.println( root.toConsoleString());
+        System.out.println(root.toConsoleString());
         return root; // Return the root of the tree
     }
 
@@ -181,7 +247,6 @@ public class MavenDependencyTree {
         int depth = leadingSpaces / 3;
         return depth;
     }
-    
 
     private static Dependency getDependencyFromLine(String line) {
         String[] separatedLine = line.split(":");

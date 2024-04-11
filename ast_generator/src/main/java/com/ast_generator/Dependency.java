@@ -73,4 +73,8 @@ public class Dependency {
                 + jarPath;
     }
 
+    public String toShortString() {
+        return "Dependency: groupId=" + groupId + ":" + artifactId + ":" + version;
+    }
+
 }

@@ -84,11 +84,11 @@ public class SourceJarAnalyzer {
         System.out.println(loadingBuffer.getMethodCalls(dependency).size() + " method calls in loading buffer.");
 
         // test
-        if (decompressedPath.equals("com.google.code.gson.gson")) {
-            for (MethodCallEntry entry : loadingBuffer.getMethodCalls(dependency)) {
-                System.out.println("Loading buffer: " + entry.getDeclaringType() + " " + entry.getMethodName());
-            }
-        }
+        // if (decompressedPath.equals("com.google.code.gson.gson")) {
+        //     for (MethodCallEntry entry : loadingBuffer.getMethodCalls(dependency)) {
+        //         System.out.println("Loading buffer: " + entry.getDeclaringType() + " " + entry.getMethodName());
+        //     }
+        // }
 
         // Process the decompressed directory
         processDecompressedDirectory();
@@ -164,11 +164,11 @@ public class SourceJarAnalyzer {
         boolean hasMatch = targetPackages.stream()
                 .anyMatch(targetPackage -> packageLikePath.startsWith(targetPackage.trim()) || 
                                            targetPackage.startsWith(packageLikePath.trim()));
-        if (decompressedPath.equals("com.google.code.gson.gson") && packageLikePath.contains("TypeAdapter")) {
-            System.out.println(
-                    "Checking google target package: " + packageLikePath + " - " +
-                            targetPackages.toString() + " " + hasMatch);
-        }
+        // if (decompressedPath.equals("com.google.code.gson.gson") && packageLikePath.contains("TypeAdapter")) {
+        //     System.out.println(
+        //             "Checking google target package: " + packageLikePath + " - " +
+        //                     targetPackages.toString() + " " + hasMatch);
+        // }
         return hasMatch;
     }
     
@@ -253,14 +253,14 @@ public class SourceJarAnalyzer {
                 }
             } catch (UnsupportedOperationException e) {
                 // Log the issue but do not treat as critical error
-                System.out.println(
-                        "Warning: UnsupportedOperationException encountered. Method may not be supported for resolution: "
-                                + e.getMessage());
+                // System.out.println(
+                //         "Warning: UnsupportedOperationException encountered. Method may not be supported for resolution: "
+                //                 + e.getMessage());
 
             } catch (IllegalStateException e) {
-                System.err.println("Warning: Failed to resolve a type due to an IllegalStateException. " +
-                        "This may indicate a complex type usage not fully supported. " +
-                        "Details: " + e.getMessage());
+                // System.err.println("Warning: Failed to resolve a type due to an IllegalStateException. " +
+                //         "This may indicate a complex type usage not fully supported. " +
+                //         "Details: " + e.getMessage());
                 failCount++;
             } catch (RuntimeException e) {
                 // Log but do not increment failCount for unresolved external methods
@@ -278,8 +278,8 @@ public class SourceJarAnalyzer {
     }
 
     private void processTypeDeclaration(TypeDeclaration<?> tp, String typePath, String fullPath) {
-        System.out.println("Processing type: " + typePath);
-        System.out.println("fullPath: " + fullPath);
+        // System.out.println("Processing type: " + typePath);
+        // System.out.println("fullPath: " + fullPath);
         if (decompressedPath.equals("com.google.gson")) {
             System.out.println("processTypeDeclaration gson: " + decompressedPath);
         }
@@ -354,22 +354,17 @@ public class SourceJarAnalyzer {
                     passList.add(pass);
 
                     List<MethodCallEntry> foundMethodCalls = new ArrayList<>();
-                    Set<MethodCallEntry> testEntries = loadingBuffer.getMethodCalls(dependency);
-                    for (MethodCallEntry entry : testEntries) {
-                        if (entry.getDeclaringType().contains("com.google.gson.TypeAdapter")) {
-                            System.out.println(" entry to resolve: " + entry.getDeclaringType());
-                        }
-                    }
+                    
                     loadingBuffer.getMethodCalls(dependency).stream().forEach(call -> {
-                        if (dependency.getArtifactId().equals("gson")) {
-                            System.out.println("comparing:  " + call.getMethodSignatureKey().getMethodSignature() + " "
-                                    + currentDeclarationSignature);
-                        }
+                        // if (dependency.getArtifactId().equals("gson")) {
+                        //     System.out.println("comparing:  " + call.getMethodSignatureKey().getMethodSignature() + " "
+                        //             + currentDeclarationSignature);
+                        // }
 
                         if (call.getMethodSignatureKey().getMethodSignature().equals(currentDeclarationSignature)) {
                             passList.set(0, true);
-                            System.out.println("Found target for extended analysis: " + packageLikePath + ", "
-                                    + methodDeclaration.getNameAsString());
+                            // System.out.println("Found target for extended analysis: " + packageLikePath + ", "
+                            //         + methodDeclaration.getNameAsString());
                             call.setDeclarationInfo(currentDeclarationInfo);
                             doneBuffer.addMethodCall(call);
                             foundMethodCalls.add(call);
@@ -391,11 +386,11 @@ public class SourceJarAnalyzer {
             } catch (UnsolvedSymbolException e) {
                 declarationResolveFailureCount++;
                 // * when we fail to resolve, it means there are certain
-                System.out.println(
-                        "Warning: Could not resolve method declaration: " + packageLikePath + ", " +
-                                methodDeclaration.getNameAsString() + " at: " + fullPath);
-                System.out.println(" declaration: " + methodDeclaration.getDeclarationAsString());
-                System.out.println(e.getMessage());
+                // System.out.println(
+                //         "Warning: Could not resolve method declaration: " + packageLikePath + ", " +
+                //                 methodDeclaration.getNameAsString() + " at: " + fullPath);
+                // System.out.println(" declaration: " + methodDeclaration.getDeclarationAsString());
+                // System.out.println(e.getMessage());
 
             }
         }
@@ -469,11 +464,6 @@ public class SourceJarAnalyzer {
 
         if (lookForCalls.size() == 0) {
             return;
-        }
-
-        if (depth > 50 && depth < 55) {
-            System.out.println("look for calls: ");
-            System.out.println(lookForCalls.toString());
         }
 
         if (depth == 55) {
@@ -633,12 +623,6 @@ public class SourceJarAnalyzer {
                     } else {
                         // only add to loading buffer if it's not already in done buffer
                         if (!doneBuffer.hasMethodCall(call)) {
-                            if (call.getDeclaringType().contains("com.google.gson.TypeAdapter")) {
-                                System.out
-                                        .println("gson methodSignatureKey: " + call.getMethodSignatureKey().toString());
-                                System.out
-                                        .println("type: " + call.getDeclaringType() + " added to loading ");
-                            }
                             loadingBuffer.addMethodCall(call);
                         }
                         return false;

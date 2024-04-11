@@ -5,17 +5,30 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 public class MethodCallBuffer {
     private int size;
     private Map<DependencyNode, HashSet<MethodCallEntry>> buffer = new HashMap<DependencyNode, HashSet<MethodCallEntry>>();
+    private DeclaringTypeToDependencyResolver declaringTypeToDependencyResolver;
 
-    public MethodCallBuffer(List<DependencyNode> dependencies) {
+    /**
+     * Constructor
+     * 
+     * @param dependencies                      the list of dependencies
+     * @param declaringTypeToDependencyResolver the declaring type to dependency
+     *                                          resolver, this help the call buffer
+     *                                          to locate function calls
+     */
+    public MethodCallBuffer(List<DependencyNode> dependencies,
+            DeclaringTypeToDependencyResolver declaringTypeToDependencyResolver) {
+        this.declaringTypeToDependencyResolver = declaringTypeToDependencyResolver;
         for (DependencyNode dependency : dependencies) {
             buffer.put(dependency, new HashSet<MethodCallEntry>());
         }
         this.size = 0;
     }
+
 
     /**
      * Add a method call to the buffer, it will be added to the buffer of the
@@ -25,18 +38,19 @@ public class MethodCallBuffer {
      */
     public void addMethodCall(MethodCallEntry method) {
         String declaringType = method.getDeclaringType();
-        for (DependencyNode dependency : buffer.keySet()) {
-            String normalizedArtifactId = dependency.getArtifactId().replace("-", ".");
-            if (declaringType.contains(normalizedArtifactId)) {
-                if (buffer.get(dependency).contains(method)) {
-                    break;
-                }
-                buffer.get(dependency).add(method);
-                this.size++;
-                break;
-            }
+        String[] parts = declaringType.split("\\.");
+        DependencyNode matchDependencyNode = declaringTypeToDependencyResolver
+                .getDependencyForDeclaringType(declaringType);
+        if (matchDependencyNode == null) {
+            // System.out.println("no match in " + " for " + method.toString());
+            return;
+        }
+        if (!buffer.get(matchDependencyNode).contains(method)) {
+            buffer.get(matchDependencyNode).add(method);
+            this.size++;
         }
     }
+
 
     /**
      * Get the buffer of a dependency if it exists
@@ -45,17 +59,13 @@ public class MethodCallBuffer {
      */
     public void removeMethodCall(MethodCallEntry method) {
         String declaringType = method.getDeclaringType();
-        for (DependencyNode dependency : buffer.keySet()) {
-            String normalizedArtifactId = dependency.getArtifactId().replace("-", ".");
-            if (declaringType.contains(normalizedArtifactId)) {
-                if (buffer.get(dependency).contains(method)) {
-                    buffer.get(dependency).remove(method);
-                    size--;
-                }
-                break;
-
-            }
+        DependencyNode matchDependencyNode = declaringTypeToDependencyResolver
+                .getDependencyForDeclaringType(declaringType);
+        if (buffer.get(matchDependencyNode).contains(method)) {
+            buffer.get(matchDependencyNode).remove(method);
+            size--;
         }
+
     }
 
     /**
@@ -67,13 +77,24 @@ public class MethodCallBuffer {
     public boolean hasMethodCall(MethodCallEntry method) {
 
         String declaringType = method.getDeclaringType();
-        for (DependencyNode dependency : buffer.keySet()) {
-            String normalizedArtifactId = dependency.getArtifactId().replace("-", ".");
-            if (dependency.getIsValid() && declaringType.contains(normalizedArtifactId)) {
-                if (buffer.get(dependency).contains(method)) {
-                    return true;
-                }
-            }
+        DependencyNode matchDependencyNode = declaringTypeToDependencyResolver
+                .getDependencyForDeclaringType(declaringType);
+
+        // if (declaringType.contains("org.slf4j.helpers.Util")) {
+        //     System.out.println("Checking path: " + declaringType.toString() + "  exist ");
+        //     System.out.println(matchDependencyNode.toShortString());
+        // }
+
+        if (matchDependencyNode == null) {
+            // System.out.println("no match in " + " for " + method.toString());
+            return false;
+        }
+        if (buffer.get(matchDependencyNode) == null) {
+            System.out.println("null buffer in " + matchDependencyNode.toShortString() + " for " + declaringType);
+            return false;
+        }
+        if (buffer.get(matchDependencyNode).contains(method)) {
+            return true;
         }
         return false;
     }
@@ -86,11 +107,9 @@ public class MethodCallBuffer {
      * @return boolean
      */
     public boolean hasMethodCall(DependencyNode dependency, MethodCallEntry method) {
-        String normalizedArtifactId = dependency.getArtifactId().replace("-", ".");
-        if (dependency.getIsValid() && method.getDeclaringType().contains(normalizedArtifactId)) {
-            return buffer.get(dependency).contains(method);
-        }
-        return false;
+
+        return buffer.get(dependency).contains(method);
+
     }
 
     /**

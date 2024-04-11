@@ -1,1 +1,515 @@
-{"Dependency: groupId=org.hamcrest, artifactId=java-hamcrest, version=2.0.0.0, jarPath=/Users/yunzezhao/.m2/repository/org/hamcrest/java-hamcrest/2.0.0.0/java-hamcrest-2.0.0.0.jar":[{"declaringType":"org.hamcrest.CoreMatchers","methodSignature":"is(T)","methodName":"is","lineNumber":["62","76","90","97"],"fullExpression":"is(expected)","currentLayer":0,"declarationInfo":{"sourceFilePath":"/Users/yunzezhao/Code/CovSBOM/decompressed/org.hamcrest.java-hamcrest/org/hamcrest/CoreMatchers.java","declarationStartLine":113,"declarationEndLine":115,"methodName":"is","declarationSignature":"is(T)","innerMethodCalls":[{"declaringType":"org.hamcrest.core.Is","methodSignature":"is(T)","methodName":"is","lineNumber":["114"],"fullExpression":"org.hamcrest.core.Is.is(value)","currentLayer":1,"declarationInfo":{"sourceFilePath":"/Users/yunzezhao/Code/CovSBOM/decompressed/org.hamcrest.java-hamcrest/org/hamcrest/core/Is.java","declarationStartLine":60,"declarationEndLine":62,"methodName":"is","declarationSignature":"is(T)","innerMethodCalls":[{"declaringType":"org.hamcrest.core.IsEqual","methodSignature":"equalTo(T)","methodName":"equalTo","lineNumber":["61"],"fullExpression":"equalTo(value)","currentLayer":2,"declarationInfo":{"sourceFilePath":"/Users/yunzezhao/Code/CovSBOM/decompressed/org.hamcrest.java-hamcrest/org/hamcrest/core/IsEqual.java","declarationStartLine":86,"declarationEndLine":88,"methodName":"equalTo","declarationSignature":"equalTo(T)","innerMethodCalls":[]}},{"declaringType":"org.hamcrest.core.Is","methodSignature":"is(org.hamcrest.Matcher<T>)","methodName":"is","lineNumber":["61"],"fullExpression":"is(equalTo(value))","currentLayer":2,"declarationInfo":{"sourceFilePath":"/Users/yunzezhao/Code/CovSBOM/decompressed/org.hamcrest.java-hamcrest/org/hamcrest/core/Is.java","declarationStartLine":48,"declarationEndLine":50,"methodName":"is","declarationSignature":"is(org.hamcrest.Matcher<T>)","innerMethodCalls":[]}}]}}]}},{"declaringType":"org.hamcrest.MatcherAssert","methodSignature":"assertThat(T, org.hamcrest.Matcher<? super T>)","methodName":"assertThat","lineNumber":["62","76","90","97"],"fullExpression":"assertThat(signedBase64URLEncoded, is(expected))","currentLayer":0,"declarationInfo":{"sourceFilePath":"/Users/yunzezhao/Code/CovSBOM/decompressed/org.hamcrest.java-hamcrest/org/hamcrest/MatcherAssert.java","declarationStartLine":5,"declarationEndLine":7,"methodName":"assertThat","declarationSignature":"assertThat(T, org.hamcrest.Matcher<? super T>)","innerMethodCalls":[{"declaringType":"org.hamcrest.MatcherAssert","methodSignature":"assertThat(java.lang.String, T, org.hamcrest.Matcher<? super T>)","methodName":"assertThat","lineNumber":["6"],"fullExpression":"assertThat(\"\", actual, matcher)","currentLayer":1,"declarationInfo":{"sourceFilePath":"/Users/yunzezhao/Code/CovSBOM/decompressed/org.hamcrest.java-hamcrest/org/hamcrest/MatcherAssert.java","declarationStartLine":9,"declarationEndLine":20,"methodName":"assertThat","declarationSignature":"assertThat(java.lang.String, T, org.hamcrest.Matcher<? super T>)","innerMethodCalls":[{"declaringType":"org.hamcrest.Description","methodSignature":"appendDescriptionOf(org.hamcrest.SelfDescribing)","methodName":"appendDescriptionOf","lineNumber":["12"],"fullExpression":"description.appendText(reason).appendText(\"\\nExpected: \").appendDescriptionOf(matcher)","currentLayer":2,"declarationInfo":{"sourceFilePath":"/Users/yunzezhao/Code/CovSBOM/decompressed/org.hamcrest.java-hamcrest/org/hamcrest/Description.java","declarationStartLine":51,"declarationEndLine":54,"methodName":"appendDescriptionOf","declarationSignature":"appendDescriptionOf(org.hamcrest.SelfDescribing)","innerMethodCalls":[]}},{"declaringType":"org.hamcrest.Matcher","methodSignature":"matches(java.lang.Object)","methodName":"matches","lineNumber":["10"],"fullExpression":"matcher.matches(actual)","currentLayer":2,"declarationInfo":{"sourceFilePath":"/Users/yunzezhao/Code/CovSBOM/decompressed/org.hamcrest.java-hamcrest/org/hamcrest/Matcher.java","declarationStartLine":35,"declarationEndLine":35,"methodName":"matches","declarationSignature":"matches(java.lang.Object)","innerMethodCalls":[]}},{"declaringType":"org.hamcrest.Description","methodSignature":"appendText(java.lang.String)","methodName":"appendText","lineNumber":["12","12","12"],"fullExpression":"description.appendText(reason).appendText(\"\\nExpected: \").appendDescriptionOf(matcher).appendText(\"\\n     but: \")","currentLayer":2,"declarationInfo":{"sourceFilePath":"/Users/yunzezhao/Code/CovSBOM/decompressed/org.hamcrest.java-hamcrest/org/hamcrest/Description.java","declarationStartLine":62,"declarationEndLine":65,"methodName":"appendText","declarationSignature":"appendText(java.lang.String)","innerMethodCalls":[]}},{"declaringType":"org.hamcrest.Matcher","methodSignature":"describeMismatch(java.lang.Object, org.hamcrest.Description)","methodName":"describeMismatch","lineNumber":["16"],"fullExpression":"matcher.describeMismatch(actual, description)","currentLayer":2,"declarationInfo":{"sourceFilePath":"/Users/yunzezhao/Code/CovSBOM/decompressed/org.hamcrest.java-hamcrest/org/hamcrest/Matcher.java","declarationStartLine":48,"declarationEndLine":48,"methodName":"describeMismatch","declarationSignature":"describeMismatch(java.lang.Object, org.hamcrest.Description)","innerMethodCalls":[]}}]}}]}}],"Dependency: groupId=org.json, artifactId=json, version=20180130, jarPath=/Users/yunzezhao/.m2/repository/org/json/json/20180130/json-20180130.jar":[{"declaringType":"org.json.JSONObject","methodSignature":"toString()","methodName":"toString","lineNumber":["26"],"fullExpression":"new JSONObject(claims).toString()","currentLayer":0,"declarationInfo":{"sourceFilePath":"/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java","declarationStartLine":2058,"declarationEndLine":2065,"methodName":"toString","declarationSignature":"toString()","innerMethodCalls":[{"declaringType":"org.json.JSONObject","methodSignature":"toString(int)","methodName":"toString","lineNumber":["2061"],"fullExpression":"this.toString(0)","currentLayer":1,"declarationInfo":{"sourceFilePath":"/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java","declarationStartLine":2093,"declarationEndLine":2098,"methodName":"toString","declarationSignature":"toString(int)","innerMethodCalls":[{"declaringType":"org.json.JSONObject","methodSignature":"write(java.io.Writer, int, int)","methodName":"write","lineNumber":["2096"],"fullExpression":"this.write(w, indentFactor, 0)","currentLayer":2,"declarationInfo":{"sourceFilePath":"/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java","declarationStartLine":2279,"declarationEndLine":2332,"methodName":"write","declarationSignature":"write(java.io.Writer, int, int)","innerMethodCalls":[{"declaringType":"org.json.JSONObject","methodSignature":"quote(java.lang.String)","methodName":"quote","lineNumber":["2289","2310"],"fullExpression":"quote(key)","currentLayer":3,"declarationInfo":{"sourceFilePath":"/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java","declarationStartLine":1743,"declarationEndLine":1753,"methodName":"quote","declarationSignature":"quote(java.lang.String)","innerMethodCalls":[{"declaringType":"org.json.JSONObject","methodSignature":"quote(java.lang.String, java.io.Writer)","methodName":"quote","lineNumber":["1747"],"fullExpression":"quote(string, sw)","currentLayer":4,"declarationInfo":{"sourceFilePath":"/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java","declarationStartLine":1755,"declarationEndLine":1812,"methodName":"quote","declarationSignature":"quote(java.lang.String, java.io.Writer)","innerMethodCalls":[]}}]}},{"declaringType":"org.json.JSONObject","methodSignature":"entrySet()","methodName":"entrySet","lineNumber":["2287","2301"],"fullExpression":"this.entrySet()","currentLayer":3,"declarationInfo":{"sourceFilePath":"/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java","declarationStartLine":907,"declarationEndLine":909,"methodName":"entrySet","declarationSignature":"entrySet()","innerMethodCalls":[]}},{"declaringType":"org.json.JSONObject","methodSignature":"writeValue(java.io.Writer, java.lang.Object, int, int)","methodName":"writeValue","lineNumber":["2295","2316"],"fullExpression":"writeValue(writer, entry.getValue(), indentFactor, indent)","currentLayer":3,"declarationInfo":{"sourceFilePath":"/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java","declarationStartLine":2199,"declarationEndLine":2245,"methodName":"writeValue","declarationSignature":"writeValue(java.io.Writer, java.lang.Object, int, int)","innerMethodCalls":[{"declaringType":"org.json.JSONObject","methodSignature":"numberToString(java.lang.Number)","methodName":"numberToString","lineNumber":["2213"],"fullExpression":"numberToString((Number) value)","currentLayer":4,"declarationInfo":{"sourceFilePath":"/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java","declarationStartLine":943,"declarationEndLine":962,"methodName":"numberToString","declarationSignature":"numberToString(java.lang.Number)","innerMethodCalls":[{"declaringType":"org.json.JSONObject","methodSignature":"testValidity(java.lang.Object)","methodName":"testValidity","lineNumber":["947"],"fullExpression":"testValidity(number)","currentLayer":5,"declarationInfo":{"sourceFilePath":"/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java","declarationStartLine":2007,"declarationEndLine":2021,"methodName":"testValidity","declarationSignature":"testValidity(java.lang.Object)","innerMethodCalls":[]}}]}},{"declaringType":"org.json.JSONString","methodSignature":"toJSONString()","methodName":"toJSONString","lineNumber":["2206"],"fullExpression":"((JSONString) value).toJSONString()","currentLayer":4,"declarationInfo":{"sourceFilePath":"/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONString.java","declarationStartLine":17,"declarationEndLine":17,"methodName":"toJSONString","declarationSignature":"toJSONString()","innerMethodCalls":[]}},{"declaringType":"org.json.JSONArray","methodSignature":"write(java.io.Writer, int, int)","methodName":"write","lineNumber":["2232","2238","2240"],"fullExpression":"((JSONArray) value).write(writer, indentFactor, indent)","currentLayer":4,"declarationInfo":{"sourceFilePath":"/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONArray.java","declarationStartLine":1432,"declarationEndLine":1475,"methodName":"write","declarationSignature":"write(java.io.Writer, int, int)","innerMethodCalls":[{"declaringType":"org.json.JSONArray","methodSignature":"length()","methodName":"length","lineNumber":["1436"],"fullExpression":"this.length()","currentLayer":5,"declarationInfo":{"sourceFilePath":"/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONArray.java","declarationStartLine":507,"declarationEndLine":509,"methodName":"length","declarationSignature":"length()","innerMethodCalls":[]}}]}}]}},{"declaringType":"org.json.JSONObject","methodSignature":"indent(java.io.Writer, int)","methodName":"indent","lineNumber":["2308","2325"],"fullExpression":"indent(writer, newindent)","currentLayer":3,"declarationInfo":{"sourceFilePath":"/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java","declarationStartLine":2247,"declarationEndLine":2251,"methodName":"indent","declarationSignature":"indent(java.io.Writer, int)","innerMethodCalls":[]}},{"declaringType":"org.json.JSONObject","methodSignature":"length()","methodName":"length","lineNumber":["2283"],"fullExpression":"this.length()","currentLayer":3,"declarationInfo":{"sourceFilePath":"/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java","declarationStartLine":916,"declarationEndLine":918,"methodName":"length","declarationSignature":"length()","innerMethodCalls":[]}}]}}]}}]}},{"declaringType":"org.json.JSONObject","methodSignature":"toMap()","methodName":"toMap","lineNumber":["21"],"fullExpression":"new JSONObject(decodedJSON).toMap()","currentLayer":0,"declarationInfo":{"sourceFilePath":"/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java","declarationStartLine":2343,"declarationEndLine":2359,"methodName":"toMap","declarationSignature":"toMap()","innerMethodCalls":[{"declaringType":"org.json.JSONObject","methodSignature":"entrySet()","methodName":"entrySet","lineNumber":["2345"],"fullExpression":"this.entrySet()","currentLayer":1,"declarationInfo":{"sourceFilePath":"/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java","declarationStartLine":907,"declarationEndLine":909,"methodName":"entrySet","declarationSignature":"entrySet()","innerMethodCalls":[]}},{"declaringType":"org.json.JSONObject","methodSignature":"toMap()","methodName":"toMap","lineNumber":["2350"],"fullExpression":"((JSONObject) entry.getValue()).toMap()","currentLayer":1,"declarationInfo":{"sourceFilePath":"/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java","declarationStartLine":2343,"declarationEndLine":2359,"methodName":"toMap","declarationSignature":"toMap()","innerMethodCalls":[{"declaringType":"org.json.JSONObject","methodSignature":"entrySet()","methodName":"entrySet","lineNumber":["2345"],"fullExpression":"this.entrySet()","currentLayer":2,"declarationInfo":{"sourceFilePath":"/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java","declarationStartLine":907,"declarationEndLine":909,"methodName":"entrySet","declarationSignature":"entrySet()","innerMethodCalls":[]}},{"declaringType":"org.json.JSONObject","methodSignature":"toMap()","methodName":"toMap","lineNumber":["2350"],"fullExpression":"((JSONObject) entry.getValue()).toMap()","currentLayer":2,"declarationInfo":{"sourceFilePath":"/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java","declarationStartLine":2343,"declarationEndLine":2359,"methodName":"toMap","declarationSignature":"toMap()","innerMethodCalls":[]}},{"declaringType":"org.json.JSONArray","methodSignature":"toList()","methodName":"toList","lineNumber":["2352"],"fullExpression":"((JSONArray) entry.getValue()).toList()","currentLayer":2,"declarationInfo":{"sourceFilePath":"/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONArray.java","declarationStartLine":1486,"declarationEndLine":1500,"methodName":"toList","declarationSignature":"toList()","innerMethodCalls":[]}}]}},{"declaringType":"org.json.JSONArray","methodSignature":"toList()","methodName":"toList","lineNumber":["2352"],"fullExpression":"((JSONArray) entry.getValue()).toList()","currentLayer":1,"declarationInfo":{"sourceFilePath":"/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONArray.java","declarationStartLine":1486,"declarationEndLine":1500,"methodName":"toList","declarationSignature":"toList()","innerMethodCalls":[]}}]}}]}
+{
+  "Dependency: groupId=org.hamcrest, artifactId=java-hamcrest, version=2.0.0.0, jarPath=/Users/yunzezhao/.m2/repository/org/hamcrest/java-hamcrest/2.0.0.0/java-hamcrest-2.0.0.0.jar": [
+    {
+      "declaringType": "org.hamcrest.CoreMatchers",
+      "methodSignature": "is(T)",
+      "methodName": "is",
+      "lineNumber": ["62", "76", "90", "97"],
+      "fullExpression": "is(expected)",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hamcrest.java-hamcrest/org/hamcrest/CoreMatchers.java",
+        "declarationStartLine": 113,
+        "declarationEndLine": 115,
+        "methodName": "is",
+        "declarationSignature": "is(T)",
+        "innerMethodCalls": [
+          {
+            "declaringType": "org.hamcrest.core.Is",
+            "methodSignature": "is(T)",
+            "methodName": "is",
+            "lineNumber": ["114"],
+            "fullExpression": "org.hamcrest.core.Is.is(value)",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hamcrest.java-hamcrest/org/hamcrest/core/Is.java",
+              "declarationStartLine": 60,
+              "declarationEndLine": 62,
+              "methodName": "is",
+              "declarationSignature": "is(T)",
+              "innerMethodCalls": [
+                {
+                  "declaringType": "org.hamcrest.core.IsEqual",
+                  "methodSignature": "equalTo(T)",
+                  "methodName": "equalTo",
+                  "lineNumber": ["61"],
+                  "fullExpression": "equalTo(value)",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hamcrest.java-hamcrest/org/hamcrest/core/IsEqual.java",
+                    "declarationStartLine": 86,
+                    "declarationEndLine": 88,
+                    "methodName": "equalTo",
+                    "declarationSignature": "equalTo(T)",
+                    "innerMethodCalls": []
+                  }
+                },
+                {
+                  "declaringType": "org.hamcrest.core.Is",
+                  "methodSignature": "is(org.hamcrest.Matcher<T>)",
+                  "methodName": "is",
+                  "lineNumber": ["61"],
+                  "fullExpression": "is(equalTo(value))",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hamcrest.java-hamcrest/org/hamcrest/core/Is.java",
+                    "declarationStartLine": 48,
+                    "declarationEndLine": 50,
+                    "methodName": "is",
+                    "declarationSignature": "is(org.hamcrest.Matcher<T>)",
+                    "innerMethodCalls": []
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "declaringType": "org.hamcrest.MatcherAssert",
+      "methodSignature": "assertThat(T, org.hamcrest.Matcher<? super T>)",
+      "methodName": "assertThat",
+      "lineNumber": ["62", "76", "90", "97"],
+      "fullExpression": "assertThat(signedBase64URLEncoded, is(expected))",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hamcrest.java-hamcrest/org/hamcrest/MatcherAssert.java",
+        "declarationStartLine": 5,
+        "declarationEndLine": 7,
+        "methodName": "assertThat",
+        "declarationSignature": "assertThat(T, org.hamcrest.Matcher<? super T>)",
+        "innerMethodCalls": [
+          {
+            "declaringType": "org.hamcrest.MatcherAssert",
+            "methodSignature": "assertThat(java.lang.String, T, org.hamcrest.Matcher<? super T>)",
+            "methodName": "assertThat",
+            "lineNumber": ["6"],
+            "fullExpression": "assertThat(\"\", actual, matcher)",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hamcrest.java-hamcrest/org/hamcrest/MatcherAssert.java",
+              "declarationStartLine": 9,
+              "declarationEndLine": 20,
+              "methodName": "assertThat",
+              "declarationSignature": "assertThat(java.lang.String, T, org.hamcrest.Matcher<? super T>)",
+              "innerMethodCalls": [
+                {
+                  "declaringType": "org.hamcrest.Description",
+                  "methodSignature": "appendDescriptionOf(org.hamcrest.SelfDescribing)",
+                  "methodName": "appendDescriptionOf",
+                  "lineNumber": ["12"],
+                  "fullExpression": "description.appendText(reason).appendText(\"\\nExpected: \").appendDescriptionOf(matcher)",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hamcrest.java-hamcrest/org/hamcrest/Description.java",
+                    "declarationStartLine": 51,
+                    "declarationEndLine": 54,
+                    "methodName": "appendDescriptionOf",
+                    "declarationSignature": "appendDescriptionOf(org.hamcrest.SelfDescribing)",
+                    "innerMethodCalls": []
+                  }
+                },
+                {
+                  "declaringType": "org.hamcrest.Matcher",
+                  "methodSignature": "matches(java.lang.Object)",
+                  "methodName": "matches",
+                  "lineNumber": ["10"],
+                  "fullExpression": "matcher.matches(actual)",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hamcrest.java-hamcrest/org/hamcrest/Matcher.java",
+                    "declarationStartLine": 35,
+                    "declarationEndLine": 35,
+                    "methodName": "matches",
+                    "declarationSignature": "matches(java.lang.Object)",
+                    "innerMethodCalls": []
+                  }
+                },
+                {
+                  "declaringType": "org.hamcrest.Description",
+                  "methodSignature": "appendText(java.lang.String)",
+                  "methodName": "appendText",
+                  "lineNumber": ["12", "12", "12"],
+                  "fullExpression": "description.appendText(reason).appendText(\"\\nExpected: \").appendDescriptionOf(matcher).appendText(\"\\n     but: \")",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hamcrest.java-hamcrest/org/hamcrest/Description.java",
+                    "declarationStartLine": 62,
+                    "declarationEndLine": 65,
+                    "methodName": "appendText",
+                    "declarationSignature": "appendText(java.lang.String)",
+                    "innerMethodCalls": []
+                  }
+                },
+                {
+                  "declaringType": "org.hamcrest.Matcher",
+                  "methodSignature": "describeMismatch(java.lang.Object, org.hamcrest.Description)",
+                  "methodName": "describeMismatch",
+                  "lineNumber": ["16"],
+                  "fullExpression": "matcher.describeMismatch(actual, description)",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.hamcrest.java-hamcrest/org/hamcrest/Matcher.java",
+                    "declarationStartLine": 48,
+                    "declarationEndLine": 48,
+                    "methodName": "describeMismatch",
+                    "declarationSignature": "describeMismatch(java.lang.Object, org.hamcrest.Description)",
+                    "innerMethodCalls": []
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "Dependency: groupId=org.json, artifactId=json, version=20180130, jarPath=/Users/yunzezhao/.m2/repository/org/json/json/20180130/json-20180130.jar": [
+    {
+      "declaringType": "org.json.JSONObject",
+      "methodSignature": "toString()",
+      "methodName": "toString",
+      "lineNumber": ["26"],
+      "fullExpression": "new JSONObject(claims).toString()",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java",
+        "declarationStartLine": 2058,
+        "declarationEndLine": 2065,
+        "methodName": "toString",
+        "declarationSignature": "toString()",
+        "innerMethodCalls": [
+          {
+            "declaringType": "org.json.JSONObject",
+            "methodSignature": "toString(int)",
+            "methodName": "toString",
+            "lineNumber": ["2061"],
+            "fullExpression": "this.toString(0)",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java",
+              "declarationStartLine": 2093,
+              "declarationEndLine": 2098,
+              "methodName": "toString",
+              "declarationSignature": "toString(int)",
+              "innerMethodCalls": [
+                {
+                  "declaringType": "org.json.JSONObject",
+                  "methodSignature": "write(java.io.Writer, int, int)",
+                  "methodName": "write",
+                  "lineNumber": ["2096"],
+                  "fullExpression": "this.write(w, indentFactor, 0)",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java",
+                    "declarationStartLine": 2279,
+                    "declarationEndLine": 2332,
+                    "methodName": "write",
+                    "declarationSignature": "write(java.io.Writer, int, int)",
+                    "innerMethodCalls": [
+                      {
+                        "declaringType": "org.json.JSONObject",
+                        "methodSignature": "quote(java.lang.String)",
+                        "methodName": "quote",
+                        "lineNumber": ["2289", "2310"],
+                        "fullExpression": "quote(key)",
+                        "currentLayer": 3,
+                        "declarationInfo": {
+                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java",
+                          "declarationStartLine": 1743,
+                          "declarationEndLine": 1753,
+                          "methodName": "quote",
+                          "declarationSignature": "quote(java.lang.String)",
+                          "innerMethodCalls": [
+                            {
+                              "declaringType": "org.json.JSONObject",
+                              "methodSignature": "quote(java.lang.String, java.io.Writer)",
+                              "methodName": "quote",
+                              "lineNumber": ["1747"],
+                              "fullExpression": "quote(string, sw)",
+                              "currentLayer": 4,
+                              "declarationInfo": {
+                                "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java",
+                                "declarationStartLine": 1755,
+                                "declarationEndLine": 1812,
+                                "methodName": "quote",
+                                "declarationSignature": "quote(java.lang.String, java.io.Writer)",
+                                "innerMethodCalls": []
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "declaringType": "org.json.JSONObject",
+                        "methodSignature": "entrySet()",
+                        "methodName": "entrySet",
+                        "lineNumber": ["2287", "2301"],
+                        "fullExpression": "this.entrySet()",
+                        "currentLayer": 3,
+                        "declarationInfo": {
+                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java",
+                          "declarationStartLine": 907,
+                          "declarationEndLine": 909,
+                          "methodName": "entrySet",
+                          "declarationSignature": "entrySet()",
+                          "innerMethodCalls": []
+                        }
+                      },
+                      {
+                        "declaringType": "org.json.JSONObject",
+                        "methodSignature": "writeValue(java.io.Writer, java.lang.Object, int, int)",
+                        "methodName": "writeValue",
+                        "lineNumber": ["2295", "2316"],
+                        "fullExpression": "writeValue(writer, entry.getValue(), indentFactor, indent)",
+                        "currentLayer": 3,
+                        "declarationInfo": {
+                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java",
+                          "declarationStartLine": 2199,
+                          "declarationEndLine": 2245,
+                          "methodName": "writeValue",
+                          "declarationSignature": "writeValue(java.io.Writer, java.lang.Object, int, int)",
+                          "innerMethodCalls": [
+                            {
+                              "declaringType": "org.json.JSONObject",
+                              "methodSignature": "numberToString(java.lang.Number)",
+                              "methodName": "numberToString",
+                              "lineNumber": ["2213"],
+                              "fullExpression": "numberToString((Number) value)",
+                              "currentLayer": 4,
+                              "declarationInfo": {
+                                "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java",
+                                "declarationStartLine": 943,
+                                "declarationEndLine": 962,
+                                "methodName": "numberToString",
+                                "declarationSignature": "numberToString(java.lang.Number)",
+                                "innerMethodCalls": [
+                                  {
+                                    "declaringType": "org.json.JSONObject",
+                                    "methodSignature": "testValidity(java.lang.Object)",
+                                    "methodName": "testValidity",
+                                    "lineNumber": ["947"],
+                                    "fullExpression": "testValidity(number)",
+                                    "currentLayer": 5,
+                                    "declarationInfo": {
+                                      "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java",
+                                      "declarationStartLine": 2007,
+                                      "declarationEndLine": 2021,
+                                      "methodName": "testValidity",
+                                      "declarationSignature": "testValidity(java.lang.Object)",
+                                      "innerMethodCalls": []
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "declaringType": "org.json.JSONString",
+                              "methodSignature": "toJSONString()",
+                              "methodName": "toJSONString",
+                              "lineNumber": ["2206"],
+                              "fullExpression": "((JSONString) value).toJSONString()",
+                              "currentLayer": 4,
+                              "declarationInfo": {
+                                "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONString.java",
+                                "declarationStartLine": 17,
+                                "declarationEndLine": 17,
+                                "methodName": "toJSONString",
+                                "declarationSignature": "toJSONString()",
+                                "innerMethodCalls": []
+                              }
+                            },
+                            {
+                              "declaringType": "org.json.JSONArray",
+                              "methodSignature": "write(java.io.Writer, int, int)",
+                              "methodName": "write",
+                              "lineNumber": ["2232", "2238", "2240"],
+                              "fullExpression": "((JSONArray) value).write(writer, indentFactor, indent)",
+                              "currentLayer": 4,
+                              "declarationInfo": {
+                                "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONArray.java",
+                                "declarationStartLine": 1432,
+                                "declarationEndLine": 1475,
+                                "methodName": "write",
+                                "declarationSignature": "write(java.io.Writer, int, int)",
+                                "innerMethodCalls": [
+                                  {
+                                    "declaringType": "org.json.JSONArray",
+                                    "methodSignature": "length()",
+                                    "methodName": "length",
+                                    "lineNumber": ["1436"],
+                                    "fullExpression": "this.length()",
+                                    "currentLayer": 5,
+                                    "declarationInfo": {
+                                      "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONArray.java",
+                                      "declarationStartLine": 507,
+                                      "declarationEndLine": 509,
+                                      "methodName": "length",
+                                      "declarationSignature": "length()",
+                                      "innerMethodCalls": []
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "declaringType": "org.json.JSONObject",
+                        "methodSignature": "indent(java.io.Writer, int)",
+                        "methodName": "indent",
+                        "lineNumber": ["2308", "2325"],
+                        "fullExpression": "indent(writer, newindent)",
+                        "currentLayer": 3,
+                        "declarationInfo": {
+                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java",
+                          "declarationStartLine": 2247,
+                          "declarationEndLine": 2251,
+                          "methodName": "indent",
+                          "declarationSignature": "indent(java.io.Writer, int)",
+                          "innerMethodCalls": []
+                        }
+                      },
+                      {
+                        "declaringType": "org.json.JSONObject",
+                        "methodSignature": "length()",
+                        "methodName": "length",
+                        "lineNumber": ["2283"],
+                        "fullExpression": "this.length()",
+                        "currentLayer": 3,
+                        "declarationInfo": {
+                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java",
+                          "declarationStartLine": 916,
+                          "declarationEndLine": 918,
+                          "methodName": "length",
+                          "declarationSignature": "length()",
+                          "innerMethodCalls": []
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "declaringType": "org.json.JSONObject",
+      "methodSignature": "toMap()",
+      "methodName": "toMap",
+      "lineNumber": ["21"],
+      "fullExpression": "new JSONObject(decodedJSON).toMap()",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java",
+        "declarationStartLine": 2343,
+        "declarationEndLine": 2359,
+        "methodName": "toMap",
+        "declarationSignature": "toMap()",
+        "innerMethodCalls": [
+          {
+            "declaringType": "org.json.JSONObject",
+            "methodSignature": "entrySet()",
+            "methodName": "entrySet",
+            "lineNumber": ["2345"],
+            "fullExpression": "this.entrySet()",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java",
+              "declarationStartLine": 907,
+              "declarationEndLine": 909,
+              "methodName": "entrySet",
+              "declarationSignature": "entrySet()",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "org.json.JSONObject",
+            "methodSignature": "toMap()",
+            "methodName": "toMap",
+            "lineNumber": ["2350"],
+            "fullExpression": "((JSONObject) entry.getValue()).toMap()",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java",
+              "declarationStartLine": 2343,
+              "declarationEndLine": 2359,
+              "methodName": "toMap",
+              "declarationSignature": "toMap()",
+              "innerMethodCalls": [
+                {
+                  "declaringType": "org.json.JSONObject",
+                  "methodSignature": "entrySet()",
+                  "methodName": "entrySet",
+                  "lineNumber": ["2345"],
+                  "fullExpression": "this.entrySet()",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java",
+                    "declarationStartLine": 907,
+                    "declarationEndLine": 909,
+                    "methodName": "entrySet",
+                    "declarationSignature": "entrySet()",
+                    "innerMethodCalls": []
+                  }
+                },
+                {
+                  "declaringType": "org.json.JSONObject",
+                  "methodSignature": "toMap()",
+                  "methodName": "toMap",
+                  "lineNumber": ["2350"],
+                  "fullExpression": "((JSONObject) entry.getValue()).toMap()",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONObject.java",
+                    "declarationStartLine": 2343,
+                    "declarationEndLine": 2359,
+                    "methodName": "toMap",
+                    "declarationSignature": "toMap()",
+                    "innerMethodCalls": []
+                  }
+                },
+                {
+                  "declaringType": "org.json.JSONArray",
+                  "methodSignature": "toList()",
+                  "methodName": "toList",
+                  "lineNumber": ["2352"],
+                  "fullExpression": "((JSONArray) entry.getValue()).toList()",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONArray.java",
+                    "declarationStartLine": 1486,
+                    "declarationEndLine": 1500,
+                    "methodName": "toList",
+                    "declarationSignature": "toList()",
+                    "innerMethodCalls": []
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "declaringType": "org.json.JSONArray",
+            "methodSignature": "toList()",
+            "methodName": "toList",
+            "lineNumber": ["2352"],
+            "fullExpression": "((JSONArray) entry.getValue()).toList()",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.json.json/org/json/JSONArray.java",
+              "declarationStartLine": 1486,
+              "declarationEndLine": 1500,
+              "methodName": "toList",
+              "declarationSignature": "toList()",
+              "innerMethodCalls": []
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

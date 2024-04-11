@@ -135,18 +135,22 @@ public class Main {
         System.out.println("java version: " + DependencyProcessor.getJavaVersion());
         Settings.setJavaVersion(DependencyProcessor.getJavaVersion());
 
-        System.out.println("moduleList: " + moduleList.toString());
+
+        for (String key : moduleList.keySet()) {
+            System.out.println("key: " + key + " value: " + moduleList.get(key));
+        }
+        System.out.println("total modules: " + moduleList.size());
         Dependency packageInfo = DependencyProcessor.getPackageInfo();
         Map<String, DependencyNode> dependencyMap = new HashMap<String, DependencyNode>();
 
         // this operation updates the dependencyMap, key: groupId:artifactId, value: dependencyNode
         DependencyNode rootNode = MavenDependencyTree.runMavenDependencyTree(rootDirectoryPath, packageInfo,
-                dependencyMap);
+                dependencyMap, moduleList);
 
         System.out.println("main project dependencies: " + dependencyMap.size());
-        for (String key : dependencyMap.keySet()) {
-            System.out.println("key: " + key + " value: " + dependencyMap.get(key).toString());
-        }
+        // for (String key : dependencyMap.keySet()) {
+        //     System.out.println("key: " + key + " value: " + dependencyMap.get(key).toString());
+        // }
 
         // if (test) {
         //     return;

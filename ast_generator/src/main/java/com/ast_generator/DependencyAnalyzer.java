@@ -43,15 +43,20 @@ public class DependencyAnalyzer {
             dependencies.addAll(DependencyCollector.collectAllDependencies(dependency));
         }
 
-        // * initialize buffers
-        MethodCallBuffer loadingBuffer = new MethodCallBuffer(dependencies);
-        MethodCallBuffer doneBuffer = new MethodCallBuffer(dependencies);
+        System.out.println("all dependencies: " + dependencies.size());
+
         // decompress all jars
         this.jarDecompressedPaths = Utils.decompressAllJars(dependencies, "decompressed");
+        DeclaringTypeToDependencyResolver declaringTypeToDependencyResolver = new DeclaringTypeToDependencyResolver(
+            dependencies, jarDecompressedPaths);
         // System.out.println("jarDecompressedPaths: " +
         // jarDecompressedPaths.toString());
         // * find all required jar and save the results in typeToJarLookup
-        findRequiredJars();
+        findRequiredJars(declaringTypeToDependencyResolver);
+
+        // * initialize buffers
+        MethodCallBuffer loadingBuffer = new MethodCallBuffer(dependencies, declaringTypeToDependencyResolver);
+        MethodCallBuffer doneBuffer = new MethodCallBuffer(dependencies, declaringTypeToDependencyResolver);
 
         System.out.println("typeToJarLookup: ");
         for (DependencyNode dependency : typeToJarLookup.keySet()) {
@@ -77,24 +82,26 @@ public class DependencyAnalyzer {
         }
 
         int faultCatchCount = 0;
+
+        // skip this for now
+        // while (loadingBuffer.size() < 0) {
         while (loadingBuffer.size() > 0) {
-           
 
             System.out.println("***");
             System.out.println("processing loading buffer: " + faultCatchCount);
             System.out.println("***");
             faultCatchCount++;
             for (DependencyNode dependency : loadingBuffer.getKeys()) {
-                
-                 // * we update the jarPath for type for reporter here
+
+                // * we update the jarPath for type for reporter here
                 for (MethodCallEntry methodCallEntry : loadingBuffer.getMethodCalls(dependency)) {
                     String declaringType = methodCallEntry.getDeclaringType();
-                    findJarPathForType(declaringType);
+                    declaringTypeToDependencyResolver.getDependencyForDeclaringType(declaringType);
                 }
 
                 // * we get all the types we need to analyze for this jar
                 Set<String> types = new HashSet<String>();
-                
+
                 loadingBuffer.getMethodCalls(dependency).forEach(methodSignatureKey -> {
                     types.add(methodSignatureKey.getDeclaringType());
                 });
@@ -114,7 +121,7 @@ public class DependencyAnalyzer {
                 }
             }
 
-            if (faultCatchCount > 6) {
+            if (faultCatchCount > 10) {
                 System.out.println("pause operation: " + faultCatchCount);
                 break;
             }
@@ -128,60 +135,33 @@ public class DependencyAnalyzer {
     /**
      * Find all required jars and save the results in typeToJarLookup
      */
-    private void findRequiredJars() {
+    private void findRequiredJars(DeclaringTypeToDependencyResolver declaringTypeToDependencyResolver) {
 
         // first layer unique types
         List<String> uniqueTypes = methodCallReporter.getUniqueTypes();
-
+        System.out.println("uniqueTypes: " + uniqueTypes.toString());
+        unresolvedTypes.addAll(uniqueTypes);
         for (String declaringType : uniqueTypes) {
+            System.out.println("declaringType before check: " + declaringType);
             if (declaringType.startsWith("java.") || declaringType.startsWith("javax.")
                     || declaringType.startsWith(methodCallReporter.getParentPackageName())) {
                 continue;
             }
 
-            unresolvedTypes.add(declaringType);
-            findJarPathForType(declaringType);
-        }
-
-    }
-
-    /**
-     * Create a map of jarPath to a set of types that are found in the jar
-     * Key: jarPath, Value: Set of types
-     */
-    private void findJarPathForType(String declaringType) {
-
-        String filePath = declaringType.replace('.', '/') + ".java"; // Convert package name to file path
-
-        for (String jarDecompressedPath : jarDecompressedPaths) {
-            Path potentialPath = Paths.get("decompressed/" + jarDecompressedPath, filePath);
-            if (Files.exists(potentialPath)) {
-                // Assuming dependencyMap keys are artifactIds and Dependency objects have a
-                // method getArtifactId()
-                DependencyNode matchedDependency = findDependencyForDecompressedPath(jarDecompressedPath);
-                if (matchedDependency != null) {
-                    if (typeToJarLookup.get(matchedDependency) == null) {
-                        typeToJarLookup.put(matchedDependency, new HashSet<String>());
-                    }
-                    typeToJarLookup.get(matchedDependency).add(declaringType);
-                    unresolvedTypes.remove(declaringType); // Mark as resolved
-                    break; // Stop searching once matched
+            System.out.println("declaringType after : " + declaringType);
+            DependencyNode matchedDependency = declaringTypeToDependencyResolver
+                    .getDependencyForDeclaringType(declaringType);
+            System.out.println("matchedDependency: " + matchedDependency + " for " + declaringType);
+            if (matchedDependency != null) {
+                if (typeToJarLookup.get(matchedDependency) == null) {
+                    typeToJarLookup.put(matchedDependency, new HashSet<String>());
                 }
-            } else {
-                // System.out.println("File not found: " + potentialPath.toAbsolutePath());
+                typeToJarLookup.get(matchedDependency).add(declaringType);
+                unresolvedTypes.remove(declaringType); // Mark as resolved
+                // break; // Stop searching once matched
             }
         }
-    }
 
-    private DependencyNode findDependencyForDecompressedPath(String decompressedPath) {
-        // Implement logic to find the matching Dependency object based on
-        // decompressedPath
-        // This might involve naming conventions or additional metadata stored during
-        // decompression
-        return dependencyMap.values().stream()
-                .filter(dependency -> decompressedPath.contains(dependency.getArtifactId()))
-                .findFirst()
-                .orElse(null);
     }
 
 }
