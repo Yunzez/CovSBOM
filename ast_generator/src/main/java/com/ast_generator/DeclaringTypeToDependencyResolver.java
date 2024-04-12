@@ -12,10 +12,11 @@ import java.util.Set;
 
 public class DeclaringTypeToDependencyResolver {
 
-    private Map<DependencyNode, Set<String>> typeToJarLookup = new HashMap<>();
+    private Map<DependencyNode, Set<String>> cache = new HashMap<>();
     private Set<String> unresolvedTypes = new HashSet<>();
     private List<DependencyNode> dependecies; // Map from artifactId to DependencyNode
     private List<String> jarDecompressedPaths; // Paths to decompressed JAR directories
+
 
     public DeclaringTypeToDependencyResolver(List<DependencyNode> dependecies,
             List<String> jarDecompressedPaths) {
@@ -28,42 +29,9 @@ public class DeclaringTypeToDependencyResolver {
      * 
      * @param declaringType The fully qualified name of the type.
      */
-    // private void findJarPathForType(String declaringType) {
-    // String filePath = declaringType.replace('.', '/') + ".java"; // Convert
-    // package name to file path
-
-    // for (String jarDecompressedPath : jarDecompressedPaths) {
-    // Path potentialPath = Paths.get("decompressed/" + jarDecompressedPath,
-    // filePath);
-    // // System.out.println("Checking path: " + potentialPath.toString());
-
-    // if (Files.exists(potentialPath)) {
-    // DependencyNode matchedDependency =
-    // findDependencyForDecompressedPath(jarDecompressedPath);
-    // if (declaringType.contains("org.slf4j.helpers.Util") &&
-    // potentialPath.toString().contains("org.slf4j")) {
-    // System.out.println("Checking path: " + potentialPath.toString() + " exist ");
-    // System.out.println(matchedDependency.toShortString());
-    // }
-
-    // if (matchedDependency != null) {
-    // typeToJarLookup.computeIfAbsent(matchedDependency, k -> new
-    // HashSet<>()).add(declaringType);
-    // unresolvedTypes.remove(declaringType); // Mark as resolved
-    // break; // Stop searching once matched
-    // } else {
-    // // Log or handle the case where the dependency couldn't be found
-    // }
-    // }
-    // }
-    // if (!typeToJarLookup.containsKey(declaringType)) {
-    // // Log or handle the case where the declaring type's source file couldn't be
-    // // found
-    // unresolvedTypes.add(declaringType);
-    // }
-    // }
 
     private void findJarPathForType(String declaringType) {
+
         String[] parts = declaringType.split("\\.");
         boolean matchFound = false;
 
@@ -76,17 +44,9 @@ public class DeclaringTypeToDependencyResolver {
 
                 if (Files.exists(potentialPath)) {
                     DependencyNode matchedDependency = findDependencyForDecompressedPath(jarDecompressedPath);
-                    if (declaringType.contains("org.apache.http.protocol")
-                            && potentialPath.toString().contains("org.apache")) {
-                        System.out.println("Checking path: " + potentialPath.toString() + "  exist " );
-                        // System.out.println(matchedDependency.toShortString());
-                        System.out.println(jarDecompressedPath);
-                        System.out.println("----");
-
-                    }
-
+                    
                     if (matchedDependency != null) {
-                        typeToJarLookup.computeIfAbsent(matchedDependency, k -> new HashSet<>()).add(declaringType);
+                        cache.computeIfAbsent(matchedDependency, k -> new HashSet<>()).add(declaringType);
                         unresolvedTypes.remove(declaringType); // Mark as resolved
                         matchFound = true;
                         break; // Stop searching once matched
@@ -110,19 +70,7 @@ public class DeclaringTypeToDependencyResolver {
     private DependencyNode findDependencyForDecompressedPath(String decompressedPath) {
         // Simplistic approach: Match based on the presence of artifactId in the
         // decompressedPath
-        // Adjust logic as needed based on your decompression naming convention
 
-        if (decompressedPath.contains("org.apache.httpcomponents.httpcore")) {
-            System.out.println("decompressedPath: " + decompressedPath);
-            // System.out.println(dependecies.values().toString());
-            System.out.println(dependecies.size());
-            for (DependencyNode dependency : dependecies) {
-                System.out.println(dependency.getSourceDecompressedPath());
-                if (dependency.getSourceDecompressedPath().contains(decompressedPath)) {
-                    System.out.println("Matched: " + dependency.toShortString());
-                }
-            }
-        }
         return dependecies.stream()
                 .filter(dependency -> decompressedPath.contains(dependency.getArtifactId()))
                 .findFirst()
@@ -131,10 +79,11 @@ public class DeclaringTypeToDependencyResolver {
 
     public DependencyNode getDependencyForDeclaringType(String declaringType) {
         // Call findJarPathForType first to ensure the mappings are updated
+      
         findJarPathForType(declaringType);
 
-        // Iterate through the typeToJarLookup to find the corresponding DependencyNode
-        for (Map.Entry<DependencyNode, Set<String>> entry : typeToJarLookup.entrySet()) {
+        // Iterate through the cache to find the corresponding DependencyNode
+        for (Map.Entry<DependencyNode, Set<String>> entry : cache.entrySet()) {
             if (entry.getValue().contains(declaringType)) {
                 return entry.getKey(); // Return the DependencyNode that includes the declaringType
             }
@@ -145,5 +94,10 @@ public class DeclaringTypeToDependencyResolver {
     // Getter for unresolvedTypes to handle or log types that couldn't be resolved
     public Set<String> getUnresolvedTypes() {
         return unresolvedTypes;
+    }
+
+    // Getter for cache to access the resolved mappings
+    public Map<DependencyNode, Set<String>> getCache() {
+        return cache;
     }
 }

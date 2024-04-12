@@ -29,7 +29,6 @@ public class MethodCallBuffer {
         this.size = 0;
     }
 
-
     /**
      * Add a method call to the buffer, it will be added to the buffer of the
      * dependency that the method call is related to
@@ -38,11 +37,15 @@ public class MethodCallBuffer {
      */
     public void addMethodCall(MethodCallEntry method) {
         String declaringType = method.getDeclaringType();
-        String[] parts = declaringType.split("\\.");
         DependencyNode matchDependencyNode = declaringTypeToDependencyResolver
                 .getDependencyForDeclaringType(declaringType);
+
+        if (declaringType.equals("org.apache.http.util.TextUtils")) {
+            System.out.println("test case found in buffer:  org.apache.http.util.TextUtils");
+            System.out.println("matched DependencyNode: " + matchDependencyNode.toShortString());
+        }
         if (matchDependencyNode == null) {
-            // System.out.println("no match in " + " for " + method.toString());
+            System.out.println("no match in " + " for " + method.toString() + " type: " + declaringType);
             return;
         }
         if (!buffer.get(matchDependencyNode).contains(method)) {
@@ -50,7 +53,6 @@ public class MethodCallBuffer {
             this.size++;
         }
     }
-
 
     /**
      * Get the buffer of a dependency if it exists
@@ -81,8 +83,8 @@ public class MethodCallBuffer {
                 .getDependencyForDeclaringType(declaringType);
 
         // if (declaringType.contains("org.slf4j.helpers.Util")) {
-        //     System.out.println("Checking path: " + declaringType.toString() + "  exist ");
-        //     System.out.println(matchDependencyNode.toShortString());
+        // System.out.println("Checking path: " + declaringType.toString() + " exist ");
+        // System.out.println(matchDependencyNode.toShortString());
         // }
 
         if (matchDependencyNode == null) {

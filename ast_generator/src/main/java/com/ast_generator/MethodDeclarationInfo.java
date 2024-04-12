@@ -78,6 +78,17 @@ public class MethodDeclarationInfo {
         return sourceFilePath + ":" + declarationStartLine + "-" + declarationEndLine + " " + methodName;
     }
 
+    public String toDebugString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\"sourceFilePath\": \"").append(sourceFilePath).append("\",\n");
+        sb.append("\"declarationStartLine\": ").append(declarationStartLine).append(",\n");
+        sb.append("\"declarationEndLine\": ").append(declarationEndLine).append(",\n");
+        sb.append("\"methodName\": \"").append(methodName).append("\",\n");
+        sb.append("\"declarationSignature\": \"").append(declarationSignature).append("\",\n");
+        sb.append("\"innerMethodCalls\": ").append(innerMethodCalls).append(",\n");
+        return sb.toString();
+    }
+
     @JsonIgnore
     public Set<String> getAllDeclaringTypes() {
         Set<String> declaringTypes = new HashSet<>();

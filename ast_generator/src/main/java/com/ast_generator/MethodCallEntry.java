@@ -1,5 +1,10 @@
 package com.ast_generator;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.HexFormat;
+
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 @JsonPropertyOrder({ "declaringType", "methodSignature", "methodName", "lineNumber", "fullExpression", "currentLayer", "declarationInfo" })
@@ -43,8 +48,6 @@ public class MethodCallEntry {
         this.currentLayer = currentLayer;
     }
 
-   
-
     // Add a method to set the declarationInfo
     public void setDeclarationInfo(MethodDeclarationInfo declarationInfo) {
         this.declarationInfo = declarationInfo;
@@ -76,6 +79,19 @@ public class MethodCallEntry {
 
     public MethodSignatureKey getMethodSignatureKey() {
         return this.methodSignatureKey;
+    }
+
+    @JsonIgnore
+    // Generates a unique identifier for this method call entry, use for anonymous method calls
+    public String generateUniqueId() {
+        try {
+            String contextualData = methodName + "-" + methodSignature + "-" + String.join(",", lineNumber);
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(contextualData.getBytes(StandardCharsets.UTF_8));
+            return HexFormat.of().formatHex(hash);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Unable to find SHA-256 algorithm", e);
+        }
     }
 }
 

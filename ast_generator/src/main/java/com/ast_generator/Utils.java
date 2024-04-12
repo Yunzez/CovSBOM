@@ -1,11 +1,5 @@
 package com.ast_generator;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-
-import com.github.javaparser.ParserConfiguration;
-
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -21,15 +15,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-import java.util.Set;
-import java.lang.Object;
+
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+
+import com.github.javaparser.ParserConfiguration;
 
 public class Utils {
     private Set<Dependency> unclearDependencies = new HashSet<Dependency>();
@@ -335,6 +332,31 @@ public class Utils {
                 collectDependenciesRecursive(child, allDependencies);
             }
         }
+    }
+
+    /**
+     * Checks if string B starts with string A when considering dot-separated
+     * segments.
+     * 
+     * @param A The leading string to match.
+     * @param B The full string to check against.
+     * @return true if B starts with A considering dot-separated segments.
+     */
+    public static boolean startsWithByDots(String A, String B) {
+        String[] aParts = A.split("\\.");
+        String[] bParts = B.split("\\.");
+
+        if (bParts.length < aParts.length) {
+            return false; // B can't start with A if it has fewer segments.
+        }
+
+        for (int i = 0; i < aParts.length; i++) {
+            if (!bParts[i].equals(aParts[i])) {
+                return false; // Any mismatch in segments means B does not start with A.
+            }
+        }
+
+        return true; // All required segments of A matched the beginning of B.
     }
 
 }

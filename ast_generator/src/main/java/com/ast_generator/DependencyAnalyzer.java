@@ -57,11 +57,7 @@ public class DependencyAnalyzer {
         // * initialize buffers
         MethodCallBuffer loadingBuffer = new MethodCallBuffer(dependencies, declaringTypeToDependencyResolver);
         MethodCallBuffer doneBuffer = new MethodCallBuffer(dependencies, declaringTypeToDependencyResolver);
-
-        System.out.println("typeToJarLookup: ");
-        for (DependencyNode dependency : typeToJarLookup.keySet()) {
-            System.out.println(dependency.toString() + ": " + typeToJarLookup.get(dependency).toString());
-        }
+       
         System.out.println("total unique types: " + methodCallReporter.getUniqueTypes().size());
         System.out.println("unresolved types: " + unresolvedTypes.size());
         System.out.println(unresolvedTypes.toString());
@@ -81,11 +77,11 @@ public class DependencyAnalyzer {
             }
         }
 
+        System.out.println("------- entering extended analysis -------");
         int faultCatchCount = 0;
-
         // skip this for now
-        // while (loadingBuffer.size() < 0) {
         while (loadingBuffer.size() > 0) {
+        // while (loadingBuffer.size() > 0) {
 
             System.out.println("***");
             System.out.println("processing loading buffer: " + faultCatchCount);
@@ -94,10 +90,10 @@ public class DependencyAnalyzer {
             for (DependencyNode dependency : loadingBuffer.getKeys()) {
 
                 // * we update the jarPath for type for reporter here
-                for (MethodCallEntry methodCallEntry : loadingBuffer.getMethodCalls(dependency)) {
-                    String declaringType = methodCallEntry.getDeclaringType();
-                    declaringTypeToDependencyResolver.getDependencyForDeclaringType(declaringType);
-                }
+                // for (MethodCallEntry methodCallEntry : loadingBuffer.getMethodCalls(dependency)) {
+                //     String declaringType = methodCallEntry.getDeclaringType();
+                //     declaringTypeToDependencyResolver.getDependencyForDeclaringType(declaringType);
+                // }
 
                 // * we get all the types we need to analyze for this jar
                 Set<String> types = new HashSet<String>();
@@ -129,7 +125,13 @@ public class DependencyAnalyzer {
 
         System.out.println(loadingBuffer.toString());
         methodCallReporter.setTypeToJarReference(typeToJarLookup);
-        System.out.println(typeToJarLookup.toString());
+
+        // for (DependencyNode dependency : loadingBuffer.getKeys()) {
+        //     if(dependency.toShortString().contains("org.apache.httpcomponents:httpclient")) {
+        //         System.out.println("loadingBuffer for org.apache.httpcomponents:httpclient");
+        //         doneBuffer.getMethodCalls(dependency).forEach(System.out::println);
+        //     }
+        // }
     }
 
     /**
@@ -139,19 +141,14 @@ public class DependencyAnalyzer {
 
         // first layer unique types
         List<String> uniqueTypes = methodCallReporter.getUniqueTypes();
-        System.out.println("uniqueTypes: " + uniqueTypes.toString());
-        unresolvedTypes.addAll(uniqueTypes);
+       
         for (String declaringType : uniqueTypes) {
-            System.out.println("declaringType before check: " + declaringType);
             if (declaringType.startsWith("java.") || declaringType.startsWith("javax.")
                     || declaringType.startsWith(methodCallReporter.getParentPackageName())) {
                 continue;
             }
-
-            System.out.println("declaringType after : " + declaringType);
             DependencyNode matchedDependency = declaringTypeToDependencyResolver
                     .getDependencyForDeclaringType(declaringType);
-            System.out.println("matchedDependency: " + matchedDependency + " for " + declaringType);
             if (matchedDependency != null) {
                 if (typeToJarLookup.get(matchedDependency) == null) {
                     typeToJarLookup.put(matchedDependency, new HashSet<String>());
@@ -159,6 +156,8 @@ public class DependencyAnalyzer {
                 typeToJarLookup.get(matchedDependency).add(declaringType);
                 unresolvedTypes.remove(declaringType); // Mark as resolved
                 // break; // Stop searching once matched
+            } else {
+                unresolvedTypes.add(declaringType);
             }
         }
 
