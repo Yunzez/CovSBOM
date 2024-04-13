@@ -92,7 +92,6 @@ public class MethodDeclarationInfo {
     @JsonIgnore
     public Set<String> getAllDeclaringTypes() {
         Set<String> declaringTypes = new HashSet<>();
-        declaringTypes.add(methodName);
         for (MethodCallEntry entry : innerMethodCalls) {
             declaringTypes.add(entry.getDeclaringType());
         }

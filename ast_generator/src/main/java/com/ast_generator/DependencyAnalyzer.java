@@ -69,6 +69,7 @@ public class DependencyAnalyzer {
             SourceJarAnalyzer sourceJarAnalyzer = new SourceJarAnalyzer(dependency, dependencies, loadingBuffer,
                     doneBuffer,
                     types, methodCallReporter, "decompressed");
+            sourceJarAnalyzer.setDeclaringTypeToDependencyResolver(declaringTypeToDependencyResolver);
 
             try {
                 sourceJarAnalyzer.analyze();
@@ -80,8 +81,8 @@ public class DependencyAnalyzer {
         System.out.println("------- entering extended analysis -------");
         int faultCatchCount = 0;
         // skip this for now
-        while (loadingBuffer.size() > 0) {
         // while (loadingBuffer.size() > 0) {
+        while (loadingBuffer.size() > 0) {
 
             System.out.println("***");
             System.out.println("processing loading buffer: " + faultCatchCount);
@@ -110,6 +111,8 @@ public class DependencyAnalyzer {
                         doneBuffer,
                         types, methodCallReporter, "decompressed");
                 sourceJarAnalyzer.setExtendedAnalysis(true); // enable subdependency analysing
+                // sourceJarAnalyzer.setDeclaringTypeToDependencyResolver(declaringTypeToDependencyResolver);
+
                 try {
                     sourceJarAnalyzer.analyze();
                 } catch (Exception e) {
@@ -126,12 +129,18 @@ public class DependencyAnalyzer {
         System.out.println(loadingBuffer.toString());
         methodCallReporter.setTypeToJarReference(typeToJarLookup);
 
-        // for (DependencyNode dependency : loadingBuffer.getKeys()) {
-        //     if(dependency.toShortString().contains("org.apache.httpcomponents:httpclient")) {
-        //         System.out.println("loadingBuffer for org.apache.httpcomponents:httpclient");
-        //         doneBuffer.getMethodCalls(dependency).forEach(System.out::println);
-        //     }
-        // }
+        for (DependencyNode dependency : doneBuffer.getKeys()) {
+            if(dependency.toShortString().contains("org.apache.httpcomponents:httpclient")) {
+                System.out.println("doneBuffer for org.apache.httpcomponents:httpclient");
+                doneBuffer.getMethodCalls(dependency).forEach(methodSignatureKey -> {
+                    if (methodSignatureKey.getDeclaringType().contains("org.apache.http.util.TextUtils")) {
+                        System.out.println("found org.apache.http.util.TextUtils type function marked as done");
+                        System.out.println(methodSignatureKey.toString());
+                    }
+                   
+                });
+            }
+        }
     }
 
     /**

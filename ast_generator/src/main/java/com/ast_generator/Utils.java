@@ -280,7 +280,6 @@ public class Utils {
     }
 
     public static ParserConfiguration.LanguageLevel getLanguageLevelFromVersion(String version) {
-        System.out.println("Java version: " + version);
         switch (version) {
             case "1.8":
                 return ParserConfiguration.LanguageLevel.JAVA_8;
@@ -337,7 +336,7 @@ public class Utils {
     /**
      * Checks if string B starts with string A when considering dot-separated
      * segments.
-     * 
+     * B is the longer string and A is the leading string to match.
      * @param A The leading string to match.
      * @param B The full string to check against.
      * @return true if B starts with A considering dot-separated segments.

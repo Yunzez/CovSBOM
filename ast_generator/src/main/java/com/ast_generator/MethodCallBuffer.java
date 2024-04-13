@@ -40,10 +40,6 @@ public class MethodCallBuffer {
         DependencyNode matchDependencyNode = declaringTypeToDependencyResolver
                 .getDependencyForDeclaringType(declaringType);
 
-        if (declaringType.equals("org.apache.http.util.TextUtils")) {
-            System.out.println("test case found in buffer:  org.apache.http.util.TextUtils");
-            System.out.println("matched DependencyNode: " + matchDependencyNode.toShortString());
-        }
         if (matchDependencyNode == null) {
             System.out.println("no match in " + " for " + method.toString() + " type: " + declaringType);
             return;

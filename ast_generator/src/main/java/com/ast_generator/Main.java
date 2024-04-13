@@ -135,7 +135,6 @@ public class Main {
         System.out.println("java version: " + DependencyProcessor.getJavaVersion());
         Settings.setJavaVersion(DependencyProcessor.getJavaVersion());
 
-
         for (String key : moduleList.keySet()) {
             System.out.println("key: " + key + " value: " + moduleList.get(key));
         }
@@ -143,18 +142,17 @@ public class Main {
         Dependency packageInfo = DependencyProcessor.getPackageInfo();
         Map<String, DependencyNode> dependencyMap = new HashMap<String, DependencyNode>();
 
-        // this operation updates the dependencyMap, key: groupId:artifactId, value: dependencyNode
+        // this operation updates the dependencyMap, key: groupId:artifactId, value:
+        // dependencyNode
         DependencyNode rootNode = MavenDependencyTree.runMavenDependencyTree(rootDirectoryPath, packageInfo,
                 dependencyMap, moduleList);
 
         System.out.println("main project dependencies: " + dependencyMap.size());
         // for (String key : dependencyMap.keySet()) {
-        //     System.out.println("key: " + key + " value: " + dependencyMap.get(key).toString());
+        // System.out.println("key: " + key + " value: " +
+        // dependencyMap.get(key).toString());
         // }
 
-        // if (test) {
-        //     return;
-        // }
         // ! generate ASTs for all java files in the application
         /*
          * +--------------------+
@@ -178,6 +176,9 @@ public class Main {
                         + "/method_calls.json");
         System.out.println(" ------- end processing directory, start analyzing dependencies -------");
 
+        // if (test) {
+        //     return;
+        // }
 
         /*
          * +------------------+

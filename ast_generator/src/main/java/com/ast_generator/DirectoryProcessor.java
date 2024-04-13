@@ -24,6 +24,7 @@ import javax.json.JsonReader;
 import javax.json.JsonWriter;
 import javax.json.stream.JsonGenerator;
 
+import com.ast_generator.Utils.DependencyCollector;
 import com.github.javaparser.ParseProblemException;
 import com.github.javaparser.ParserConfiguration;
 import com.github.javaparser.Position;
@@ -50,6 +51,7 @@ public class DirectoryProcessor {
     private static Map<String, DependencyNode> dependencyMap;
     private ImportManager importManager;
     private static boolean separateFiles;
+
     CombinedTypeSolver combinedSolver;
     MethodCallReporter methodReporter;
     Map<String, String> moduleList;
@@ -90,20 +92,23 @@ public class DirectoryProcessor {
 
     private void initCombinedSolver() {
         this.combinedSolver = new CombinedTypeSolver();
-        combinedSolver.add(new ReflectionTypeSolver(false)); 
+        combinedSolver.add(new ReflectionTypeSolver(false));
 
+        List<DependencyNode> dependencies = new ArrayList<DependencyNode>();
+        for (DependencyNode dependency : dependencyMap.values()) {
+            dependencies.addAll(DependencyCollector.collectAllDependencies(dependency));
+        }
         // Loop through each dependency and add it to the CombinedTypeSolver
-        for (String dependencyPath : dependencyMap.keySet()) {
-            DependencyNode dependency = dependencyMap.get(dependencyPath);
+        for (DependencyNode dependency : dependencies) {
+
             Path jarPath = Paths.get(dependency.getJarPath());
 
             if (Files.exists(jarPath)) {
                 try {
-                    System.out.println("Adding dependency: " + jarPath);
                     // Add JarTypeSolver for each JAR file (external dependency)
                     combinedSolver.add(new JarTypeSolver(jarPath.toString()));
                 } catch (Exception e) {
-                    System.out.println("Failed to add dependency: " + dependencyPath);
+                    System.out.println("Failed to add dependency: " + dependency.toShortString());
                     e.printStackTrace();
                 }
             } else {
@@ -126,7 +131,6 @@ public class DirectoryProcessor {
             System.out.println("Main project does not have a 'main/src/java' directory. Skipping: " + mainSrcPath);
         }
 
-
         if (moduleList.size() > 0) {
             for (String module : moduleList.keySet()) {
                 String pomPath = moduleList.get(module);
@@ -148,7 +152,7 @@ public class DirectoryProcessor {
                     e.printStackTrace();
                 }
             }
-        }  else {
+        } else {
             System.out.println("No modules to process, skipping");
         }
 
@@ -180,7 +184,7 @@ public class DirectoryProcessor {
     }
 
     private void processDirectory(Path directory) throws IOException {
-        final int[] count = {0}; // Declare count as final or effectively final
+        final int[] count = { 0 }; // Declare count as final or effectively final
         Files.walkFileTree(directory, new SimpleFileVisitor<Path>() {
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
@@ -207,13 +211,6 @@ public class DirectoryProcessor {
             if (dependencyMap != null) {
                 analyzeSingleASTObject(cu, path);
             }
-
-            // ! convert AST object to JSON
-            // String astJson = convertASTObjecttoJson(cu, path);
-
-            // ! save AST JSON to file
-            // saveASTJsonToFile(path.toString(), astJson);
-
         } catch (IOException e) {
             System.out.println("Error parsing file: " + path);
             e.printStackTrace();
@@ -263,20 +260,21 @@ public class DirectoryProcessor {
         methodReporter.setParentPackageName(packageName[0]);
         // System.out.println("Package: " + packageName[0]);
         Map<MethodSignatureKey, MethodCallEntry> uniqueMethodCalls = new HashMap<>();
+        if (path.toString().contains("WebSocketServletContextHandlerFactory")) {
+            System.out.println("in file WebSocketServletContextHandlerFactory");
+            cu.findAll(MethodCallExpr.class).forEach(methodCall -> {
+                System.out.println("methodCall: " + methodCall.getName());
+            });
+        }
         cu.findAll(MethodCallExpr.class).forEach(methodCall -> {
             try {
-                // methodCall.
-                ResolvedMethodDeclaration resolvedMethod = methodCall.resolve();
-                if (resolvedMethod.getName().toString().equals("setTrustStorePassword")) {
-                    System.out.println("setTrustStorePassword after resolved: " + methodCall.getName()
-                            + resolvedMethod.getQualifiedName());
-                }
 
+                ResolvedMethodDeclaration resolvedMethod = methodCall.resolve();
                 String currentSignature = resolvedMethod.getSignature().toString();
                 int lineNumber = methodCall.getBegin().map(pos -> pos.line).orElse(-1);
                 String fullExpression = methodCall.toString();
                 String functionCallType = resolvedMethod.declaringType().getQualifiedName();
-                
+
                 MethodSignatureKey key = new MethodSignatureKey(functionCallType, currentSignature);
                 if (!functionCallType.startsWith("java.") && !functionCallType.startsWith("javax.")) {
                     MethodCallEntry existingEntry = uniqueMethodCalls.get(key);
@@ -296,22 +294,24 @@ public class DirectoryProcessor {
                         existingEntry.addLineNumber(lineNumber); // Ensure MethodCallEntry has a setter for lineNumber
                     }
                 }
-            }  catch (UnsolvedSymbolException e) {
+            } catch (UnsolvedSymbolException e) {
                 // System.out.println("Info: Unresolved method call to '" + e.getName());
                 // e.printStackTrace();
-            }
-            catch (StackOverflowError e) {
+                if (path.toString().contains("WebSocketServletContextHandlerFactory")) {
+                    System.out.println("in file WebSocketServletContextHandlerFactory, unresolved");
+                    System.out.println("methodCall: " + e.getName());
+                }
+            } catch (StackOverflowError e) {
                 System.err.println("Stack overflow error caught. Consider reviewing recursive methods.");
                 // Log the error or take corrective action here.
                 // Be cautious about the JVM's state.
             } catch (Exception e) {
                 // if (methodCall.getName().toString().equals("setTrustStorePassword")) {
-                    // System.out.println("setTrustStorePassword: " + methodCall.getName());
-                    // this.methodReporter.addEntry(path.toString(), "unknown_delcare_type",
-                    // methodCall.getNameAsString());
-                    System.err.println("General exception: Failed to resolve method call: " + methodCall.getName());
-                    // e.printStackTrace();
-                // }
+                // System.out.println("setTrustStorePassword: " + methodCall.getName());
+                // this.methodReporter.addEntry(path.toString(), "unknown_delcare_type",
+                // methodCall.getNameAsString());
+                System.err.println("General exception: Failed to resolve method call: " + methodCall.getName());
+                // e.printStackTrace();
 
             }
         });

@@ -44,6 +44,8 @@ public class SourceJarAnalyzer {
     private String packageName;
     private MethodCallBuffer loadingBuffer;
     private MethodCallBuffer doneBuffer;
+
+    private DeclaringTypeToDependencyResolver declaringTypeToDependencyResolver;
     // * this is the packages we will be tracking again when we loop thru internal
     // methods
     private Path decompressDir;
@@ -76,6 +78,11 @@ public class SourceJarAnalyzer {
         this.allDependencies = allDependencies;
         this.loadingBuffer = loadingBuffer;
         this.doneBuffer = doneBuffer;
+    }
+
+    public void setDeclaringTypeToDependencyResolver(
+            DeclaringTypeToDependencyResolver declaringTypeToDependencyResolver) {
+        this.declaringTypeToDependencyResolver = declaringTypeToDependencyResolver;
     }
 
     public void analyze() throws IOException {
@@ -173,7 +180,7 @@ public class SourceJarAnalyzer {
             if (matchesTargetPackage(typePath)) {
                 if (dependency.toShortString().contains("org.apache.httpcomponents:httpcore:4.4.10")
                         && typePath.contains("http.util.TextUtils")) {
-                    System.out.println("looking in httpcomponents:httpcore for org.apache.http.util.TextUtils");
+                    System.out.println(" process type org.apache.http.util.TextUtils");
                     System.out.println("  -----  ");
                 }
                 processTypeDeclaration(type, typePath, filePath.toString());
@@ -194,10 +201,10 @@ public class SourceJarAnalyzer {
      * Extract method calls from the method declaration
      */
     private List<MethodCallEntry> extractMethodCallsFromDeclaration(MethodDeclaration methodDeclaration) {
+
         Map<MethodSignatureKey, MethodCallEntry> uniqueMethodCalls = new HashMap<>();
         List<MethodCallExpr> methodCalls = methodDeclaration.findAll(MethodCallExpr.class);
         totalCount += methodCalls.size();
-
         for (MethodCallExpr methodCall : methodCalls) {
             try {
                 ResolvedMethodDeclaration resolvedMethod = methodCall.resolve();
@@ -301,9 +308,7 @@ public class SourceJarAnalyzer {
                 // * providing higher accuracy
                 ResolvedMethodDeclaration resolvedDeclaration = methodDeclaration.resolve();
                 String currentDeclarationSignature = resolvedDeclaration.getSignature().toString();
-                if (currentDeclarationSignature.contains("javax")) {
-                    System.out.println(currentDeclarationSignature + " " + fullPath);
-                }
+
                 int startLine = methodDeclaration.getBegin().map(pos -> pos.line).orElse(-1);
                 int endLine = methodDeclaration.getEnd().map(pos -> pos.line).orElse(-1);
                 String name = methodDeclaration.getName().asString();
@@ -315,6 +320,13 @@ public class SourceJarAnalyzer {
                 List<MethodCallEntry> currentCallEntries = extractMethodCallsFromDeclaration(methodDeclaration);
                 for (MethodCallEntry callEntry : currentCallEntries) {
                     callEntry.setCurrentLayer(1);
+
+                    // if (extendedAnalysis) {
+                    // if (!doneBuffer.hasMethodCall(callEntry)) {
+                    // loadingBuffer.addMethodCall(callEntry);
+                    // }
+                    // }
+
                 }
 
                 // * add the method calls to the currentDeclarationInfo
@@ -348,10 +360,17 @@ public class SourceJarAnalyzer {
                     pass = passList.get(0);
                 }
 
+                if (currentDeclarationInfo.getDeclarationSignature()
+                        .equals("setServer(org.eclipse.jetty.server.Server)")
+                        && fullPath.contains("org.eclipse.jetty.jetty-webapp/org/eclipse/jetty/webapp/WebAppContext")) {
+                    System.out.println("Found setServer");
+                    System.out.println(currentDeclarationInfo.toDebugString());
+                    System.out.println("pass checked: " + pass);
+                }
+
                 if (pass) {
                     // * start digging
                     Set<MethodSignatureKey> currentClassSignatureContext = new HashSet<>();
-
 
                     digFunctionCallEntries(currentDeclarationInfo, 1, currentClassSignatureContext);
                 }
@@ -370,7 +389,13 @@ public class SourceJarAnalyzer {
     }
 
     /**
-     * Dig into the internal method calls for recursive searching
+     * Loop through parse results of one jar, find type that matches the functions
+     * in currentDeclarationInfo
+     * and analyze it in helper
+     * 
+     * @param currentDeclarationInfo
+     * @param depth
+     * @param currentClassSignatureContext
      */
     private void digFunctionCallEntries(MethodDeclarationInfo currentDeclarationInfo, int depth,
             Set<MethodSignatureKey> currentClassSignatureContext) {
@@ -387,9 +412,22 @@ public class SourceJarAnalyzer {
             return;
         }
 
-        List<MethodCallEntry> internalTargetCalls = currentDeclarationInfo.getInnerMethodCalls();
+        if (currentDeclarationInfo.getInnerMethodCalls().size() == 0) {
+            return;
+        }
+
+        Set<MethodCallEntry> unresolvedMethodEntries = new HashSet<>();
 
         Set<String> targetPackages = currentDeclarationInfo.getAllDeclaringTypes();
+        List<MethodCallEntry> internalTargetCalls = currentDeclarationInfo.getInnerMethodCalls();
+        if (currentDeclarationInfo.getDeclarationSignature()
+                .equals("setServer(org.eclipse.jetty.server.Server)") &&
+                currentDeclarationInfo.getDeclarationStartLine() == 1379 &&
+                currentDeclarationInfo.getDeclarationEndLine() == 1383) {
+            System.out.println("1 Continue Found setServer");
+            System.out.println(currentDeclarationInfo.toDebugString());
+            System.out.println("target packages: " + currentDeclarationInfo.getAllDeclaringTypes().toString());
+        }
 
         for (ParseResult<CompilationUnit> parseResult : this.currentParseResults) {
             if (!parseResult.isSuccessful() || !parseResult.getResult().isPresent()) {
@@ -412,13 +450,50 @@ public class SourceJarAnalyzer {
             // declaring type for this
             Set<String> cuTypes = getAllPossibleDeclaringTypesFromCU(cu, packageLikePath, null);
 
+            if (currentDeclarationInfo.getDeclarationSignature()
+                    .equals("setServer(org.eclipse.jetty.server.Server)") &&
+                    currentDeclarationInfo.getDeclarationStartLine() == 1379 &&
+                    currentDeclarationInfo.getDeclarationEndLine() == 1383
+                    && cuPath.toString().contains("jetty-server/org/eclipse/jetty/server/")) {
+                System.out.println("2 Continue Found setServer related file");
+                System.out.println("all sub types: " + cuTypes.toString());
+            }
+            // ! todo, I NEED TO FIGURE OUT WAY THE CALL GOT LOST
             targetPackages.stream().forEach(targetPackage -> {
                 cuTypes.stream().forEach(internalType -> {
+
                     if (Utils.startsWithByDots(internalType, targetPackage)) {
+                        if (currentDeclarationInfo.getDeclarationSignature()
+                                .equals("setServer(org.eclipse.jetty.server.Server)") &&
+                                targetPackage.toString().contains(".eclipse.jetty.server.handler.ContextHandler") &&
+                                cuPath.toString().contains(
+                                        "decompressed/org.eclipse.jetty.jetty-server/org/eclipse/jetty/server/handler/ContextHandler")) {
+                            System.out.println("3 Continue Found setServer at it's file, pass start with dots");
+                            System.out.println("look for calls:" + internalTargetCalls);
+                        }
                         lookForCalls.addAll(filterCallsForPackage(targetPackage, internalTargetCalls));
                     }
                 });
             });
+
+            if (currentDeclarationInfo.getInnerMethodCalls().size() > 0 && lookForCalls.size() == 0) {
+                // * if we cannot find the target package in the current CU, we need to skip
+                // * this CU and add the target calls to the unresolvedMethodEntries
+                unresolvedMethodEntries.addAll(internalTargetCalls);
+                continue;
+            } else {
+                // * remove the calls we have found
+                unresolvedMethodEntries.removeAll(lookForCalls);
+            }
+
+            if (currentDeclarationInfo.getDeclarationSignature()
+                    .equals("setServer(org.eclipse.jetty.server.Server)") &&
+                    currentDeclarationInfo.getDeclarationStartLine() == 1379 &&
+                    currentDeclarationInfo.getDeclarationEndLine() == 1383) {
+                System.out.println("4 Continue Found setServer");
+                System.out.println("look for calls:" + lookForCalls.toString());
+                System.out.println("original calls: " + internalTargetCalls.toString());
+            }
 
             List<TypeDeclaration<?>> types = cu.getTypes();
             if (types.size() == 1) {
@@ -428,7 +503,15 @@ public class SourceJarAnalyzer {
                 digType(types, packageLikePath, cuPath, true, lookForCalls, depth,
                         new HashSet<>(currentClassSignatureContext));
             }
-
+        }
+        
+        // ! important: 
+        // * if we have unresolved method entries, we need to add them to the loading
+        // * buffer
+        for (MethodCallEntry unresolvedEntry : unresolvedMethodEntries) {
+            if (!doneBuffer.hasMethodCall(unresolvedEntry)) {
+                loadingBuffer.addMethodCall(unresolvedEntry);
+            }
         }
     }
 
@@ -492,6 +575,17 @@ public class SourceJarAnalyzer {
             return;
         }
 
+        // lookForCalls.stream().forEach(call -> {
+        // if
+        // (call.getMethodSignature().equals("setServer(org.eclipse.jetty.server.Server)")
+        // &&
+        // call.getDeclaringType().equals("org.eclipse.jetty.server.handler.ContextHandler"))
+        // {
+        // System.out.println("dig at ");
+        // System.out.println(fullPath);
+        // }
+        // });
+
         if (depth == 55) {
             System.out.println(lookForCalls.toString());
             System.out.println("Paused, possible inifite recursion. Depth reached: " + depth);
@@ -505,15 +599,7 @@ public class SourceJarAnalyzer {
         currentPath = currentPath.split(decompressedPath)[1].substring(1);
 
         // * looping thru method declaration to find match
-        if (dependency.toShortString().contains("org.apache.httpcomponents:httpcore:4.4.10")
-                && fullPath.contains("http/util/TextUtils")) {
-            for (MethodDeclaration methodDeclaration : methodDeclarations) {
-                System.out.println("looking in httpcomponents:httpcore for org.apache.http.util.TextUtils"
-                        + " after filtering method : " + methodDeclaration.getNameAsString());
-                System.out.println(fullPath);
-                System.out.println("  -----  ");
-            }
-        }
+
         for (MethodDeclaration methodDeclaration : methodDeclarations) {
             // Initialize MethodDeclarationInfo for the current method declaration
 
@@ -526,16 +612,6 @@ public class SourceJarAnalyzer {
             String currentDeclarationSignature = resolvedDeclaration.getSignature().toString();
 
             for (MethodCallEntry lookForCall : lookForCalls) {
-                if (dependency.toShortString().contains("org.apache.httpcomponents:httpcore:4.4.10")) {
-                    // System.out.println(dependency.getGroupId());
-                    if (lookForCall.getDeclaringType().contains("org.apache.http.util.TextUtils")) {
-                        System.out.println(
-                                " looking in httpcomponents:httpcore for org.apache.http.util.TextUtils"
-                                        + " after filtering method : "
-                                        + lookForCall.getMethodSignatureKey().getMethodSignature()
-                                        + "comparing to: " + currentDeclarationSignature);
-                    }
-                }
                 // skip anonymous function
                 if (lookForCall.getMethodName().equals(name)
                         && lookForCall.getMethodSignature().equals(currentDeclarationSignature)) {
@@ -560,17 +636,11 @@ public class SourceJarAnalyzer {
                     }
 
                     currentDeclarationInfo.addInnerMethodCalls(filteredCalls);
-                    if (dependency.toShortString().contains("org.apache.httpcomponents:httpcore:4.4.10")) {
-                        // System.out.println(dependency.getGroupId());
-                        if (lookForCall.getDeclaringType().contains("org.apache.http.util.TextUtils")) {
-                            System.out.println(
-                                    "found match: "
-                                            + lookForCall.getMethodSignatureKey().getMethodSignature() + " "
-                                            + lookForCall.getMethodName()
-                                            + "new declaration info: " + currentDeclarationInfo.toDebugString()
-                                            + " new call entries: : " + currentCallEntries.size());
-                        }
-                    }
+
+                    // ! potentially correct
+                    doneBuffer.addMethodCall(lookForCall);
+                    loadingBuffer.removeMethodCall(lookForCall);
+
                     // * if there are more inner method calls, we need to dig into them again
                     if (currentDeclarationInfo.getInnerMethodCalls().size() > 0) {
                         // * create a new context for the next level of method calls
@@ -652,30 +722,32 @@ public class SourceJarAnalyzer {
      */
     private List<MethodCallEntry> filterCallsForPackage(String targetPackage,
             List<MethodCallEntry> internalTargetCalls) {
-
+        if (targetPackage.toString().contains(".eclipse.jetty.server.handler.ContextHandler")) {
+            System.out.println("3 Continue Found setServer");
+            System.out.println("look for calls:" + internalTargetCalls.toString());
+            System.out.println(targetPackage);
+        }
         List<MethodCallEntry> internCallEntries = internalTargetCalls.stream()
                 .filter(call -> {
-
                     if (call.getDeclaringType().contains(".Anonymous-")) {
                         doneBuffer.addMethodCall(call);
                         loadingBuffer.removeMethodCall(call);
                         return false;
                     }
 
-                    if (targetPackage.equals(call.getDeclaringType())) {
-                        if (dependency.toShortString().contains("org.apache.httpcomponents:httpcore:4.4.10")) {
-                            // System.out.println(dependency.getGroupId());
-                            if (call.getDeclaringType().contains("org.apache.http.util.TextUtils")) {
-                                System.out.println(
-                                        " org.apache.httpcomponents:httpcore Found org.apache.http.util.TextUtils"
-                                                + " while filtering method, marked as done for : " + targetPackage + " "
-                                                + call.getMethodSignatureKey().getMethodSignature());
-                            }
-                        }
+                    // if
+                    // (call.getDeclaringType().equals("org.eclipse.jetty.server.handler.ContextHandler"))
+                    // {
+                    // System.out.println("check " + call.getDeclaringType() + " at filter");
+                    // System.out.println(call.getFullExpression());
+                    // System.out.println(targetPackage);
+                    // }
 
-                        // System.out.println(" type: " + call.getDeclaringType() + " added to done");
-                        doneBuffer.addMethodCall(call);
-                        loadingBuffer.removeMethodCall(call);
+                    if (targetPackage.equals(call.getDeclaringType())) {
+
+                        // ! potentially correct
+                        // doneBuffer.addMethodCall(call);
+                        // loadingBuffer.removeMethodCall(call);
                         return true;
                     } else {
                         // only add to loading buffer if it's not already in done buffer
@@ -687,8 +759,12 @@ public class SourceJarAnalyzer {
                 })
                 .collect(Collectors.toList());
 
-        Set<MethodCallEntry> otherCallsToResolve = loadingBuffer.getMethodCalls(dependency);
-        internCallEntries.addAll(otherCallsToResolve);
+        if (extendedAnalysis) {
+            // ! we only add extra calls to resolve if it's extended analysis, because first
+            // time analysis only gather loading buffer, not spend it
+            Set<MethodCallEntry> otherCallsToResolve = loadingBuffer.getMethodCalls(dependency);
+            internCallEntries.addAll(otherCallsToResolve);
+        }
 
         return internCallEntries;
     }
