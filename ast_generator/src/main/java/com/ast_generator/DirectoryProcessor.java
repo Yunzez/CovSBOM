@@ -260,12 +260,6 @@ public class DirectoryProcessor {
         methodReporter.setParentPackageName(packageName[0]);
         // System.out.println("Package: " + packageName[0]);
         Map<MethodSignatureKey, MethodCallEntry> uniqueMethodCalls = new HashMap<>();
-        if (path.toString().contains("WebSocketServletContextHandlerFactory")) {
-            System.out.println("in file WebSocketServletContextHandlerFactory");
-            cu.findAll(MethodCallExpr.class).forEach(methodCall -> {
-                System.out.println("methodCall: " + methodCall.getName());
-            });
-        }
         cu.findAll(MethodCallExpr.class).forEach(methodCall -> {
             try {
 
@@ -297,10 +291,6 @@ public class DirectoryProcessor {
             } catch (UnsolvedSymbolException e) {
                 // System.out.println("Info: Unresolved method call to '" + e.getName());
                 // e.printStackTrace();
-                if (path.toString().contains("WebSocketServletContextHandlerFactory")) {
-                    System.out.println("in file WebSocketServletContextHandlerFactory, unresolved");
-                    System.out.println("methodCall: " + e.getName());
-                }
             } catch (StackOverflowError e) {
                 System.err.println("Stack overflow error caught. Consider reviewing recursive methods.");
                 // Log the error or take corrective action here.

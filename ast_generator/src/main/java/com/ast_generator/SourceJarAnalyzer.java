@@ -178,11 +178,6 @@ public class SourceJarAnalyzer {
             String typePath = isTopLevel ? basePackageLikePath : basePackageLikePath + "." + type.getNameAsString();
 
             if (matchesTargetPackage(typePath)) {
-                if (dependency.toShortString().contains("org.apache.httpcomponents:httpcore:4.4.10")
-                        && typePath.contains("http.util.TextUtils")) {
-                    System.out.println(" process type org.apache.http.util.TextUtils");
-                    System.out.println("  -----  ");
-                }
                 processTypeDeclaration(type, typePath, filePath.toString());
             }
 
@@ -320,13 +315,6 @@ public class SourceJarAnalyzer {
                 List<MethodCallEntry> currentCallEntries = extractMethodCallsFromDeclaration(methodDeclaration);
                 for (MethodCallEntry callEntry : currentCallEntries) {
                     callEntry.setCurrentLayer(1);
-
-                    // if (extendedAnalysis) {
-                    // if (!doneBuffer.hasMethodCall(callEntry)) {
-                    // loadingBuffer.addMethodCall(callEntry);
-                    // }
-                    // }
-
                 }
 
                 // * add the method calls to the currentDeclarationInfo
@@ -358,14 +346,6 @@ public class SourceJarAnalyzer {
                         loadingBuffer.removeMethodCall(call);
                     }
                     pass = passList.get(0);
-                }
-
-                if (currentDeclarationInfo.getDeclarationSignature()
-                        .equals("setServer(org.eclipse.jetty.server.Server)")
-                        && fullPath.contains("org.eclipse.jetty.jetty-webapp/org/eclipse/jetty/webapp/WebAppContext")) {
-                    System.out.println("Found setServer");
-                    System.out.println(currentDeclarationInfo.toDebugString());
-                    System.out.println("pass checked: " + pass);
                 }
 
                 if (pass) {
@@ -420,14 +400,6 @@ public class SourceJarAnalyzer {
 
         Set<String> targetPackages = currentDeclarationInfo.getAllDeclaringTypes();
         List<MethodCallEntry> internalTargetCalls = currentDeclarationInfo.getInnerMethodCalls();
-        if (currentDeclarationInfo.getDeclarationSignature()
-                .equals("setServer(org.eclipse.jetty.server.Server)") &&
-                currentDeclarationInfo.getDeclarationStartLine() == 1379 &&
-                currentDeclarationInfo.getDeclarationEndLine() == 1383) {
-            System.out.println("1 Continue Found setServer");
-            System.out.println(currentDeclarationInfo.toDebugString());
-            System.out.println("target packages: " + currentDeclarationInfo.getAllDeclaringTypes().toString());
-        }
 
         for (ParseResult<CompilationUnit> parseResult : this.currentParseResults) {
             if (!parseResult.isSuccessful() || !parseResult.getResult().isPresent()) {
@@ -450,27 +422,10 @@ public class SourceJarAnalyzer {
             // declaring type for this
             Set<String> cuTypes = getAllPossibleDeclaringTypesFromCU(cu, packageLikePath, null);
 
-            if (currentDeclarationInfo.getDeclarationSignature()
-                    .equals("setServer(org.eclipse.jetty.server.Server)") &&
-                    currentDeclarationInfo.getDeclarationStartLine() == 1379 &&
-                    currentDeclarationInfo.getDeclarationEndLine() == 1383
-                    && cuPath.toString().contains("jetty-server/org/eclipse/jetty/server/")) {
-                System.out.println("2 Continue Found setServer related file");
-                System.out.println("all sub types: " + cuTypes.toString());
-            }
             // ! todo, I NEED TO FIGURE OUT WAY THE CALL GOT LOST
             targetPackages.stream().forEach(targetPackage -> {
                 cuTypes.stream().forEach(internalType -> {
-
                     if (Utils.startsWithByDots(internalType, targetPackage)) {
-                        if (currentDeclarationInfo.getDeclarationSignature()
-                                .equals("setServer(org.eclipse.jetty.server.Server)") &&
-                                targetPackage.toString().contains(".eclipse.jetty.server.handler.ContextHandler") &&
-                                cuPath.toString().contains(
-                                        "decompressed/org.eclipse.jetty.jetty-server/org/eclipse/jetty/server/handler/ContextHandler")) {
-                            System.out.println("3 Continue Found setServer at it's file, pass start with dots");
-                            System.out.println("look for calls:" + internalTargetCalls);
-                        }
                         lookForCalls.addAll(filterCallsForPackage(targetPackage, internalTargetCalls));
                     }
                 });
@@ -486,15 +441,6 @@ public class SourceJarAnalyzer {
                 unresolvedMethodEntries.removeAll(lookForCalls);
             }
 
-            if (currentDeclarationInfo.getDeclarationSignature()
-                    .equals("setServer(org.eclipse.jetty.server.Server)") &&
-                    currentDeclarationInfo.getDeclarationStartLine() == 1379 &&
-                    currentDeclarationInfo.getDeclarationEndLine() == 1383) {
-                System.out.println("4 Continue Found setServer");
-                System.out.println("look for calls:" + lookForCalls.toString());
-                System.out.println("original calls: " + internalTargetCalls.toString());
-            }
-
             List<TypeDeclaration<?>> types = cu.getTypes();
             if (types.size() == 1) {
                 digFunctionCallEntriesHelper(cuPath.toString(), types.get(0), lookForCalls, depth,
@@ -504,7 +450,7 @@ public class SourceJarAnalyzer {
                         new HashSet<>(currentClassSignatureContext));
             }
         }
-        
+
         // ! important: 
         // * if we have unresolved method entries, we need to add them to the loading
         // * buffer
@@ -574,17 +520,6 @@ public class SourceJarAnalyzer {
         if (lookForCalls.size() == 0) {
             return;
         }
-
-        // lookForCalls.stream().forEach(call -> {
-        // if
-        // (call.getMethodSignature().equals("setServer(org.eclipse.jetty.server.Server)")
-        // &&
-        // call.getDeclaringType().equals("org.eclipse.jetty.server.handler.ContextHandler"))
-        // {
-        // System.out.println("dig at ");
-        // System.out.println(fullPath);
-        // }
-        // });
 
         if (depth == 55) {
             System.out.println(lookForCalls.toString());
@@ -722,11 +657,6 @@ public class SourceJarAnalyzer {
      */
     private List<MethodCallEntry> filterCallsForPackage(String targetPackage,
             List<MethodCallEntry> internalTargetCalls) {
-        if (targetPackage.toString().contains(".eclipse.jetty.server.handler.ContextHandler")) {
-            System.out.println("3 Continue Found setServer");
-            System.out.println("look for calls:" + internalTargetCalls.toString());
-            System.out.println(targetPackage);
-        }
         List<MethodCallEntry> internCallEntries = internalTargetCalls.stream()
                 .filter(call -> {
                     if (call.getDeclaringType().contains(".Anonymous-")) {
@@ -735,19 +665,7 @@ public class SourceJarAnalyzer {
                         return false;
                     }
 
-                    // if
-                    // (call.getDeclaringType().equals("org.eclipse.jetty.server.handler.ContextHandler"))
-                    // {
-                    // System.out.println("check " + call.getDeclaringType() + " at filter");
-                    // System.out.println(call.getFullExpression());
-                    // System.out.println(targetPackage);
-                    // }
-
                     if (targetPackage.equals(call.getDeclaringType())) {
-
-                        // ! potentially correct
-                        // doneBuffer.addMethodCall(call);
-                        // loadingBuffer.removeMethodCall(call);
                         return true;
                     } else {
                         // only add to loading buffer if it's not already in done buffer
