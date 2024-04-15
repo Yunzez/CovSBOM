@@ -145,47 +145,53 @@ public class DependencyProcessor {
      */
     public static Dependency parseProjectInfo(String pomFilePath) {
         Dependency projectInfo = null;
-
+    
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(new File(pomFilePath));
             doc.getDocumentElement().normalize();
-
-            // Assuming there's only one project defined per pom.xml
-            Node projectNode = doc.getElementsByTagName("project").item(0);
-            if (projectNode.getNodeType() == Node.ELEMENT_NODE) {
-                Element projectElement = (Element) projectNode;
-
-                // Get groupId
-                NodeList groupIdNodes = projectElement.getElementsByTagName("groupId");
-                String groupId = (groupIdNodes.getLength() > 0) ? groupIdNodes.item(0).getTextContent() : "";
-
-                // Get artifactId
-                NodeList artifactIdNodes = projectElement.getElementsByTagName("artifactId");
-                String artifactId = (artifactIdNodes.getLength() > 0) ? artifactIdNodes.item(0).getTextContent() : "";
-
-                // Get version
-                NodeList versionNodes = projectElement.getElementsByTagName("version");
-                String version = (versionNodes.getLength() > 0) ? versionNodes.item(0).getTextContent() : "";
-
-                // Get packaging
-                NodeList packagingNodes = projectElement.getElementsByTagName("packaging");
-                String packaging = (packagingNodes.getLength() > 0) ? packagingNodes.item(0).getTextContent() : "jar"; // Default
-                                                                                                                       // to
-                                                                                                                       // jar
-                                                                                                                       // if
-                                                                                                                       // not
-                                                                                                                       // specified
-
+    
+            Element projectElement = (Element) doc.getElementsByTagName("project").item(0);
+            NodeList children = projectElement.getChildNodes();
+    
+            String groupId = null;
+            String artifactId = null;
+            String version = null;
+    
+            for (int i = 0; i < children.getLength(); i++) {
+                Node node = children.item(i);
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    Element child = (Element) node;
+                    switch (child.getTagName()) {
+                        case "groupId":
+                            groupId = child.getTextContent();
+                            break;
+                        case "artifactId":
+                            artifactId = child.getTextContent();
+                            break;
+                        case "version":
+                            version = child.getTextContent();
+                            break;
+                    }
+                }
+            }
+    
+            // Only create a Dependency if all required fields are present
+            if (groupId != null && artifactId != null && version != null) {
                 projectInfo = new Dependency(groupId, artifactId, version, "", "");
+                return projectInfo;
+            } else {
+                System.out.println("Some essential elements are missing or inherited.");
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+    
+        System.out.println("Project Info: " + projectInfo);
         return projectInfo;
     }
+    
 
     private static String findJavaVersionInProperties(Document doc) {
         NodeList propertiesList = doc.getElementsByTagName("properties");

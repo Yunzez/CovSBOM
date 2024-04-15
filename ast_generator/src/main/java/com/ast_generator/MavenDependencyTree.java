@@ -30,6 +30,7 @@ public class MavenDependencyTree {
     public static DependencyNode runMavenDependencyTree(String projectDir, Dependency packageInfo,
             Map<String, DependencyNode> dependencyMap, Map<String, String> moduleList) {
 
+        final boolean skipDependencyTree = false;
         System.out.println(System.getProperty("user.dir"));
         System.out.println("Running maven dependency:tree for " + projectDir);
         List<String> mavenOutput = new ArrayList<>();
@@ -41,50 +42,55 @@ public class MavenDependencyTree {
             // Execute the Maven command
             System.out.println(moduleList.size());
             if (moduleList != null && moduleList.size() > 0) {
-                System.out.println("run mvn dependency:tree for multi-module project");
-                String basePath = System.getProperty("user.dir");
-                String scriptName = "mavenDependencyTreeRunner.sh";
-                // Assuming the script is now located in src/main/java/com/ast_generator/
+                if (skipDependencyTree) {
+                    System.out.println("skip dependency tree");
+                } else {
+                    System.out.println("run mvn dependency:tree for multi-module project");
+                    String basePath = System.getProperty("user.dir");
+                    String scriptName = "mavenDependencyTreeRunner.sh";
+                    // Assuming the script is now located in src/main/java/com/ast_generator/
 
-                // ! warning, this is temporary, we need to find a better way to locate the
-                // script
-                String scriptRelativePath = "ast_generator/src/main/java/com/ast_generator/" + scriptName;
+                    // ! warning, this is temporary, we need to find a better way to locate the
+                    // script
+                    String scriptRelativePath = "ast_generator/src/main/java/com/ast_generator/" + scriptName;
 
-                String scriptPath = Paths.get(basePath, scriptRelativePath).toString();
-                String bashCommand = "bash " + scriptPath + " " + projectPath.toString() + " " + outputPath.toString();
-                System.out.println("bashCommand: " + bashCommand);
-                for (String modulePath : moduleList.values()) {
-                    // If modulePath is absolute, convert it to relative by subtracting projectDir
-                    // part
-                    Path absoluteModulePath = Paths.get(modulePath).toAbsolutePath();
-                    Path relativeModulePath = Paths.get(projectDir).toAbsolutePath().relativize(absoluteModulePath);
-                    bashCommand += " " + relativeModulePath;
-                }
-
-                // Execute the command
-                ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", bashCommand);
-                processBuilder.directory(Paths.get(projectDir).toFile()); // Ensure we're in the correct directory
-                Process process = processBuilder.start();
-
-                System.out.println("the project is large, please wait for the process to finish");
-                // Output the process's output
-                try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        System.out.println(line);
+                    String scriptPath = Paths.get(basePath, scriptRelativePath).toString();
+                    String bashCommand = "bash " + scriptPath + " " + projectPath.toString() + " "
+                            + outputPath.toString();
+                    System.out.println("bashCommand: " + bashCommand);
+                    for (String modulePath : moduleList.values()) {
+                        // If modulePath is absolute, convert it to relative by subtracting projectDir
+                        // part
+                        Path absoluteModulePath = Paths.get(modulePath).toAbsolutePath();
+                        Path relativeModulePath = Paths.get(projectDir).toAbsolutePath().relativize(absoluteModulePath);
+                        bashCommand += " " + relativeModulePath;
                     }
-                }
 
-                // Reading standard error
-                try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        System.err.println(line); // Print standard error
+                    // Execute the command
+                    ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", bashCommand);
+                    processBuilder.directory(Paths.get(projectDir).toFile()); // Ensure we're in the correct directory
+                    Process process = processBuilder.start();
+
+                    System.out.println("the project is large, please wait for the process to finish");
+                    // Output the process's output
+                    try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            System.out.println(line);
+                        }
                     }
-                }
 
-                int exitCode = process.waitFor();
-                System.out.println("Script exited with error code : " + exitCode);
+                    // Reading standard error
+                    try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            System.err.println(line); // Print standard error
+                        }
+                    }
+
+                    int exitCode = process.waitFor();
+                    System.out.println("Script exited with error code : " + exitCode);
+                }
                 mavenOutput = Files.readAllLines(outputPath);
             } else {
                 System.out.println("run mvn dependency:tree for single module project");
@@ -132,12 +138,12 @@ public class MavenDependencyTree {
         DependencyNode rootNode;
         if (isMultiModuleProject) {
             System.out.println("multi-module project, use simple parse");
-            rootNode = simpleBuildTree(mavenTree);
+            rootNode = simpleBuildTree(mavenTree, packageInfo);
         } else {
             rootNode = buildDependencyTree(mavenTree);
         }
 
-        List<DependencyNode> mainDependencies = rootNode.getChildren();
+        Set<DependencyNode> mainDependencies = rootNode.getChildren();
         for (DependencyNode dependencyNode : mainDependencies) {
             // System.out.println("dependency: " + dependencyNode.toString());
 
@@ -149,11 +155,16 @@ public class MavenDependencyTree {
         return rootNode;
     }
 
-    public static DependencyNode simpleBuildTree(List<String> mavenTreeLines) {
-        Dependency rootDependency = new Dependency("main.project.groupId", "test", "version", "N/A", "N/A");
+    /**
+     * @param packageInfo - the root package info for filtering dependencies
+     */
+    public static DependencyNode simpleBuildTree(List<String> mavenTreeLines, Dependency packageInfo) {
+        Dependency rootDependency = packageInfo;
         DependencyNode rootNode = new DependencyNode(rootDependency);
         Set<Dependency> dependencies = new HashSet<>(); // remove duplicates
-        for (String line : mavenTreeLines) {
+        Set<String> uniqueDependencyStrings = new HashSet<>();
+        uniqueDependencyStrings.addAll(mavenTreeLines);
+        for (String line : uniqueDependencyStrings) {
             // Assuming each dependency line can be identified and parsed
             if (line.contains(":jar:")) {
                 Dependency dependency = getDependencyFromLine(line);
@@ -163,9 +174,17 @@ public class MavenDependencyTree {
 
         for (Dependency dependency : dependencies) {
             DependencyNode node = new DependencyNode(dependency);
-            rootNode.addChild(node);
+            if (node.getGroupId().equalsIgnoreCase(packageInfo.getGroupId())) {
+                System.out.println("found inner packages, skip: " + node.getGroupId() + ":" + node.getArtifactId());
+
+            } else {
+                rootNode.addChild(node);
+            }
         }
 
+        System.out.println("root: ");
+        System.out.println(rootNode.toConsoleString());
+        System.out.println(packageInfo.toString());
         return rootNode;
     }
 

@@ -152,6 +152,10 @@ public class Main {
         // System.out.println("key: " + key + " value: " +
         // dependencyMap.get(key).toString());
         // }
+        System.out.println("pacckageInfo: " + packageInfo.toString());
+        // if (test) {
+        //     return;
+        // }
 
         // ! generate ASTs for all java files in the application
         /*
@@ -175,10 +179,6 @@ public class Main {
                 "CovSBOM_output/analysis/" + outputProjectFolderPath
                         + "/method_calls.json");
         System.out.println(" ------- end processing directory, start analyzing dependencies -------");
-
-        // if (test) {
-        //     return;
-        // }
 
         /*
          * +------------------+

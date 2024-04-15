@@ -451,7 +451,7 @@ public class SourceJarAnalyzer {
             }
         }
 
-        // ! important: 
+        // ! important:
         // * if we have unresolved method entries, we need to add them to the loading
         // * buffer
         for (MethodCallEntry unresolvedEntry : unresolvedMethodEntries) {
@@ -659,12 +659,12 @@ public class SourceJarAnalyzer {
             List<MethodCallEntry> internalTargetCalls) {
         List<MethodCallEntry> internCallEntries = internalTargetCalls.stream()
                 .filter(call -> {
-                    if (call.getDeclaringType().contains(".Anonymous-")) {
-                        doneBuffer.addMethodCall(call);
-                        loadingBuffer.removeMethodCall(call);
-                        return false;
-                    }
-
+                    // * if the declaring type is anonymous, we skip it
+                    // if (call.getDeclaringType().contains(".Anonymous-")) {
+                    //     doneBuffer.addMethodCall(call);
+                    //     loadingBuffer.removeMethodCall(call);
+                    //     return false;
+                    // }
                     if (targetPackage.equals(call.getDeclaringType())) {
                         return true;
                     } else {

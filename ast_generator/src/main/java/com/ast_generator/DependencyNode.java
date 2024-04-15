@@ -1,7 +1,9 @@
 package com.ast_generator;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class DependencyNode extends Dependency{
     private String groupId;
@@ -9,7 +11,7 @@ public class DependencyNode extends Dependency{
     private String version;
     private String jarPath;
     private String sourceJarPath;
-    private List<DependencyNode> children = new ArrayList<>();
+    private Set<DependencyNode> children = new HashSet<>();
 
     // * isValid is used to mark if the dependency has source jar
     private Boolean isValid = true;
@@ -36,7 +38,7 @@ public class DependencyNode extends Dependency{
         children.add(child);
     }
 
-    public List<DependencyNode> getChildren() {
+    public Set<DependencyNode> getChildren() {
         return children;
     }
 
@@ -49,7 +51,7 @@ public class DependencyNode extends Dependency{
         return list;
     }
 
-    public void setChildren(List<DependencyNode> children) {
+    public void setChildren(Set<DependencyNode> children) {
         this.children = children;
     }
 
