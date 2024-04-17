@@ -78,10 +78,6 @@ public class MethodCallBuffer {
         DependencyNode matchDependencyNode = declaringTypeToDependencyResolver
                 .getDependencyForDeclaringType(declaringType);
 
-        // if (declaringType.contains("org.slf4j.helpers.Util")) {
-        // System.out.println("Checking path: " + declaringType.toString() + " exist ");
-        // System.out.println(matchDependencyNode.toShortString());
-        // }
 
         if (matchDependencyNode == null) {
             // System.out.println("no match in " + " for " + method.toString());

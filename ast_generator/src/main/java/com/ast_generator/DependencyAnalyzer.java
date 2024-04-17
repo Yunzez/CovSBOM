@@ -47,13 +47,15 @@ public class DependencyAnalyzer {
 
         // decompress all jars
         this.jarDecompressedPaths = Utils.decompressAllJars(dependencies, "decompressed");
+        System.out.println("done decompressing jars");
         DeclaringTypeToDependencyResolver declaringTypeToDependencyResolver = new DeclaringTypeToDependencyResolver(
             dependencies, jarDecompressedPaths);
         // System.out.println("jarDecompressedPaths: " +
         // jarDecompressedPaths.toString());
         // * find all required jar and save the results in typeToJarLookup
         findRequiredJars(declaringTypeToDependencyResolver);
-
+        
+        System.out.println("done findRequiredJars");
         // * initialize buffers
         MethodCallBuffer loadingBuffer = new MethodCallBuffer(dependencies, declaringTypeToDependencyResolver);
         MethodCallBuffer doneBuffer = new MethodCallBuffer(dependencies, declaringTypeToDependencyResolver);

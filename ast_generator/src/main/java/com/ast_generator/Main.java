@@ -29,6 +29,8 @@ import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
 import javax.json.JsonWriter;
 
+import com.ast_generator.Utils.DependencyCollector;
+
 public class Main {
     private List<String> dependenciesTree;
     private static Map<String, String> dependencyMap;
@@ -152,10 +154,24 @@ public class Main {
         // System.out.println("key: " + key + " value: " +
         // dependencyMap.get(key).toString());
         // }
-        System.out.println("pacckageInfo: " + packageInfo.toString());
+        if (packageInfo != null) {
+            System.out.println("packageInfo: " + packageInfo.toString());
+        } else {
+            System.out.println("packageInfo is null");
+        }
+
+        Set<DependencyNode> allDependencies = DependencyCollector.collectAllDependencies(rootNode);
+        for (DependencyNode dependencyNode : allDependencies) {
+            System.out.println("dependencyNode: " + dependencyNode.toString());
+        }
         // if (test) {
         //     return;
         // }
+
+        long startTime = System.currentTimeMillis();
+
+        // Start timing
+        performTasks();
 
         // ! generate ASTs for all java files in the application
         /*
@@ -201,5 +217,20 @@ public class Main {
                                 + "/final_report_package_based.json");
 
         System.out.println("End of analysis");
+        // End the timer
+        long endTime = System.currentTimeMillis();
+        // Calculate total time taken
+        long totalTime = endTime - startTime;
+        // Output the time in seconds
+        System.out.println("Total time taken: " + totalTime / 1000 + " seconds.");
+    }
+
+    private static void performTasks() {
+        // Simulate some operations
+        try {
+            Thread.sleep(2000); // Simulate a delay of 2000 milliseconds
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 }

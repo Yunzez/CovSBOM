@@ -2,3 +2,4 @@
 /Application
 **/node_modules/
 /target
+**/CovSBOM_output

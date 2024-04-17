@@ -135,6 +135,7 @@ public class SourceJarAnalyzer {
     }
 
     private void iterateParseResults(List<ParseResult<CompilationUnit>> parseResults) {
+
         this.currentParseResults = parseResults; // ! remember this current list of results
         for (ParseResult<CompilationUnit> parseResult : parseResults) {
             if (parseResult.isSuccessful() && parseResult.getResult().isPresent()) {
@@ -150,7 +151,17 @@ public class SourceJarAnalyzer {
 
                 // * we will get all the classes of this CU, and loop thru them to find the
                 // * required packages, this help us finding all sub-class
-                processTypes(cu.getTypes(), basePackageLikePath, cu.getStorage().get().getPath(), true);
+
+                try {
+                    if (filePath.contains("google/common/reflect/TypeToken.java")) {
+                        continue;
+                    } else {
+
+                        processTypes(cu.getTypes(), basePackageLikePath, cu.getStorage().get().getPath(), true);
+                    }
+                } catch (Exception e) {
+                    System.out.println("Error: Failed to process types for " + filePath + ". " + e.getMessage());
+                }
 
             }
         }
@@ -661,9 +672,9 @@ public class SourceJarAnalyzer {
                 .filter(call -> {
                     // * if the declaring type is anonymous, we skip it
                     // if (call.getDeclaringType().contains(".Anonymous-")) {
-                    //     doneBuffer.addMethodCall(call);
-                    //     loadingBuffer.removeMethodCall(call);
-                    //     return false;
+                    // doneBuffer.addMethodCall(call);
+                    // loadingBuffer.removeMethodCall(call);
+                    // return false;
                     // }
                     if (targetPackage.equals(call.getDeclaringType())) {
                         return true;

@@ -119,6 +119,7 @@ public class Utils {
 
     public static String decompressSingleJar(Dependency dependency, Path decompressDir) throws IOException {
         // Extract the JAR file name without the extension to use as the directory name
+        System.out.println("Decompressing: " + dependency.getSourceJarPath());
         Path jarPath = Paths.get(dependency.getSourceJarPath());
         String pathAfterRepository = dependency.getBasePackageName(); // jarFileName.split("/repository/")[1];
 
