@@ -137,11 +137,16 @@ public class Main {
         System.out.println("java version: " + DependencyProcessor.getJavaVersion());
         Settings.setJavaVersion(DependencyProcessor.getJavaVersion());
 
-        for (String key : moduleList.keySet()) {
-            System.out.println("key: " + key + " value: " + moduleList.get(key));
-        }
         System.out.println("total modules: " + moduleList.size());
-        Dependency packageInfo = DependencyProcessor.getPackageInfo();
+
+        Dependency packageInfo = new DependencyNode("unknown groupId", "unknown artifactId", "unkown version", null, null);
+       
+        try {
+            packageInfo = MavenEvaluator.evaluateCurrentProject(rootDirectoryPath);
+        } catch (Exception e) {
+            System.out.println("Error in evaluating current project");
+        }
+        
         Map<String, DependencyNode> dependencyMap = new HashMap<String, DependencyNode>();
 
         // this operation updates the dependencyMap, key: groupId:artifactId, value:
@@ -149,11 +154,6 @@ public class Main {
         DependencyNode rootNode = MavenDependencyTree.runMavenDependencyTree(rootDirectoryPath, packageInfo,
                 dependencyMap, moduleList);
 
-        System.out.println("main project dependencies: " + dependencyMap.size());
-        // for (String key : dependencyMap.keySet()) {
-        // System.out.println("key: " + key + " value: " +
-        // dependencyMap.get(key).toString());
-        // }
         if (packageInfo != null) {
             System.out.println("packageInfo: " + packageInfo.toString());
         } else {
@@ -164,28 +164,29 @@ public class Main {
         for (DependencyNode dependencyNode : allDependencies) {
             System.out.println("dependencyNode: " + dependencyNode.toString());
         }
-        // if (test) {
-        //     return;
-        // }
+        System.out.println("project dependencies number: " + allDependencies.size());
+
+        System.out.println("no jar dependencies: ");
+        System.out.println(MavenDependencyTree.totNoJarDependencyString());
 
         long startTime = System.currentTimeMillis();
-
+        // if (test) {
+        // return;
+        // }
         // Start timing
-        performTasks();
-
-        // ! generate ASTs for all java files in the application
+        
         /*
          * +--------------------+
          * | Generation section |
          * +--------------------+
          */
+        startTiming();
 
         // * create an instance of import manager
 
-        ImportManager importManager = new ImportManager(dependencyMap, astPath);
         MethodCallReporter methodCallReporter = new MethodCallReporter();
         // * create an instance of directory processor
-        DirectoryProcessor processor = new DirectoryProcessor(rootDirectoryPath, astPath, dependencyMap, importManager,
+        DirectoryProcessor processor = new DirectoryProcessor(rootDirectoryPath, astPath, dependencyMap,
                 methodCallReporter, moduleList);
 
         // * process the directory
@@ -225,7 +226,7 @@ public class Main {
         System.out.println("Total time taken: " + totalTime / 1000 + " seconds.");
     }
 
-    private static void performTasks() {
+    private static void startTiming() {
         // Simulate some operations
         try {
             Thread.sleep(2000); // Simulate a delay of 2000 milliseconds

@@ -90,7 +90,10 @@ public class SourceJarAnalyzer {
         System.out.println(" - - - - - - - - - - - - - ");
         System.out.println("Analyze decompressed path of used dependency: " + decompressedPath);
         System.out.println(loadingBuffer.getMethodCalls(dependency).size() + " method calls in loading buffer.");
-
+        if (decompressedPath.equals("net.bytebuddy.byte-buddy")) {
+            System.out.println("ByteBuddy detected, skipping.");
+            return;
+        }
         // Process the decompressed directory
         processDecompressedDirectory();
         System.out.println("Total third party method calls: " + totalCount + ", Success: " + successCount + ", Fail: "
@@ -138,10 +141,14 @@ public class SourceJarAnalyzer {
 
         this.currentParseResults = parseResults; // ! remember this current list of results
         for (ParseResult<CompilationUnit> parseResult : parseResults) {
+           
             if (parseResult.isSuccessful() && parseResult.getResult().isPresent()) {
                 CompilationUnit cu = parseResult.getResult().get();
                 String filePath = cu.getStorage().get().getPath().toString();
-
+                if (filePath.toString().contains("org/powermock/api/mockito/expectation/")) {
+                    System.out.println("/expectation/*.java file detected.");
+                    System.out.println(filePath);
+                }
                 // * check if the current path is in the target package
                 filePath = filePath.split(decompressedPath)[1].substring(1);
 
@@ -153,12 +160,7 @@ public class SourceJarAnalyzer {
                 // * required packages, this help us finding all sub-class
 
                 try {
-                    if (filePath.contains("google/common/reflect/TypeToken.java")) {
-                        continue;
-                    } else {
-
-                        processTypes(cu.getTypes(), basePackageLikePath, cu.getStorage().get().getPath(), true);
-                    }
+                     processTypes(cu.getTypes(), basePackageLikePath, cu.getStorage().get().getPath(), true);
                 } catch (Exception e) {
                     System.out.println("Error: Failed to process types for " + filePath + ". " + e.getMessage());
                 }
@@ -183,7 +185,7 @@ public class SourceJarAnalyzer {
      */
     private void processTypes(List<TypeDeclaration<?>> types, String basePackageLikePath, Path filePath,
             boolean isTopLevel) {
-
+       
         for (TypeDeclaration<?> type : types) {
             // Construct the package-like path for this type
             String typePath = isTopLevel ? basePackageLikePath : basePackageLikePath + "." + type.getNameAsString();
@@ -276,7 +278,11 @@ public class SourceJarAnalyzer {
 
     private void processTypeDeclaration(TypeDeclaration<?> tp, String typePath, String fullPath) {
         List<MethodDeclaration> methodDeclarations = tp.findAll(MethodDeclaration.class);
-
+        if (fullPath.contains("org/powermock/api/mockito/expectation/WithAnyArguments.java")) {
+            System.out.println("/expectation/WithAnyArguments.java file detected.");
+            System.out.println("Method declarations: " + methodDeclarations.size());
+            System.out.println("Type path: " + typePath);
+        }
         if (methodDeclarations.size() > 0) {
             processMethodDeclarationForCUorTP(methodDeclarations, fullPath, typePath);
         }
@@ -307,6 +313,7 @@ public class SourceJarAnalyzer {
     private void processMethodDeclarationForCUorTP(List<MethodDeclaration> methodDeclarations, String fullPath,
             String packageLikePath) {
         for (MethodDeclaration methodDeclaration : methodDeclarations) {
+            
             // Initialize MethodDeclarationInfo for the current method declaration
             try {
                 // * we have to resolve the method declaration to get the Qualified signature,

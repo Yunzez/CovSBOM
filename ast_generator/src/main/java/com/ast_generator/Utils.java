@@ -325,7 +325,9 @@ public class Utils {
             }
 
             // Process current node
-            allDependencies.add(node);
+            if (!node.getSourceJarPath().isEmpty() && !node.getSourceJarPath().isEmpty()) {
+                allDependencies.add(node);
+            }
 
             // Recursively process all children
             for (DependencyNode child : node.getChildren()) {
@@ -338,6 +340,7 @@ public class Utils {
      * Checks if string B starts with string A when considering dot-separated
      * segments.
      * B is the longer string and A is the leading string to match.
+     * 
      * @param A The leading string to match.
      * @param B The full string to check against.
      * @return true if B starts with A considering dot-separated segments.

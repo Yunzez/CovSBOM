@@ -29,7 +29,6 @@ import org.w3c.dom.NodeList;
  */
 
 public class DependencyProcessor {
-    private static Dependency packageInfo;
     private static String javaVersion;
 
     public DependencyProcessor() {
@@ -106,7 +105,6 @@ public class DependencyProcessor {
     }
 
     public static Map<String, String> parsePomForModules(String pomFilePath) {
-        packageInfo = parseProjectInfo(pomFilePath);
         Map<String, String> moduleMap = new HashMap<>();
 
         try {
@@ -140,57 +138,7 @@ public class DependencyProcessor {
         return moduleMap;
     }
 
-    /** 
-     * This method parses the `pom.xml` file for a Maven project and returns a `Dependency` object representing the project.
-     */
-    public static Dependency parseProjectInfo(String pomFilePath) {
-        Dependency projectInfo = null;
-    
-        try {
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(new File(pomFilePath));
-            doc.getDocumentElement().normalize();
-    
-            Element projectElement = (Element) doc.getElementsByTagName("project").item(0);
-            NodeList children = projectElement.getChildNodes();
-    
-            String groupId = null;
-            String artifactId = null;
-            String version = null;
-    
-            for (int i = 0; i < children.getLength(); i++) {
-                Node node = children.item(i);
-                if (node.getNodeType() == Node.ELEMENT_NODE) {
-                    Element child = (Element) node;
-                    switch (child.getTagName()) {
-                        case "groupId":
-                            groupId = child.getTextContent();
-                            break;
-                        case "artifactId":
-                            artifactId = child.getTextContent();
-                            break;
-                        case "version":
-                            version = child.getTextContent();
-                            break;
-                    }
-                }
-            }
-    
-            // Only create a Dependency if all required fields are present
-            if (groupId != null && artifactId != null && version != null) {
-                projectInfo = new Dependency(groupId, artifactId, version, "", "");
-                return projectInfo;
-            } else {
-                System.out.println("Some essential elements are missing or inherited.");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    
-        System.out.println("Project Info: " + projectInfo);
-        return projectInfo;
-    }
+ 
     
 
     private static String findJavaVersionInProperties(Document doc) {
@@ -255,10 +203,6 @@ public class DependencyProcessor {
             return nodes.item(0).getTextContent();
         }
         return null;
-    }
-
-    public static Dependency getPackageInfo() {
-        return packageInfo;
     }
 
     public static String getJavaVersion() {

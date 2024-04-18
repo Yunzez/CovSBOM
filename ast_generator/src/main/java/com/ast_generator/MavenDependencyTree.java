@@ -1,6 +1,9 @@
 package com.ast_generator;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,8 +17,11 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Arrays;
+import com.ast_generator.Utils.DependencyCollector;
 
 public class MavenDependencyTree {
+    public static Set<Dependency> noJarDependency = new HashSet<>();
 
     /**
      * this method will run the maven dependency:tree command and parse the output
@@ -33,6 +39,7 @@ public class MavenDependencyTree {
         final boolean skipDependencyTree = false;
         System.out.println(System.getProperty("user.dir"));
         System.out.println("Running maven dependency:tree for " + projectDir);
+        Set<String> resolvedClassPath = runAndReadMavenClasspath(projectDir);
         List<String> mavenOutput = new ArrayList<>();
         try {
             Path projectPath = Paths.get(projectDir).toAbsolutePath();
@@ -111,39 +118,84 @@ public class MavenDependencyTree {
 
             // delete the file after reading
 
-            DependencyNode rootNode = updateDependencyMapWithTreeOutput(mavenOutput, dependencyMap, packageInfo,
-                    moduleList != null && moduleList.size() > 0);
-            return rootNode;
+            // DependencyNode rootNode = updateDependencyMapWithTreeOutput(mavenOutput,
+            // dependencyMap, resolvedClassPath,
+            // packageInfo,
+            // moduleList != null && moduleList.size() > 0);
+            // return rootNode;
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        DependencyNode rootNode = updateDependencyMapWithTreeOutput(mavenOutput, dependencyMap,
+        DependencyNode rootNode = updateDependencyMapWithTreeOutput(mavenOutput, dependencyMap, resolvedClassPath,
                 packageInfo, moduleList != null && moduleList.size() > 0);
+        System.out.println(resolvedClassPath);
         return rootNode;
 
     }
 
+    public static Set<String> runAndReadMavenClasspath(String projectDir) {
+        Set<String> classpath = new HashSet<>();
+        Path projectPath = Paths.get(projectDir).toAbsolutePath();
+        // Define the output file path
+        Path outputPath = projectPath.resolve("classPath.txt");
+        List<String> mavenOutput = new ArrayList<>();
+        try {
+            ProcessBuilder builder = new ProcessBuilder(
+                    "mvn", "dependency:build-classpath",
+                    "-Dmdep.outputFile=" + outputPath);
+            builder.directory(Paths.get(projectDir).toFile()); // Set the working directory
+            builder.redirectErrorStream(true); // Redirect errors to standard output
+            Process process = builder.start();
+
+            int exitCode = process.waitFor();
+            System.out.println("Exited with code " + exitCode);
+
+            System.out.println("Reading from file: " + outputPath);
+            mavenOutput = Files.readAllLines(outputPath);
+            Files.delete(outputPath);
+
+            String joinedOutput = String.join("", mavenOutput);
+            String[] elements = joinedOutput.split(":");
+            System.out.println("found classpath elements: " + elements.length);
+            for (String element : elements) {
+                classpath.add(element);
+            }
+
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return classpath;
+    }
+
     /**
      * 
-     * @param mavenTree     - the output of the maven dependency:tree command
-     * @param dependencyMap - the map to update with the dependencies
-     * @param packageInfo   - the root package info for filtering dependencies
+     * @param mavenTree            - the output of the maven dependency:tree command
+     * @param dependencyMap        - the map to update with the dependencies
+     * @param resolvedClassPath    - the output of maven dependency:build-classpath
+     * @param packageInfo          - the root package info for filtering
+     *                             dependencies
+     * @param isMultiModuleProject - whether the project is a multi-module project
+     * @return
      */
     public static DependencyNode updateDependencyMapWithTreeOutput(List<String> mavenTree,
             Map<String, DependencyNode> dependencyMap,
+            Set<String> resolvedClassPath,
             Dependency packageInfo,
             Boolean isMultiModuleProject) {
+
         DependencyNode rootNode;
         if (isMultiModuleProject) {
             System.out.println("multi-module project, use simple parse");
-            rootNode = simpleBuildTree(mavenTree, packageInfo);
+            rootNode = simpleBuildTree(mavenTree, packageInfo, resolvedClassPath);
         } else {
-            rootNode = buildDependencyTree(mavenTree);
+            rootNode = buildDependencyTree(mavenTree, resolvedClassPath);
         }
-
+        System.out.println();
         Set<DependencyNode> mainDependencies = rootNode.getChildren();
+
         for (DependencyNode dependencyNode : mainDependencies) {
             // System.out.println("dependency: " + dependencyNode.toString());
 
@@ -158,7 +210,8 @@ public class MavenDependencyTree {
     /**
      * @param packageInfo - the root package info for filtering dependencies
      */
-    public static DependencyNode simpleBuildTree(List<String> mavenTreeLines, Dependency packageInfo) {
+    public static DependencyNode simpleBuildTree(List<String> mavenTreeLines, Dependency packageInfo,
+            Set<String> resolvedClassPath) {
         Dependency rootDependency = packageInfo;
         DependencyNode rootNode = new DependencyNode(rootDependency);
         Set<Dependency> dependencies = new HashSet<>(); // remove duplicates
@@ -167,7 +220,10 @@ public class MavenDependencyTree {
         for (String line : uniqueDependencyStrings) {
             // Assuming each dependency line can be identified and parsed
             if (line.contains(":jar:")) {
-                Dependency dependency = getDependencyFromLine(line);
+                Dependency dependency = getDependencyFromLine(line, resolvedClassPath);
+                if (dependency == null) {
+                    continue;
+                }
                 dependencies.add(dependency);
             }
         }
@@ -194,7 +250,7 @@ public class MavenDependencyTree {
      * @param mavenTreeLines - the output of the maven dependency:tree command
      * @return
      */
-    public static DependencyNode buildDependencyTree(List<String> mavenTreeLines) {
+    public static DependencyNode buildDependencyTree(List<String> mavenTreeLines, Set<String> resolvedClassPath) {
         // System.out.println("mavenTreeLines: " + mavenTreeLines.toString());
         List<DependencyNode> nodes = new ArrayList<>();
         Stack<DependencyNode> nodeStack = new Stack<>();
@@ -215,7 +271,10 @@ public class MavenDependencyTree {
             // System.out.println("count: " + count + "start:" + start + " line: " + line);
 
             if (count == start) {
-                Dependency dependency = getDependencyFromLine(line);
+                Dependency dependency = getDependencyFromLine(line, resolvedClassPath);
+                if (dependency == null) {
+                    continue;
+                }
                 DependencyNode node = new DependencyNode(dependency);
                 root = node;
                 nodeStack.push(node);
@@ -226,7 +285,11 @@ public class MavenDependencyTree {
 
             int depth = getDepth(line); // Implement this method to determine the depth based on leading spaces or
                                         // dashes
-            Dependency dependency = getDependencyFromLine(line);
+            Dependency dependency = getDependencyFromLine(line, resolvedClassPath);
+
+            if (dependency == null) {
+                continue;
+            }
 
             DependencyNode node = new DependencyNode(dependency);
 
@@ -267,7 +330,7 @@ public class MavenDependencyTree {
         return depth;
     }
 
-    private static Dependency getDependencyFromLine(String line) {
+    private static Dependency getDependencyFromLine(String line, Set<String> resolvedClassPath) {
         String[] separatedLine = line.split(":");
         String artifactId = separatedLine[1].trim();
         String groupId = separatedLine[0].trim();
@@ -275,14 +338,61 @@ public class MavenDependencyTree {
 
         groupId = groupId.split(" ")[groupId.split(" ").length - 1];
 
-        String mavenPathBase = System.getProperty("user.home") + "/.m2/repository/"
-                + groupId.replace('.', '/') + "/" + artifactId + "/" + version
-                + "/" + artifactId + "-" + version;
+        // we first initialize dependency with no jar path or sourcejar path
+        Dependency dependency = new Dependency(groupId, artifactId, version, "",
+                "");
+        matchClasspathToDependency(dependency, resolvedClassPath);
 
-        Dependency dependency = new Dependency(groupId, artifactId, version, mavenPathBase + ".jar",
-                mavenPathBase + "-sources.jar");
-
+        File jarFile = new File(dependency.getJarPath());
+        File sourceJarFile = new File(dependency.getSourceJarPath());
+        if (!jarFile.exists() || !sourceJarFile.exists()) {
+            System.out.println("dependency jar not found: " + dependency.toString());
+            noJarDependency.add(dependency);
+        }
         return dependency;
+    }
+
+    public static void matchClasspathToDependency(Dependency dependency, Set<String> classPaths) {
+        for (String classPath : classPaths) {
+            String[] parts = classPath.split("/");
+            boolean groupIdFound = false, artifactIdFound = false, versionFound = false;
+
+            // Check each part of the path to see if it contains the artifactId or version
+            // directly
+            for (String part : parts) {
+                if (part.equals(dependency.getArtifactId() + "-" + dependency.getVersion() + ".jar")) {
+                    artifactIdFound = true;
+                    versionFound = true;
+                }
+
+                // Check if the groupId is included anywhere in the path
+                if (classPath.contains(dependency.getGroupId().replace(".", "/"))) {
+                    groupIdFound = true;
+                }
+            }
+
+            // Only consider it a match if both artifactId and version are found directly,
+            // and groupId is included anywhere
+            if (artifactIdFound && versionFound && groupIdFound) {
+                System.out.println("Match found in path: " + classPath);
+                dependency.setJarPath(classPath);
+                dependency.setSourceJarPath(classPath.replace(".jar", "-sources.jar"));
+                break; // Match found, no need to continue
+            }
+        }
+
+        if (dependency.getJarPath() == null || dependency.getJarPath().isEmpty()) {
+            System.out.println("No matching classpath found for dependency: " + dependency);
+        }
+    }
+
+    public static String totNoJarDependencyString() {
+        StringBuilder sb = new StringBuilder();
+        for (Dependency dependency : noJarDependency) {
+            sb.append(dependency.toString());
+            sb.append("\n");
+        }
+        return sb + "";
     }
 
 }

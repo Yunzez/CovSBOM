@@ -49,17 +49,17 @@ public class DependencyAnalyzer {
         this.jarDecompressedPaths = Utils.decompressAllJars(dependencies, "decompressed");
         System.out.println("done decompressing jars");
         DeclaringTypeToDependencyResolver declaringTypeToDependencyResolver = new DeclaringTypeToDependencyResolver(
-            dependencies, jarDecompressedPaths);
+                dependencies, jarDecompressedPaths);
         // System.out.println("jarDecompressedPaths: " +
         // jarDecompressedPaths.toString());
         // * find all required jar and save the results in typeToJarLookup
         findRequiredJars(declaringTypeToDependencyResolver);
-        
+
         System.out.println("done findRequiredJars");
         // * initialize buffers
         MethodCallBuffer loadingBuffer = new MethodCallBuffer(dependencies, declaringTypeToDependencyResolver);
         MethodCallBuffer doneBuffer = new MethodCallBuffer(dependencies, declaringTypeToDependencyResolver);
-       
+
         System.out.println("total unique types: " + methodCallReporter.getUniqueTypes().size());
         System.out.println("unresolved types: " + unresolvedTypes.size());
         System.out.println(unresolvedTypes.toString());
@@ -82,8 +82,8 @@ public class DependencyAnalyzer {
 
         System.out.println("------- entering extended analysis -------");
         int faultCatchCount = 0;
+
         // skip this for now
-        // while (loadingBuffer.size() > 0) {
         while (loadingBuffer.size() > 0) {
 
             System.out.println("***");
@@ -93,9 +93,10 @@ public class DependencyAnalyzer {
             for (DependencyNode dependency : loadingBuffer.getKeys()) {
 
                 // * we update the jarPath for type for reporter here
-                // for (MethodCallEntry methodCallEntry : loadingBuffer.getMethodCalls(dependency)) {
-                //     String declaringType = methodCallEntry.getDeclaringType();
-                //     declaringTypeToDependencyResolver.getDependencyForDeclaringType(declaringType);
+                // for (MethodCallEntry methodCallEntry :
+                // loadingBuffer.getMethodCalls(dependency)) {
+                // String declaringType = methodCallEntry.getDeclaringType();
+                // declaringTypeToDependencyResolver.getDependencyForDeclaringType(declaringType);
                 // }
 
                 // * we get all the types we need to analyze for this jar
@@ -132,14 +133,14 @@ public class DependencyAnalyzer {
         methodCallReporter.setTypeToJarReference(typeToJarLookup);
 
         for (DependencyNode dependency : doneBuffer.getKeys()) {
-            if(dependency.toShortString().contains("org.apache.httpcomponents:httpclient")) {
+            if (dependency.toShortString().contains("org.apache.httpcomponents:httpclient")) {
                 System.out.println("doneBuffer for org.apache.httpcomponents:httpclient");
                 doneBuffer.getMethodCalls(dependency).forEach(methodSignatureKey -> {
                     if (methodSignatureKey.getDeclaringType().contains("org.apache.http.util.TextUtils")) {
                         System.out.println("found org.apache.http.util.TextUtils type function marked as done");
                         System.out.println(methodSignatureKey.toString());
                     }
-                   
+
                 });
             }
         }
@@ -152,7 +153,7 @@ public class DependencyAnalyzer {
 
         // first layer unique types
         List<String> uniqueTypes = methodCallReporter.getUniqueTypes();
-       
+
         for (String declaringType : uniqueTypes) {
             if (declaringType.startsWith("java.") || declaringType.startsWith("javax.")
                     || declaringType.startsWith(methodCallReporter.getParentPackageName())) {

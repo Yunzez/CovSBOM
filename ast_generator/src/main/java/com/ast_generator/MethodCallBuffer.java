@@ -41,7 +41,7 @@ public class MethodCallBuffer {
                 .getDependencyForDeclaringType(declaringType);
 
         if (matchDependencyNode == null) {
-            System.out.println("no match in " + " for " + method.toString() + " type: " + declaringType);
+            // System.out.println("no match in " + " for " + method.toString() + " type: " + declaringType);
             return;
         }
         if (!buffer.get(matchDependencyNode).contains(method)) {

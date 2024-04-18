@@ -97,6 +97,7 @@ public class MethodCallReporter {
      * @return True if the declaration info is added successfully, false otherwise
      */
     public boolean addDeclarationInfoForMethodinType(String declaringType, MethodDeclarationInfo declarationInfo) {
+
         String declarationSignature = declarationInfo.getDeclarationSignature();
         if (declaringType.startsWith("java.") || declaringType.startsWith("javax.")) {
             return false;
@@ -107,8 +108,6 @@ public class MethodCallReporter {
         // checking if the method is already in the reportMap, we only analyze function
         for (List<MethodCallEntry> entries : reportMap.values()) {
             for (MethodCallEntry entry : entries) {
-                // System.out.println("test type check in reporter: " +
-                // entry.getDeclaringType());
                 if (entry.getDeclaringType().equals(declaringType)) {
 
                     if (entry.getMethodSignature().equals(declarationSignature)) {

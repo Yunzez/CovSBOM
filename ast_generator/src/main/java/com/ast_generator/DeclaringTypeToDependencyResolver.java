@@ -59,7 +59,10 @@ public class DeclaringTypeToDependencyResolver {
                     Path potentialPath = potentialDirectoryPath.resolve(parts[parts.length - 1] + ".java");
 
                     if (Files.exists(potentialPath)) {
-                        DependencyNode matchedDependency = findDependencyForDecompressedPath(jarDecompressedPath);
+                        if (declaringType.equals("org.powermock.api.mockito.expectation.WithAnyArguments")) {
+                            System.out.println("check WithAnyArguments type at " + potentialPath.toString());
+                        }
+                        DependencyNode matchedDependency = findDependencyForDecompressedPath(potentialPath.toString());
 
                         if (matchedDependency != null) {
                             cache.computeIfAbsent(matchedDependency, k -> new HashSet<>()).add(declaringType);
@@ -75,10 +78,6 @@ public class DeclaringTypeToDependencyResolver {
 
             // Reduce parts array by removing the last element for the next iteration
             parts = Arrays.copyOf(parts, parts.length - 1);
-        }
-
-        if (declaringType.contains("com.fasterxml.jackson.databind.util.internal.Linked")) {
-            System.out.println("check Linked type");
         }
 
         if (!matchFound && lastValidPath.size() > 0) {
@@ -100,7 +99,8 @@ public class DeclaringTypeToDependencyResolver {
 
         if (!matchFound) {
             unresolvedTypes.add(declaringType);
-            System.out.println("Ultimately failed to find a match for: " + declaringType);
+            System.out.println("Ultimately failed to find a match for: " + declaringType
+                    + ", possibly an interface or abstract class");
         }
     }
 
@@ -168,7 +168,8 @@ public class DeclaringTypeToDependencyResolver {
             for (Node node : types) {
                 if (node instanceof TypeDeclaration) {
                     TypeDeclaration<?> type = (TypeDeclaration<?>) node;
-                    // System.out.println("Found type: " + type.getNameAsString() + " in file: " + javaFilePath);
+                    // System.out.println("Found type: " + type.getNameAsString() + " in file: " +
+                    // javaFilePath);
                     if (type.getNameAsString().equals(typeName)) {
                         return true;
                     }
@@ -178,12 +179,22 @@ public class DeclaringTypeToDependencyResolver {
         return false;
     }
 
+    /**
+     * Attempts to find a dependency node for a given decompressed path.
+     * 
+     * @param decompressedPath The path to the java file that is a potential match.
+     * @return The dependency node if found, null otherwise.
+     */
     private DependencyNode findDependencyForDecompressedPath(String decompressedPath) {
-        // Simplistic approach: Match based on the presence of artifactId in the
-        // decompressedPath
-
+        String normalizedPath = decompressedPath.replace('/', '.').toLowerCase();
+        // Attempt to find a matching dependency node
         return dependecies.stream()
-                .filter(dependency -> decompressedPath.contains(dependency.getArtifactId()))
+                .filter(dependency -> {
+                    String expectedPathFragment = ( "." + dependency.getArtifactId() + ".")
+                            .toLowerCase();
+                    // Ensure the path fragment expected is indeed part of the normalized path
+                    return normalizedPath.contains(expectedPathFragment);
+                })
                 .findFirst()
                 .orElse(null);
     }
@@ -191,14 +202,15 @@ public class DeclaringTypeToDependencyResolver {
     public DependencyNode getDependencyForDeclaringType(String declaringType) {
 
         if (unresolvedTypes.contains(declaringType)) {
-            // System.out.println("Type is unresolved: " + declaringType + " , potentially a java parser issue or missing dependency ");
+            // System.out.println("Type is unresolved: " + declaringType + " , potentially a
+            // java parser issue or missing dependency ");
             return null; // Return null if the type is still unresolved
         }
 
         // Call findJarPathForType first to ensure the mappings are updated
         if (!declaringTypeToDependency.containsKey(declaringType)) {
             findJarPathForType(declaringType);
-        } 
+        }
 
         // Iterate through the cache to find the corresponding DependencyNode
 

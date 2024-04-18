@@ -68,6 +68,10 @@ public class Dependency {
         this.jarPath = jarPath;
     }
 
+    public void setSourceJarPath(String sourceJarPath) {
+        this.sourceJarPath = sourceJarPath;
+    }
+
     public String toString() {
         return "Dependency: groupId=" + groupId + ", artifactId=" + artifactId + ", version=" + version + ", jarPath="
                 + jarPath;

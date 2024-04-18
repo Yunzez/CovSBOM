@@ -39,7 +39,6 @@ import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeS
 import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
 import com.github.javaparser.resolution.declarations.ResolvedMethodDeclaration;
-import com.github.javaparser.serialization.JavaParserJsonSerializer;
 import java.io.File;
 
 /*
@@ -49,7 +48,6 @@ public class DirectoryProcessor {
     private String directoryPath;
     private static Path astPath;
     private static Map<String, DependencyNode> dependencyMap;
-    private ImportManager importManager;
     private static boolean separateFiles;
 
     CombinedTypeSolver combinedSolver;
@@ -75,16 +73,14 @@ public class DirectoryProcessor {
      * @param directoryPath  the path to the directory to process
      * @param astPath        the path to the directory to save the AST files
      * @param dependencyMap  the map of dependencies to resolve
-     * @param importManager  the ImportManager to store the imports
      * @param methodReporter the MethodCallReporter to store the method calls
      * @param moduleList     the list of modules to process, this can be null
      */
     public DirectoryProcessor(String directoryPath, Path astPath, Map<String, DependencyNode> dependencyMap,
-            ImportManager importManager, MethodCallReporter methodReporter, Map<String, String> moduleList) {
+           MethodCallReporter methodReporter, Map<String, String> moduleList) {
         this.directoryPath = directoryPath;
         DirectoryProcessor.astPath = astPath;
         DirectoryProcessor.dependencyMap = dependencyMap;
-        this.importManager = importManager;
         this.methodReporter = methodReporter;
         this.moduleList = moduleList;
         initCombinedSolver();
@@ -225,28 +221,9 @@ public class DirectoryProcessor {
      */
     private void analyzeSingleASTObject(CompilationUnit cu, Path path) {
         System.out.println("Analyzing AST object: " + path);
-        if (importManager != null) {
-            analyzeASTObjectImport(cu, path);
-        } else {
-            System.out.println("ImportManager is null");
-        }
         analyzeASTObjectFunctionCall(cu, path);
     }
 
-    /*
-     * this method analyze an AST object import, and save the result to
-     * ImportManager
-     */
-    private void analyzeASTObjectImport(CompilationUnit cu, Path path) {
-        FunctionSignatureExtractor extractor = new FunctionSignatureExtractor(
-                dependencyMap != null ? dependencyMap : null);
-        extractor.extractThirdPartyImports(cu);
-        Set<String> thirdPartyImports = extractor.getThirdPartyImports();
-
-        // Store the imports in ImportManager
-
-        importManager.addImports(thirdPartyImports);
-    }
 
     /*
      * this method analyze an AST object function call, and save the result to
