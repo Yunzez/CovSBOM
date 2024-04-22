@@ -139,14 +139,15 @@ public class Main {
 
         System.out.println("total modules: " + moduleList.size());
 
-        Dependency packageInfo = new DependencyNode("unknown groupId", "unknown artifactId", "unkown version", null, null);
-       
+        Dependency packageInfo = new DependencyNode("unknown groupId", "unknown artifactId", "unkown version", null,
+                null);
+
         try {
             packageInfo = MavenEvaluator.evaluateCurrentProject(rootDirectoryPath);
         } catch (Exception e) {
             System.out.println("Error in evaluating current project");
         }
-        
+
         Map<String, DependencyNode> dependencyMap = new HashMap<String, DependencyNode>();
 
         // this operation updates the dependencyMap, key: groupId:artifactId, value:
@@ -166,15 +167,12 @@ public class Main {
         }
         System.out.println("project dependencies number: " + allDependencies.size());
 
-        System.out.println("no jar dependencies: ");
-        System.out.println(MavenDependencyTree.totNoJarDependencyString());
-
         long startTime = System.currentTimeMillis();
+
         // if (test) {
-        // return;
+        //     return;
         // }
-        // Start timing
-        
+
         /*
          * +--------------------+
          * | Generation section |
@@ -204,7 +202,7 @@ public class Main {
          */
 
         DependencyAnalyzer dependencyAnalyzer = new DependencyAnalyzer(dependencyMap,
-                methodCallReporter);
+                methodCallReporter, packageInfo);
 
         dependencyAnalyzer.analyze();
 
@@ -224,6 +222,9 @@ public class Main {
         long totalTime = endTime - startTime;
         // Output the time in seconds
         System.out.println("Total time taken: " + totalTime / 1000 + " seconds.");
+
+        System.out.println("no jar dependencies: ");
+        System.out.println(MavenDependencyTree.totNoJarDependencyString());
     }
 
     private static void startTiming() {

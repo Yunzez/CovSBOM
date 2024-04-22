@@ -27,12 +27,21 @@ public class DeclaringTypeToDependencyResolver {
     private List<DependencyNode> dependecies; // Map from artifactId to DependencyNode
     private List<String> jarDecompressedPaths; // Paths to decompressed JAR directories
     private Map<String, DependencyNode> declaringTypeToDependency;
+    private Dependency packageInfo;
 
     public DeclaringTypeToDependencyResolver(List<DependencyNode> dependecies,
             List<String> jarDecompressedPaths) {
         this.dependecies = dependecies;
         this.jarDecompressedPaths = jarDecompressedPaths;
         this.declaringTypeToDependency = new HashMap<>();
+    }
+
+    public DeclaringTypeToDependencyResolver(List<DependencyNode> dependecies,
+            List<String> jarDecompressedPaths, Dependency packageInfo) {
+        this.dependecies = dependecies;
+        this.jarDecompressedPaths = jarDecompressedPaths;
+        this.declaringTypeToDependency = new HashMap<>();
+        this.packageInfo = packageInfo;
     }
 
     /**
@@ -81,7 +90,7 @@ public class DeclaringTypeToDependencyResolver {
         }
 
         if (!matchFound && lastValidPath.size() > 0) {
-            System.out.println("Failed to find a direct match for, start using java parser for complex matching for : "
+            System.out.println("Failed to find a direct match, start using java parser for complex matching for : "
                     + declaringType);
             // Attempt to find using JavaParser within the last valid directory path
             String foundPath = attemptToFindTypeWithJavaParser(declaringType);
@@ -190,7 +199,7 @@ public class DeclaringTypeToDependencyResolver {
         // Attempt to find a matching dependency node
         return dependecies.stream()
                 .filter(dependency -> {
-                    String expectedPathFragment = ( "." + dependency.getArtifactId() + ".")
+                    String expectedPathFragment = ("." + dependency.getArtifactId() + ".")
                             .toLowerCase();
                     // Ensure the path fragment expected is indeed part of the normalized path
                     return normalizedPath.contains(expectedPathFragment);
@@ -200,7 +209,11 @@ public class DeclaringTypeToDependencyResolver {
     }
 
     public DependencyNode getDependencyForDeclaringType(String declaringType) {
-
+       
+        if (declaringType.contains(packageInfo.getGroupId())) {
+            System.out.println("Type is part of the current package file: " + declaringType);
+            return null;
+        }
         if (unresolvedTypes.contains(declaringType)) {
             // System.out.println("Type is unresolved: " + declaringType + " , potentially a
             // java parser issue or missing dependency ");

@@ -18,6 +18,7 @@ public class DependencyAnalyzer {
     private MethodCallReporter methodCallReporter;
     private Set<String> unresolvedTypes = new HashSet<String>();
     private List<String> jarDecompressedPaths = new ArrayList<String>();
+    private Dependency packageInfo;
     Map<DependencyNode, HashSet<MethodSignatureKey>> loadingBuffer = new HashMap<DependencyNode, HashSet<MethodSignatureKey>>();
     Map<DependencyNode, HashSet<MethodSignatureKey>> doneBuffer = new HashMap<DependencyNode, HashSet<MethodSignatureKey>>();
 
@@ -28,9 +29,10 @@ public class DependencyAnalyzer {
     public DependencyAnalyzer() {
     }
 
-    public DependencyAnalyzer(Map<String, DependencyNode> dependencyMap, MethodCallReporter methodCallReporter) {
+    public DependencyAnalyzer(Map<String, DependencyNode> dependencyMap, MethodCallReporter methodCallReporter, Dependency packageInfo) {
         this.dependencyMap = dependencyMap;
         this.methodCallReporter = methodCallReporter;
+        this.packageInfo = packageInfo;
     }
 
     public void analyze() {
@@ -49,9 +51,8 @@ public class DependencyAnalyzer {
         this.jarDecompressedPaths = Utils.decompressAllJars(dependencies, "decompressed");
         System.out.println("done decompressing jars");
         DeclaringTypeToDependencyResolver declaringTypeToDependencyResolver = new DeclaringTypeToDependencyResolver(
-                dependencies, jarDecompressedPaths);
-        // System.out.println("jarDecompressedPaths: " +
-        // jarDecompressedPaths.toString());
+                dependencies, jarDecompressedPaths, packageInfo);
+
         // * find all required jar and save the results in typeToJarLookup
         findRequiredJars(declaringTypeToDependencyResolver);
 

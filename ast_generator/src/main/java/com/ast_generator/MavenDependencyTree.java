@@ -22,7 +22,6 @@ import com.ast_generator.Utils.DependencyCollector;
 
 public class MavenDependencyTree {
     public static Set<Dependency> noJarDependency = new HashSet<>();
-
     /**
      * this method will run the maven dependency:tree command and parse the output
      * to get the dependencies and dependencies tree
@@ -37,6 +36,7 @@ public class MavenDependencyTree {
             Map<String, DependencyNode> dependencyMap, Map<String, String> moduleList) {
 
         final boolean skipDependencyTree = false;
+
         System.out.println(System.getProperty("user.dir"));
         System.out.println("Running maven dependency:tree for " + projectDir);
         Set<String> resolvedClassPath = runAndReadMavenClasspath(projectDir);
@@ -135,40 +135,52 @@ public class MavenDependencyTree {
 
     }
 
+
     public static Set<String> runAndReadMavenClasspath(String projectDir) {
-        Set<String> classpath = new HashSet<>();
+        Set<String> classpaths = new HashSet<>();
         Path projectPath = Paths.get(projectDir).toAbsolutePath();
-        // Define the output file path
-        Path outputPath = projectPath.resolve("classPath.txt");
-        List<String> mavenOutput = new ArrayList<>();
+        String outputPath = "classPath.txt";
+
         try {
-            ProcessBuilder builder = new ProcessBuilder(
-                    "mvn", "dependency:build-classpath",
-                    "-Dmdep.outputFile=" + outputPath);
-            builder.directory(Paths.get(projectDir).toFile()); // Set the working directory
-            builder.redirectErrorStream(true); // Redirect errors to standard output
+            // Execute Maven command to generate classpath files
+            ProcessBuilder builder = new ProcessBuilder("mvn", "dependency:build-classpath", "-Dmdep.outputFile=" + outputPath);
+            builder.directory(projectPath.toFile());  // Set the working directory
+            builder.redirectErrorStream(true);  // Redirect errors to standard output
             Process process = builder.start();
 
             int exitCode = process.waitFor();
-            System.out.println("Exited with code " + exitCode);
+            System.out.println("Maven exited with code " + exitCode);
 
-            System.out.println("Reading from file: " + outputPath);
-            mavenOutput = Files.readAllLines(outputPath);
-            Files.delete(outputPath);
-
-            String joinedOutput = String.join("", mavenOutput);
-            String[] elements = joinedOutput.split(":");
-            System.out.println("found classpath elements: " + elements.length);
-            for (String element : elements) {
-                classpath.add(element);
-            }
-
+            // Read classPath.txt from all relevant directories
+            Files.walk(projectPath)
+                .filter(dir -> isMavenProject(dir))
+                .forEach(path -> {
+                    Path classpathFile = path.resolve(outputPath);
+                    if (Files.exists(classpathFile)) {
+                        try {
+                            Files.readAllLines(classpathFile).forEach(line -> {
+                                String[] elements = line.split(":");
+                                for (String element : elements) {
+                                    classpaths.add(element);
+                                }
+                            });
+                        } catch (IOException e) {
+                            System.err.println("Failed to read classpath file: " + classpathFile);
+                            e.printStackTrace();
+                        }
+                    }
+                });
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
-
-        return classpath;
+        return classpaths;
     }
+
+    private static boolean isMavenProject(Path path) {
+        return Files.isDirectory(path) && Files.exists(path.resolve("pom.xml"));
+    }
+
+
 
     /**
      * 
@@ -224,18 +236,19 @@ public class MavenDependencyTree {
                 if (dependency == null) {
                     continue;
                 }
-                dependencies.add(dependency);
+                if (!dependency.getGroupId().equalsIgnoreCase(packageInfo.getGroupId())) {
+                    dependencies.add(dependency);
+                } else {
+                    // we don't need to add the sub package to the dependencies
+                    noJarDependency.remove(dependency);
+                }
+               
             }
         }
 
         for (Dependency dependency : dependencies) {
             DependencyNode node = new DependencyNode(dependency);
-            if (node.getGroupId().equalsIgnoreCase(packageInfo.getGroupId())) {
-                System.out.println("found inner packages, skip: " + node.getGroupId() + ":" + node.getArtifactId());
-
-            } else {
                 rootNode.addChild(node);
-            }
         }
 
         System.out.println("root: ");
@@ -349,6 +362,8 @@ public class MavenDependencyTree {
             System.out.println("dependency jar not found: " + dependency.toString());
             noJarDependency.add(dependency);
         }
+        // if (node.getGroupId().equalsIgnoreCase(packageInfo.getGroupId()))
+        
         return dependency;
     }
 

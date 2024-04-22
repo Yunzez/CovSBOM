@@ -1,1278 +1,4 @@
 {
-  "Dependency: groupId=com.google.guava, artifactId=guava, version=27.0.1-jre, jarPath=/Users/yunzezhao/.m2/repository/com/google/guava/guava/27.0.1-jre/guava-27.0.1-jre.jar": [
-    {
-      "declaringType": "com.google.common.base.Optional",
-      "methodSignature": "absent()",
-      "methodName": "absent",
-      "lineNumber": ["49", "72", "95", "118", "141", "164"],
-      "fullExpression": "Optional.absent()",
-      "currentLayer": 0,
-      "declarationInfo": {
-        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/base/Optional.java",
-        "declarationStartLine": 90,
-        "declarationEndLine": 92,
-        "methodName": "absent",
-        "declarationSignature": "absent()",
-        "innerMethodCalls": [
-          {
-            "declaringType": "com.google.common.base.Absent",
-            "methodSignature": "withType()",
-            "methodName": "withType",
-            "lineNumber": ["91"],
-            "fullExpression": "Absent.withType()",
-            "currentLayer": 1,
-            "declarationInfo": {
-              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/base/Absent.java",
-              "declarationStartLine": 29,
-              "declarationEndLine": 32,
-              "methodName": "withType",
-              "declarationSignature": "withType()",
-              "innerMethodCalls": []
-            }
-          }
-        ]
-      }
-    },
-    {
-      "declaringType": "com.google.common.primitives.Chars",
-      "methodSignature": "toArray(java.util.Collection<java.lang.Character>)",
-      "methodName": "toArray",
-      "lineNumber": ["84"],
-      "fullExpression": "Chars.toArray(wrapperList)",
-      "currentLayer": 0,
-      "declarationInfo": {
-        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/primitives/Chars.java",
-        "declarationStartLine": 420,
-        "declarationEndLine": 433,
-        "methodName": "toArray",
-        "declarationSignature": "toArray(java.util.Collection<java.lang.Character>)",
-        "innerMethodCalls": [
-          {
-            "declaringType": "com.google.common.primitives.Chars.CharArrayAsList",
-            "methodSignature": "toCharArray()",
-            "methodName": "toCharArray",
-            "lineNumber": ["422"],
-            "fullExpression": "((CharArrayAsList) collection).toCharArray()",
-            "currentLayer": 1,
-            "declarationInfo": {
-              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/primitives/Chars.java",
-              "declarationStartLine": 631,
-              "declarationEndLine": 633,
-              "methodName": "toCharArray",
-              "declarationSignature": "toCharArray()",
-              "innerMethodCalls": []
-            }
-          },
-          {
-            "declaringType": "com.google.common.base.Preconditions",
-            "methodSignature": "checkNotNull(T)",
-            "methodName": "checkNotNull",
-            "lineNumber": ["430"],
-            "fullExpression": "checkNotNull(boxedArray[i])",
-            "currentLayer": 1,
-            "declarationInfo": {
-              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/base/Preconditions.java",
-              "declarationStartLine": 874,
-              "declarationEndLine": 880,
-              "methodName": "checkNotNull",
-              "declarationSignature": "checkNotNull(T)",
-              "innerMethodCalls": []
-            }
-          }
-        ]
-      }
-    },
-    {
-      "declaringType": "com.google.common.reflect.TypeToken",
-      "methodSignature": "isSubtypeOf(com.google.common.reflect.TypeToken<? extends java.lang.Object>)",
-      "methodName": "isSubtypeOf",
-      "lineNumber": ["131", "132"],
-      "fullExpression": "typeToken.isSubtypeOf(TypeToken.of(List.class))",
-      "currentLayer": 0,
-      "declarationInfo": null
-    },
-    {
-      "declaringType": "com.google.common.reflect.TypeToken",
-      "methodSignature": "getComponentType()",
-      "methodName": "getComponentType",
-      "lineNumber": ["30"],
-      "fullExpression": "typeToken.getComponentType()",
-      "currentLayer": 0,
-      "declarationInfo": null
-    },
-    {
-      "declaringType": "com.google.common.reflect.Invokable",
-      "methodSignature": "getParameters()",
-      "methodName": "getParameters",
-      "lineNumber": ["46", "70", "94"],
-      "fullExpression": "Invokable.from(candidate).getParameters()",
-      "currentLayer": 0,
-      "declarationInfo": {
-        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/reflect/Invokable.java",
-        "declarationStartLine": 117,
-        "declarationEndLine": 128,
-        "methodName": "getParameters",
-        "declarationSignature": "getParameters()",
-        "innerMethodCalls": [
-          {
-            "declaringType": "com.google.common.collect.ImmutableList.Builder",
-            "methodSignature": "add(E)",
-            "methodName": "add",
-            "lineNumber": ["123"],
-            "fullExpression": "builder.add(new Parameter(this, i, TypeToken.of(parameterTypes[i]), annotations[i], annotatedTypes[i]))",
-            "currentLayer": 1,
-            "declarationInfo": {
-              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/collect/ImmutableList.java",
-              "declarationStartLine": 785,
-              "declarationEndLine": 792,
-              "methodName": "add",
-              "declarationSignature": "add(E)",
-              "innerMethodCalls": []
-            }
-          },
-          {
-            "declaringType": "com.google.common.reflect.Invokable",
-            "methodSignature": "getGenericParameterTypes()",
-            "methodName": "getGenericParameterTypes",
-            "lineNumber": ["118"],
-            "fullExpression": "getGenericParameterTypes()",
-            "currentLayer": 1,
-            "declarationInfo": {
-              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/reflect/Invokable.java",
-              "declarationStartLine": 294,
-              "declarationEndLine": 306,
-              "methodName": "getGenericParameterTypes",
-              "declarationSignature": "getGenericParameterTypes()",
-              "innerMethodCalls": [
-                {
-                  "declaringType": "com.google.common.reflect.Invokable",
-                  "methodSignature": "getDeclaringClass()",
-                  "methodName": "getDeclaringClass",
-                  "lineNumber": ["300"],
-                  "fullExpression": "getDeclaringClass()",
-                  "currentLayer": 2,
-                  "declarationInfo": {
-                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/reflect/Invokable.java",
-                    "declarationStartLine": 166,
-                    "declarationEndLine": 170,
-                    "methodName": "getDeclaringClass",
-                    "declarationSignature": "getDeclaringClass()",
-                    "innerMethodCalls": [
-                      {
-                        "declaringType": "com.google.common.reflect.Element",
-                        "methodSignature": "getDeclaringClass()",
-                        "methodName": "getDeclaringClass",
-                        "lineNumber": ["169"],
-                        "fullExpression": "super.getDeclaringClass()",
-                        "currentLayer": 3,
-                        "declarationInfo": {
-                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/reflect/Element.java",
-                          "declarationStartLine": 79,
-                          "declarationEndLine": 82,
-                          "methodName": "getDeclaringClass",
-                          "declarationSignature": "getDeclaringClass()",
-                          "innerMethodCalls": []
-                        }
-                      }
-                    ]
-                  }
-                },
-                {
-                  "declaringType": "com.google.common.reflect.Invokable.ConstructorInvokable",
-                  "methodSignature": "mayNeedHiddenThis()",
-                  "methodName": "mayNeedHiddenThis",
-                  "lineNumber": ["297"],
-                  "fullExpression": "mayNeedHiddenThis()",
-                  "currentLayer": 2,
-                  "declarationInfo": {
-                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/reflect/Invokable.java",
-                    "declarationStartLine": 359,
-                    "declarationEndLine": 379,
-                    "methodName": "mayNeedHiddenThis",
-                    "declarationSignature": "mayNeedHiddenThis()",
-                    "innerMethodCalls": []
-                  }
-                }
-              ]
-            }
-          },
-          {
-            "declaringType": "com.google.common.reflect.Invokable",
-            "methodSignature": "getParameterAnnotations()",
-            "methodName": "getParameterAnnotations",
-            "lineNumber": ["119"],
-            "fullExpression": "getParameterAnnotations()",
-            "currentLayer": 1,
-            "declarationInfo": {
-              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/reflect/Invokable.java",
-              "declarationStartLine": 323,
-              "declarationEndLine": 326,
-              "methodName": "getParameterAnnotations",
-              "declarationSignature": "getParameterAnnotations()",
-              "innerMethodCalls": []
-            }
-          },
-          {
-            "declaringType": "com.google.common.collect.ImmutableList",
-            "methodSignature": "builder()",
-            "methodName": "builder",
-            "lineNumber": ["121"],
-            "fullExpression": "ImmutableList.builder()",
-            "currentLayer": 1,
-            "declarationInfo": {
-              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/collect/ImmutableList.java",
-              "declarationStartLine": 708,
-              "declarationEndLine": 710,
-              "methodName": "builder",
-              "declarationSignature": "builder()",
-              "innerMethodCalls": []
-            }
-          },
-          {
-            "declaringType": "com.google.common.reflect.Invokable",
-            "methodSignature": "getAnnotatedParameterTypes()",
-            "methodName": "getAnnotatedParameterTypes",
-            "lineNumber": ["120"],
-            "fullExpression": "getAnnotatedParameterTypes()",
-            "currentLayer": 1,
-            "declarationInfo": {
-              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/reflect/Invokable.java",
-              "declarationStartLine": 308,
-              "declarationEndLine": 311,
-              "methodName": "getAnnotatedParameterTypes",
-              "declarationSignature": "getAnnotatedParameterTypes()",
-              "innerMethodCalls": []
-            }
-          },
-          {
-            "declaringType": "com.google.common.reflect.TypeToken",
-            "methodSignature": "of(java.lang.reflect.Type)",
-            "methodName": "of",
-            "lineNumber": ["125"],
-            "fullExpression": "TypeToken.of(parameterTypes[i])",
-            "currentLayer": 1,
-            "declarationInfo": {
-              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/reflect/TypeToken.java",
-              "declarationStartLine": 174,
-              "declarationEndLine": 176,
-              "methodName": "of",
-              "declarationSignature": "of(java.lang.reflect.Type)",
-              "innerMethodCalls": []
-            }
-          },
-          {
-            "declaringType": "com.google.common.collect.ImmutableList.Builder",
-            "methodSignature": "build()",
-            "methodName": "build",
-            "lineNumber": ["127"],
-            "fullExpression": "builder.build()",
-            "currentLayer": 1,
-            "declarationInfo": {
-              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/collect/ImmutableList.java",
-              "declarationStartLine": 863,
-              "declarationEndLine": 867,
-              "methodName": "build",
-              "declarationSignature": "build()",
-              "innerMethodCalls": []
-            }
-          }
-        ]
-      }
-    },
-    {
-      "declaringType": "com.google.common.reflect.TypeToken",
-      "methodSignature": "getType()",
-      "methodName": "getType",
-      "lineNumber": ["107", "165"],
-      "fullExpression": "typeToken.getType()",
-      "currentLayer": 0,
-      "declarationInfo": null
-    },
-    {
-      "declaringType": "com.google.common.reflect.TypeToken",
-      "methodSignature": "isSubtypeOf(java.lang.reflect.Type)",
-      "methodName": "isSubtypeOf",
-      "lineNumber": ["186"],
-      "fullExpression": "typeToken.isSubtypeOf(Map.class)",
-      "currentLayer": 0,
-      "declarationInfo": null
-    },
-    {
-      "declaringType": "com.google.common.base.Optional",
-      "methodSignature": "get()",
-      "methodName": "get",
-      "lineNumber": ["25", "35", "46", "57", "68", "79"],
-      "fullExpression": "((Optional<Integer>) result).get()",
-      "currentLayer": 0,
-      "declarationInfo": {
-        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/base/Optional.java",
-        "declarationStartLine": 180,
-        "declarationEndLine": 180,
-        "methodName": "get",
-        "declarationSignature": "get()",
-        "innerMethodCalls": []
-      }
-    },
-    {
-      "declaringType": "com.google.common.base.Optional",
-      "methodSignature": "of(T)",
-      "methodName": "of",
-      "lineNumber": ["51", "74", "97", "120", "143", "166"],
-      "fullExpression": "Optional.of((Integer) converted)",
-      "currentLayer": 0,
-      "declarationInfo": {
-        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/base/Optional.java",
-        "declarationStartLine": 102,
-        "declarationEndLine": 104,
-        "methodName": "of",
-        "declarationSignature": "of(T)",
-        "innerMethodCalls": [
-          {
-            "declaringType": "com.google.common.base.Preconditions",
-            "methodSignature": "checkNotNull(T)",
-            "methodName": "checkNotNull",
-            "lineNumber": ["103"],
-            "fullExpression": "checkNotNull(reference)",
-            "currentLayer": 1,
-            "declarationInfo": {
-              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/base/Preconditions.java",
-              "declarationStartLine": 874,
-              "declarationEndLine": 880,
-              "methodName": "checkNotNull",
-              "declarationSignature": "checkNotNull(T)",
-              "innerMethodCalls": []
-            }
-          }
-        ]
-      }
-    },
-    {
-      "declaringType": "com.google.common.reflect.TypeToken",
-      "methodSignature": "isPrimitive()",
-      "methodName": "isPrimitive",
-      "lineNumber": ["106", "164"],
-      "fullExpression": "typeToken.isPrimitive()",
-      "currentLayer": 0,
-      "declarationInfo": null
-    },
-    {
-      "declaringType": "com.google.common.reflect.TypeToken",
-      "methodSignature": "of(java.lang.Class<T>)",
-      "methodName": "of",
-      "lineNumber": ["108", "131", "132", "194", "195"],
-      "fullExpression": "TypeToken.of(wrapperClass)",
-      "currentLayer": 0,
-      "declarationInfo": null
-    },
-    {
-      "declaringType": "com.google.common.reflect.Invokable",
-      "methodSignature": "from(java.lang.reflect.Method)",
-      "methodName": "from",
-      "lineNumber": ["46", "70", "94"],
-      "fullExpression": "Invokable.from(candidate)",
-      "currentLayer": 0,
-      "declarationInfo": {
-        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/reflect/Invokable.java",
-        "declarationStartLine": 66,
-        "declarationEndLine": 68,
-        "methodName": "from",
-        "declarationSignature": "from(java.lang.reflect.Method)",
-        "innerMethodCalls": []
-      }
-    },
-    {
-      "declaringType": "com.google.common.reflect.TypeToken",
-      "methodSignature": "equals(java.lang.Object)",
-      "methodName": "equals",
-      "lineNumber": ["58", "81", "104", "127", "150", "173"],
-      "fullExpression": "targetTypeToken.equals(new TypeToken<Optional<Integer>>() {\n})",
-      "currentLayer": 0,
-      "declarationInfo": null
-    },
-    {
-      "declaringType": "com.google.common.reflect.Parameter",
-      "methodSignature": "getType()",
-      "methodName": "getType",
-      "lineNumber": ["49", "73", "96"],
-      "fullExpression": "paramTypes.get(0).getType()",
-      "currentLayer": 0,
-      "declarationInfo": {
-        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/reflect/Parameter.java",
-        "declarationStartLine": 56,
-        "declarationEndLine": 58,
-        "methodName": "getType",
-        "declarationSignature": "getType()",
-        "innerMethodCalls": []
-      }
-    },
-    {
-      "declaringType": "com.google.common.reflect.TypeToken",
-      "methodSignature": "getRawType()",
-      "methodName": "getRawType",
-      "lineNumber": [
-        "139",
-        "143",
-        "167",
-        "200",
-        "204",
-        "219",
-        "229",
-        "230",
-        "234"
-      ],
-      "fullExpression": "typeToken.getRawType()",
-      "currentLayer": 0,
-      "declarationInfo": null
-    },
-    {
-      "declaringType": "com.google.common.reflect.TypeToken",
-      "methodSignature": "isArray()",
-      "methodName": "isArray",
-      "lineNumber": ["130"],
-      "fullExpression": "typeToken.isArray()",
-      "currentLayer": 0,
-      "declarationInfo": null
-    },
-    {
-      "declaringType": "com.google.common.reflect.TypeToken",
-      "methodSignature": "of(java.lang.reflect.Type)",
-      "methodName": "of",
-      "lineNumber": ["38"],
-      "fullExpression": "TypeToken.of(type)",
-      "currentLayer": 0,
-      "declarationInfo": null
-    },
-    {
-      "declaringType": "com.google.common.primitives.Booleans",
-      "methodSignature": "toArray(java.util.Collection<java.lang.Boolean>)",
-      "methodName": "toArray",
-      "lineNumber": ["70"],
-      "fullExpression": "Booleans.toArray(wrapperList)",
-      "currentLayer": 0,
-      "declarationInfo": {
-        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/primitives/Booleans.java",
-        "declarationStartLine": 343,
-        "declarationEndLine": 356,
-        "methodName": "toArray",
-        "declarationSignature": "toArray(java.util.Collection<java.lang.Boolean>)",
-        "innerMethodCalls": [
-          {
-            "declaringType": "com.google.common.base.Preconditions",
-            "methodSignature": "checkNotNull(T)",
-            "methodName": "checkNotNull",
-            "lineNumber": ["353"],
-            "fullExpression": "checkNotNull(boxedArray[i])",
-            "currentLayer": 1,
-            "declarationInfo": {
-              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/base/Preconditions.java",
-              "declarationStartLine": 874,
-              "declarationEndLine": 880,
-              "methodName": "checkNotNull",
-              "declarationSignature": "checkNotNull(T)",
-              "innerMethodCalls": []
-            }
-          },
-          {
-            "declaringType": "com.google.common.primitives.Booleans.BooleanArrayAsList",
-            "methodSignature": "toBooleanArray()",
-            "methodName": "toBooleanArray",
-            "lineNumber": ["345"],
-            "fullExpression": "((BooleanArrayAsList) collection).toBooleanArray()",
-            "currentLayer": 1,
-            "declarationInfo": {
-              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/primitives/Booleans.java",
-              "declarationStartLine": 500,
-              "declarationEndLine": 502,
-              "methodName": "toBooleanArray",
-              "declarationSignature": "toBooleanArray()",
-              "innerMethodCalls": []
-            }
-          }
-        ]
-      }
-    }
-  ],
-  "Dependency: groupId=org.slf4j, artifactId=slf4j-api, version=1.7.25, jarPath=/Users/yunzezhao/.m2/repository/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar": [
-    {
-      "declaringType": "org.slf4j.LoggerFactory",
-      "methodSignature": "getLogger(java.lang.Class<?>)",
-      "methodName": "getLogger",
-      "lineNumber": ["21"],
-      "fullExpression": "LoggerFactory.getLogger(FixtureConverterImpl.class)",
-      "currentLayer": 0,
-      "declarationInfo": {
-        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
-        "declarationStartLine": 382,
-        "declarationEndLine": 393,
-        "methodName": "getLogger",
-        "declarationSignature": "getLogger(java.lang.Class<?>)",
-        "innerMethodCalls": [
-          {
-            "declaringType": "org.slf4j.LoggerFactory",
-            "methodSignature": "getLogger(java.lang.String)",
-            "methodName": "getLogger",
-            "lineNumber": ["383"],
-            "fullExpression": "getLogger(clazz.getName())",
-            "currentLayer": 1,
-            "declarationInfo": {
-              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
-              "declarationStartLine": 356,
-              "declarationEndLine": 359,
-              "methodName": "getLogger",
-              "declarationSignature": "getLogger(java.lang.String)",
-              "innerMethodCalls": [
-                {
-                  "declaringType": "org.slf4j.LoggerFactory",
-                  "methodSignature": "getILoggerFactory()",
-                  "methodName": "getILoggerFactory",
-                  "lineNumber": ["357"],
-                  "fullExpression": "getILoggerFactory()",
-                  "currentLayer": 2,
-                  "declarationInfo": {
-                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
-                    "declarationStartLine": 407,
-                    "declarationEndLine": 429,
-                    "methodName": "getILoggerFactory",
-                    "declarationSignature": "getILoggerFactory()",
-                    "innerMethodCalls": [
-                      {
-                        "declaringType": "org.slf4j.LoggerFactory",
-                        "methodSignature": "performInitialization()",
-                        "methodName": "performInitialization",
-                        "lineNumber": ["412"],
-                        "fullExpression": "performInitialization()",
-                        "currentLayer": 3,
-                        "declarationInfo": {
-                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
-                          "declarationStartLine": 123,
-                          "declarationEndLine": 128,
-                          "methodName": "performInitialization",
-                          "declarationSignature": "performInitialization()",
-                          "innerMethodCalls": [
-                            {
-                              "declaringType": "org.slf4j.LoggerFactory",
-                              "methodSignature": "bind()",
-                              "methodName": "bind",
-                              "lineNumber": ["124"],
-                              "fullExpression": "bind()",
-                              "currentLayer": 4,
-                              "declarationInfo": {
-                                "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
-                                "declarationStartLine": 140,
-                                "declarationEndLine": 181,
-                                "methodName": "bind",
-                                "declarationSignature": "bind()",
-                                "innerMethodCalls": [
-                                  {
-                                    "declaringType": "org.slf4j.LoggerFactory",
-                                    "methodSignature": "findPossibleStaticLoggerBinderPathSet()",
-                                    "methodName": "findPossibleStaticLoggerBinderPathSet",
-                                    "lineNumber": ["146"],
-                                    "fullExpression": "findPossibleStaticLoggerBinderPathSet()",
-                                    "currentLayer": 5,
-                                    "declarationInfo": {
-                                      "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
-                                      "declarationStartLine": 292,
-                                      "declarationEndLine": 313,
-                                      "methodName": "findPossibleStaticLoggerBinderPathSet",
-                                      "declarationSignature": "findPossibleStaticLoggerBinderPathSet()",
-                                      "innerMethodCalls": []
-                                    }
-                                  },
-                                  {
-                                    "declaringType": "org.slf4j.LoggerFactory",
-                                    "methodSignature": "reportMultipleBindingAmbiguity(java.util.Set<java.net.URL>)",
-                                    "methodName": "reportMultipleBindingAmbiguity",
-                                    "lineNumber": ["147"],
-                                    "fullExpression": "reportMultipleBindingAmbiguity(staticLoggerBinderPathSet)",
-                                    "currentLayer": 5,
-                                    "declarationInfo": {
-                                      "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
-                                      "declarationStartLine": 324,
-                                      "declarationEndLine": 332,
-                                      "methodName": "reportMultipleBindingAmbiguity",
-                                      "declarationSignature": "reportMultipleBindingAmbiguity(java.util.Set<java.net.URL>)",
-                                      "innerMethodCalls": [
-                                        {
-                                          "declaringType": "org.slf4j.LoggerFactory",
-                                          "methodSignature": "isAmbiguousStaticLoggerBinderPathSet(java.util.Set<java.net.URL>)",
-                                          "methodName": "isAmbiguousStaticLoggerBinderPathSet",
-                                          "lineNumber": ["325"],
-                                          "fullExpression": "isAmbiguousStaticLoggerBinderPathSet(binderPathSet)",
-                                          "currentLayer": 6,
-                                          "declarationInfo": {
-                                            "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
-                                            "declarationStartLine": 315,
-                                            "declarationEndLine": 317,
-                                            "methodName": "isAmbiguousStaticLoggerBinderPathSet",
-                                            "declarationSignature": "isAmbiguousStaticLoggerBinderPathSet(java.util.Set<java.net.URL>)",
-                                            "innerMethodCalls": []
-                                          }
-                                        }
-                                      ]
-                                    }
-                                  },
-                                  {
-                                    "declaringType": "org.slf4j.LoggerFactory",
-                                    "methodSignature": "failedBinding(java.lang.Throwable)",
-                                    "methodName": "failedBinding",
-                                    "lineNumber": ["165", "178"],
-                                    "fullExpression": "failedBinding(ncde)",
-                                    "currentLayer": 5,
-                                    "declarationInfo": {
-                                      "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
-                                      "declarationStartLine": 194,
-                                      "declarationEndLine": 197,
-                                      "methodName": "failedBinding",
-                                      "declarationSignature": "failedBinding(java.lang.Throwable)",
-                                      "innerMethodCalls": [
-                                        {
-                                          "declaringType": "org.slf4j.helpers.Util",
-                                          "methodSignature": "report(java.lang.String, java.lang.Throwable)",
-                                          "methodName": "report",
-                                          "lineNumber": ["196"],
-                                          "fullExpression": "Util.report(\"Failed to instantiate SLF4J LoggerFactory\", t)",
-                                          "currentLayer": 6,
-                                          "declarationInfo": {
-                                            "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/Util.java",
-                                            "declarationStartLine": 121,
-                                            "declarationEndLine": 125,
-                                            "methodName": "report",
-                                            "declarationSignature": "report(java.lang.String, java.lang.Throwable)",
-                                            "innerMethodCalls": []
-                                          }
-                                        }
-                                      ]
-                                    }
-                                  },
-                                  {
-                                    "declaringType": "org.slf4j.LoggerFactory",
-                                    "methodSignature": "isAndroid()",
-                                    "methodName": "isAndroid",
-                                    "lineNumber": ["145"],
-                                    "fullExpression": "isAndroid()",
-                                    "currentLayer": 5,
-                                    "declarationInfo": {
-                                      "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
-                                      "declarationStartLine": 334,
-                                      "declarationEndLine": 339,
-                                      "methodName": "isAndroid",
-                                      "declarationSignature": "isAndroid()",
-                                      "innerMethodCalls": [
-                                        {
-                                          "declaringType": "org.slf4j.helpers.Util",
-                                          "methodSignature": "safeGetSystemProperty(java.lang.String)",
-                                          "methodName": "safeGetSystemProperty",
-                                          "lineNumber": ["335"],
-                                          "fullExpression": "Util.safeGetSystemProperty(JAVA_VENDOR_PROPERTY)",
-                                          "currentLayer": 6,
-                                          "declarationInfo": {
-                                            "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/Util.java",
-                                            "declarationStartLine": 39,
-                                            "declarationEndLine": 50,
-                                            "methodName": "safeGetSystemProperty",
-                                            "declarationSignature": "safeGetSystemProperty(java.lang.String)",
-                                            "innerMethodCalls": []
-                                          }
-                                        }
-                                      ]
-                                    }
-                                  },
-                                  {
-                                    "declaringType": "org.slf4j.LoggerFactory",
-                                    "methodSignature": "reportActualBinding(java.util.Set<java.net.URL>)",
-                                    "methodName": "reportActualBinding",
-                                    "lineNumber": ["152"],
-                                    "fullExpression": "reportActualBinding(staticLoggerBinderPathSet)",
-                                    "currentLayer": 5,
-                                    "declarationInfo": {
-                                      "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
-                                      "declarationStartLine": 341,
-                                      "declarationEndLine": 346,
-                                      "methodName": "reportActualBinding",
-                                      "declarationSignature": "reportActualBinding(java.util.Set<java.net.URL>)",
-                                      "innerMethodCalls": [
-                                        {
-                                          "declaringType": "org.slf4j.impl.StaticLoggerBinder",
-                                          "methodSignature": "getLoggerFactoryClassStr()",
-                                          "methodName": "getLoggerFactoryClassStr",
-                                          "lineNumber": ["344"],
-                                          "fullExpression": "StaticLoggerBinder.getSingleton().getLoggerFactoryClassStr()",
-                                          "currentLayer": 6,
-                                          "declarationInfo": {
-                                            "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/impl/StaticLoggerBinder.java",
-                                            "declarationStartLine": 70,
-                                            "declarationEndLine": 72,
-                                            "methodName": "getLoggerFactoryClassStr",
-                                            "declarationSignature": "getLoggerFactoryClassStr()",
-                                            "innerMethodCalls": []
-                                          }
-                                        }
-                                      ]
-                                    }
-                                  },
-                                  {
-                                    "declaringType": "org.slf4j.LoggerFactory",
-                                    "methodSignature": "fixSubstituteLoggers()",
-                                    "methodName": "fixSubstituteLoggers",
-                                    "lineNumber": ["153"],
-                                    "fullExpression": "fixSubstituteLoggers()",
-                                    "currentLayer": 5,
-                                    "declarationInfo": {
-                                      "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
-                                      "declarationStartLine": 183,
-                                      "declarationEndLine": 192,
-                                      "methodName": "fixSubstituteLoggers",
-                                      "declarationSignature": "fixSubstituteLoggers()",
-                                      "innerMethodCalls": [
-                                        {
-                                          "declaringType": "org.slf4j.LoggerFactory",
-                                          "methodSignature": "getLogger(java.lang.String)",
-                                          "methodName": "getLogger",
-                                          "lineNumber": ["187"],
-                                          "fullExpression": "getLogger(substLogger.getName())",
-                                          "currentLayer": 6,
-                                          "declarationInfo": {
-                                            "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
-                                            "declarationStartLine": 356,
-                                            "declarationEndLine": 359,
-                                            "methodName": "getLogger",
-                                            "declarationSignature": "getLogger(java.lang.String)",
-                                            "innerMethodCalls": []
-                                          }
-                                        },
-                                        {
-                                          "declaringType": "org.slf4j.helpers.SubstituteLogger",
-                                          "methodSignature": "getName()",
-                                          "methodName": "getName",
-                                          "lineNumber": ["187"],
-                                          "fullExpression": "substLogger.getName()",
-                                          "currentLayer": 6,
-                                          "declarationInfo": {
-                                            "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/SubstituteLogger.java",
-                                            "declarationStartLine": 64,
-                                            "declarationEndLine": 66,
-                                            "methodName": "getName",
-                                            "declarationSignature": "getName()",
-                                            "innerMethodCalls": []
-                                          }
-                                        },
-                                        {
-                                          "declaringType": "org.slf4j.helpers.SubstituteLoggerFactory",
-                                          "methodSignature": "getLoggers()",
-                                          "methodName": "getLoggers",
-                                          "lineNumber": ["186"],
-                                          "fullExpression": "SUBST_FACTORY.getLoggers()",
-                                          "currentLayer": 6,
-                                          "declarationInfo": {
-                                            "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/SubstituteLoggerFactory.java",
-                                            "declarationStartLine": 64,
-                                            "declarationEndLine": 66,
-                                            "methodName": "getLoggers",
-                                            "declarationSignature": "getLoggers()",
-                                            "innerMethodCalls": []
-                                          }
-                                        },
-                                        {
-                                          "declaringType": "org.slf4j.helpers.SubstituteLoggerFactory",
-                                          "methodSignature": "postInitialization()",
-                                          "methodName": "postInitialization",
-                                          "lineNumber": ["185"],
-                                          "fullExpression": "SUBST_FACTORY.postInitialization()",
-                                          "currentLayer": 6,
-                                          "declarationInfo": {
-                                            "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/SubstituteLoggerFactory.java",
-                                            "declarationStartLine": 72,
-                                            "declarationEndLine": 74,
-                                            "methodName": "postInitialization",
-                                            "declarationSignature": "postInitialization()",
-                                            "innerMethodCalls": []
-                                          }
-                                        },
-                                        {
-                                          "declaringType": "org.slf4j.helpers.SubstituteLogger",
-                                          "methodSignature": "setDelegate(org.slf4j.Logger)",
-                                          "methodName": "setDelegate",
-                                          "lineNumber": ["188"],
-                                          "fullExpression": "substLogger.setDelegate(logger)",
-                                          "currentLayer": 6,
-                                          "declarationInfo": {
-                                            "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/SubstituteLogger.java",
-                                            "declarationStartLine": 354,
-                                            "declarationEndLine": 356,
-                                            "methodName": "setDelegate",
-                                            "declarationSignature": "setDelegate(org.slf4j.Logger)",
-                                            "innerMethodCalls": []
-                                          }
-                                        }
-                                      ]
-                                    }
-                                  },
-                                  {
-                                    "declaringType": "org.slf4j.LoggerFactory",
-                                    "methodSignature": "replayEvents()",
-                                    "methodName": "replayEvents",
-                                    "lineNumber": ["154"],
-                                    "fullExpression": "replayEvents()",
-                                    "currentLayer": 5,
-                                    "declarationInfo": {
-                                      "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
-                                      "declarationStartLine": 199,
-                                      "declarationEndLine": 216,
-                                      "methodName": "replayEvents",
-                                      "declarationSignature": "replayEvents()",
-                                      "innerMethodCalls": [
-                                        {
-                                          "declaringType": "org.slf4j.LoggerFactory",
-                                          "methodSignature": "replaySingleEvent(org.slf4j.event.SubstituteLoggingEvent)",
-                                          "methodName": "replaySingleEvent",
-                                          "lineNumber": ["210"],
-                                          "fullExpression": "replaySingleEvent(event)",
-                                          "currentLayer": 6,
-                                          "declarationInfo": {
-                                            "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
-                                            "declarationStartLine": 228,
-                                            "declarationEndLine": 245,
-                                            "methodName": "replaySingleEvent",
-                                            "declarationSignature": "replaySingleEvent(org.slf4j.event.SubstituteLoggingEvent)",
-                                            "innerMethodCalls": [
-                                              {
-                                                "declaringType": "org.slf4j.helpers.SubstituteLogger",
-                                                "methodSignature": "log(org.slf4j.event.LoggingEvent)",
-                                                "methodName": "log",
-                                                "lineNumber": ["241"],
-                                                "fullExpression": "substLogger.log(event)",
-                                                "currentLayer": 7,
-                                                "declarationInfo": {
-                                                  "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/SubstituteLogger.java",
-                                                  "declarationStartLine": 371,
-                                                  "declarationEndLine": 380,
-                                                  "methodName": "log",
-                                                  "declarationSignature": "log(org.slf4j.event.LoggingEvent)",
-                                                  "innerMethodCalls": []
-                                                }
-                                              },
-                                              {
-                                                "declaringType": "org.slf4j.helpers.SubstituteLogger",
-                                                "methodSignature": "isDelegateNull()",
-                                                "methodName": "isDelegateNull",
-                                                "lineNumber": ["234"],
-                                                "fullExpression": "substLogger.isDelegateNull()",
-                                                "currentLayer": 7,
-                                                "declarationInfo": {
-                                                  "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/SubstituteLogger.java",
-                                                  "declarationStartLine": 383,
-                                                  "declarationEndLine": 385,
-                                                  "methodName": "isDelegateNull",
-                                                  "declarationSignature": "isDelegateNull()",
-                                                  "innerMethodCalls": []
-                                                }
-                                              }
-                                            ]
-                                          }
-                                        },
-                                        {
-                                          "declaringType": "org.slf4j.LoggerFactory",
-                                          "methodSignature": "emitReplayOrSubstituionWarning(org.slf4j.event.SubstituteLoggingEvent, int)",
-                                          "methodName": "emitReplayOrSubstituionWarning",
-                                          "lineNumber": ["212"],
-                                          "fullExpression": "emitReplayOrSubstituionWarning(event, queueSize)",
-                                          "currentLayer": 6,
-                                          "declarationInfo": {
-                                            "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
-                                            "declarationStartLine": 218,
-                                            "declarationEndLine": 226,
-                                            "methodName": "emitReplayOrSubstituionWarning",
-                                            "declarationSignature": "emitReplayOrSubstituionWarning(org.slf4j.event.SubstituteLoggingEvent, int)",
-                                            "innerMethodCalls": [
-                                              {
-                                                "declaringType": "org.slf4j.LoggerFactory",
-                                                "methodSignature": "emitReplayWarning(int)",
-                                                "methodName": "emitReplayWarning",
-                                                "lineNumber": ["220"],
-                                                "fullExpression": "emitReplayWarning(queueSize)",
-                                                "currentLayer": 7,
-                                                "declarationInfo": {
-                                                  "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
-                                                  "declarationStartLine": 255,
-                                                  "declarationEndLine": 259,
-                                                  "methodName": "emitReplayWarning",
-                                                  "declarationSignature": "emitReplayWarning(int)",
-                                                  "innerMethodCalls": []
-                                                }
-                                              },
-                                              {
-                                                "declaringType": "org.slf4j.LoggerFactory",
-                                                "methodSignature": "emitSubstitutionWarning()",
-                                                "methodName": "emitSubstitutionWarning",
-                                                "lineNumber": ["224"],
-                                                "fullExpression": "emitSubstitutionWarning()",
-                                                "currentLayer": 7,
-                                                "declarationInfo": {
-                                                  "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
-                                                  "declarationStartLine": 247,
-                                                  "declarationEndLine": 253,
-                                                  "methodName": "emitSubstitutionWarning",
-                                                  "declarationSignature": "emitSubstitutionWarning()",
-                                                  "innerMethodCalls": []
-                                                }
-                                              },
-                                              {
-                                                "declaringType": "org.slf4j.helpers.SubstituteLogger",
-                                                "methodSignature": "isDelegateEventAware()",
-                                                "methodName": "isDelegateEventAware",
-                                                "lineNumber": ["219"],
-                                                "fullExpression": "event.getLogger().isDelegateEventAware()",
-                                                "currentLayer": 7,
-                                                "declarationInfo": {
-                                                  "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/SubstituteLogger.java",
-                                                  "declarationStartLine": 358,
-                                                  "declarationEndLine": 369,
-                                                  "methodName": "isDelegateEventAware",
-                                                  "declarationSignature": "isDelegateEventAware()",
-                                                  "innerMethodCalls": []
-                                                }
-                                              },
-                                              {
-                                                "declaringType": "org.slf4j.event.SubstituteLoggingEvent",
-                                                "methodSignature": "getLogger()",
-                                                "methodName": "getLogger",
-                                                "lineNumber": ["219", "221"],
-                                                "fullExpression": "event.getLogger()",
-                                                "currentLayer": 7,
-                                                "declarationInfo": {
-                                                  "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/event/SubstituteLoggingEvent.java",
-                                                  "declarationStartLine": 42,
-                                                  "declarationEndLine": 44,
-                                                  "methodName": "getLogger",
-                                                  "declarationSignature": "getLogger()",
-                                                  "innerMethodCalls": []
-                                                }
-                                              },
-                                              {
-                                                "declaringType": "org.slf4j.helpers.SubstituteLogger",
-                                                "methodSignature": "isDelegateNOP()",
-                                                "methodName": "isDelegateNOP",
-                                                "lineNumber": ["221"],
-                                                "fullExpression": "event.getLogger().isDelegateNOP()",
-                                                "currentLayer": 7,
-                                                "declarationInfo": {
-                                                  "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/SubstituteLogger.java",
-                                                  "declarationStartLine": 387,
-                                                  "declarationEndLine": 389,
-                                                  "methodName": "isDelegateNOP",
-                                                  "declarationSignature": "isDelegateNOP()",
-                                                  "innerMethodCalls": []
-                                                }
-                                              }
-                                            ]
-                                          }
-                                        },
-                                        {
-                                          "declaringType": "org.slf4j.helpers.SubstituteLoggerFactory",
-                                          "methodSignature": "getEventQueue()",
-                                          "methodName": "getEventQueue",
-                                          "lineNumber": ["200"],
-                                          "fullExpression": "SUBST_FACTORY.getEventQueue()",
-                                          "currentLayer": 6,
-                                          "declarationInfo": {
-                                            "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/SubstituteLoggerFactory.java",
-                                            "declarationStartLine": 68,
-                                            "declarationEndLine": 70,
-                                            "methodName": "getEventQueue",
-                                            "declarationSignature": "getEventQueue()",
-                                            "innerMethodCalls": []
-                                          }
-                                        }
-                                      ]
-                                    }
-                                  },
-                                  {
-                                    "declaringType": "org.slf4j.helpers.Util",
-                                    "methodSignature": "report(java.lang.String)",
-                                    "methodName": "report",
-                                    "lineNumber": [
-                                      "161",
-                                      "162",
-                                      "163",
-                                      "172",
-                                      "173",
-                                      "174"
-                                    ],
-                                    "fullExpression": "Util.report(\"Failed to load class \\\"org.slf4j.impl.StaticLoggerBinder\\\".\")",
-                                    "currentLayer": 5,
-                                    "declarationInfo": {
-                                      "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/Util.java",
-                                      "declarationStartLine": 127,
-                                      "declarationEndLine": 129,
-                                      "methodName": "report",
-                                      "declarationSignature": "report(java.lang.String)",
-                                      "innerMethodCalls": []
-                                    }
-                                  },
-                                  {
-                                    "declaringType": "org.slf4j.helpers.SubstituteLoggerFactory",
-                                    "methodSignature": "clear()",
-                                    "methodName": "clear",
-                                    "lineNumber": ["156"],
-                                    "fullExpression": "SUBST_FACTORY.clear()",
-                                    "currentLayer": 5,
-                                    "declarationInfo": {
-                                      "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/SubstituteLoggerFactory.java",
-                                      "declarationStartLine": 76,
-                                      "declarationEndLine": 79,
-                                      "methodName": "clear",
-                                      "declarationSignature": "clear()",
-                                      "innerMethodCalls": []
-                                    }
-                                  },
-                                  {
-                                    "declaringType": "org.slf4j.LoggerFactory",
-                                    "methodSignature": "messageContainsOrgSlf4jImplStaticLoggerBinder(java.lang.String)",
-                                    "methodName": "messageContainsOrgSlf4jImplStaticLoggerBinder",
-                                    "lineNumber": ["159"],
-                                    "fullExpression": "messageContainsOrgSlf4jImplStaticLoggerBinder(msg)",
-                                    "currentLayer": 5,
-                                    "declarationInfo": {
-                                      "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
-                                      "declarationStartLine": 130,
-                                      "declarationEndLine": 138,
-                                      "methodName": "messageContainsOrgSlf4jImplStaticLoggerBinder",
-                                      "declarationSignature": "messageContainsOrgSlf4jImplStaticLoggerBinder(java.lang.String)",
-                                      "innerMethodCalls": []
-                                    }
-                                  }
-                                ]
-                              }
-                            },
-                            {
-                              "declaringType": "org.slf4j.LoggerFactory",
-                              "methodSignature": "versionSanityCheck()",
-                              "methodName": "versionSanityCheck",
-                              "lineNumber": ["126"],
-                              "fullExpression": "versionSanityCheck()",
-                              "currentLayer": 4,
-                              "declarationInfo": {
-                                "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
-                                "declarationStartLine": 261,
-                                "declarationEndLine": 285,
-                                "methodName": "versionSanityCheck",
-                                "declarationSignature": "versionSanityCheck()",
-                                "innerMethodCalls": [
-                                  {
-                                    "declaringType": "org.slf4j.helpers.Util",
-                                    "methodSignature": "report(java.lang.String, java.lang.Throwable)",
-                                    "methodName": "report",
-                                    "lineNumber": ["283"],
-                                    "fullExpression": "Util.report(\"Unexpected problem occured during version sanity check\", e)",
-                                    "currentLayer": 5,
-                                    "declarationInfo": {
-                                      "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/Util.java",
-                                      "declarationStartLine": 121,
-                                      "declarationEndLine": 125,
-                                      "methodName": "report",
-                                      "declarationSignature": "report(java.lang.String, java.lang.Throwable)",
-                                      "innerMethodCalls": []
-                                    }
-                                  }
-                                ]
-                              }
-                            }
-                          ]
-                        }
-                      },
-                      {
-                        "declaringType": "org.slf4j.impl.StaticLoggerBinder",
-                        "methodSignature": "getSingleton()",
-                        "methodName": "getSingleton",
-                        "lineNumber": ["418"],
-                        "fullExpression": "StaticLoggerBinder.getSingleton()",
-                        "currentLayer": 3,
-                        "declarationInfo": {
-                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/impl/StaticLoggerBinder.java",
-                          "declarationStartLine": 51,
-                          "declarationEndLine": 53,
-                          "methodName": "getSingleton",
-                          "declarationSignature": "getSingleton()",
-                          "innerMethodCalls": []
-                        }
-                      },
-                      {
-                        "declaringType": "org.slf4j.impl.StaticLoggerBinder",
-                        "methodSignature": "getLoggerFactory()",
-                        "methodName": "getLoggerFactory",
-                        "lineNumber": ["418"],
-                        "fullExpression": "StaticLoggerBinder.getSingleton().getLoggerFactory()",
-                        "currentLayer": 3,
-                        "declarationInfo": {
-                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/impl/StaticLoggerBinder.java",
-                          "declarationStartLine": 66,
-                          "declarationEndLine": 68,
-                          "methodName": "getLoggerFactory",
-                          "declarationSignature": "getLoggerFactory()",
-                          "innerMethodCalls": []
-                        }
-                      }
-                    ]
-                  }
-                },
-                {
-                  "declaringType": "org.slf4j.ILoggerFactory",
-                  "methodSignature": "getLogger(java.lang.String)",
-                  "methodName": "getLogger",
-                  "lineNumber": ["358"],
-                  "fullExpression": "iLoggerFactory.getLogger(name)",
-                  "currentLayer": 2,
-                  "declarationInfo": {
-                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/ILoggerFactory.java",
-                    "declarationStartLine": 56,
-                    "declarationEndLine": 56,
-                    "methodName": "getLogger",
-                    "declarationSignature": "getLogger(java.lang.String)",
-                    "innerMethodCalls": []
-                  }
-                }
-              ]
-            }
-          },
-          {
-            "declaringType": "org.slf4j.LoggerFactory",
-            "methodSignature": "nonMatchingClasses(java.lang.Class<?>, java.lang.Class<?>)",
-            "methodName": "nonMatchingClasses",
-            "lineNumber": ["386"],
-            "fullExpression": "nonMatchingClasses(clazz, autoComputedCallingClass)",
-            "currentLayer": 1,
-            "declarationInfo": {
-              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
-              "declarationStartLine": 395,
-              "declarationEndLine": 397,
-              "methodName": "nonMatchingClasses",
-              "declarationSignature": "nonMatchingClasses(java.lang.Class<?>, java.lang.Class<?>)",
-              "innerMethodCalls": []
-            }
-          },
-          {
-            "declaringType": "org.slf4j.Logger",
-            "methodSignature": "getName()",
-            "methodName": "getName",
-            "lineNumber": ["387"],
-            "fullExpression": "logger.getName()",
-            "currentLayer": 1,
-            "declarationInfo": {
-              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/Logger.java",
-              "declarationStartLine": 77,
-              "declarationEndLine": 77,
-              "methodName": "getName",
-              "declarationSignature": "getName()",
-              "innerMethodCalls": []
-            }
-          },
-          {
-            "declaringType": "org.slf4j.helpers.Util",
-            "methodSignature": "report(java.lang.String)",
-            "methodName": "report",
-            "lineNumber": ["387", "389"],
-            "fullExpression": "Util.report(String.format(\"Detected logger name mismatch. Given name: \\\"%s\\\"; computed name: \\\"%s\\\".\", logger.getName(), autoComputedCallingClass.getName()))",
-            "currentLayer": 1,
-            "declarationInfo": {
-              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/Util.java",
-              "declarationStartLine": 127,
-              "declarationEndLine": 129,
-              "methodName": "report",
-              "declarationSignature": "report(java.lang.String)",
-              "innerMethodCalls": []
-            }
-          },
-          {
-            "declaringType": "org.slf4j.helpers.Util",
-            "methodSignature": "getCallingClass()",
-            "methodName": "getCallingClass",
-            "lineNumber": ["385"],
-            "fullExpression": "Util.getCallingClass()",
-            "currentLayer": 1,
-            "declarationInfo": {
-              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/Util.java",
-              "declarationStartLine": 99,
-              "declarationEndLine": 119,
-              "methodName": "getCallingClass",
-              "declarationSignature": "getCallingClass()",
-              "innerMethodCalls": [
-                {
-                  "declaringType": "org.slf4j.helpers.Util.ClassContextSecurityManager",
-                  "methodSignature": "getClassContext()",
-                  "methodName": "getClassContext",
-                  "lineNumber": ["103"],
-                  "fullExpression": "securityManager.getClassContext()",
-                  "currentLayer": 2,
-                  "declarationInfo": {
-                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/Util.java",
-                    "declarationStartLine": 66,
-                    "declarationEndLine": 68,
-                    "methodName": "getClassContext",
-                    "declarationSignature": "getClassContext()",
-                    "innerMethodCalls": []
-                  }
-                },
-                {
-                  "declaringType": "org.slf4j.helpers.Util",
-                  "methodSignature": "getSecurityManager()",
-                  "methodName": "getSecurityManager",
-                  "lineNumber": ["100"],
-                  "fullExpression": "getSecurityManager()",
-                  "currentLayer": 2,
-                  "declarationInfo": {
-                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/Util.java",
-                    "declarationStartLine": 74,
-                    "declarationEndLine": 84,
-                    "methodName": "getSecurityManager",
-                    "declarationSignature": "getSecurityManager()",
-                    "innerMethodCalls": [
-                      {
-                        "declaringType": "org.slf4j.helpers.Util",
-                        "methodSignature": "safeCreateSecurityManager()",
-                        "methodName": "safeCreateSecurityManager",
-                        "lineNumber": ["80"],
-                        "fullExpression": "safeCreateSecurityManager()",
-                        "currentLayer": 3,
-                        "declarationInfo": {
-                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/Util.java",
-                          "declarationStartLine": 86,
-                          "declarationEndLine": 92,
-                          "methodName": "safeCreateSecurityManager",
-                          "declarationSignature": "safeCreateSecurityManager()",
-                          "innerMethodCalls": []
-                        }
-                      }
-                    ]
-                  }
-                }
-              ]
-            }
-          }
-        ]
-      }
-    }
-  ],
-  "Dependency: groupId=com.joestelmach, artifactId=natty, version=0.13, jarPath=/Users/yunzezhao/.m2/repository/com/joestelmach/natty/0.13/natty-0.13.jar": [
-    {
-      "declaringType": "com.joestelmach.natty.Parser",
-      "methodSignature": "parse(java.lang.String)",
-      "methodName": "parse",
-      "lineNumber": ["22"],
-      "fullExpression": "dateParser.parse(source)",
-      "currentLayer": 0,
-      "declarationInfo": null
-    },
-    {
-      "declaringType": "com.joestelmach.natty.DateGroup",
-      "methodSignature": "getDates()",
-      "methodName": "getDates",
-      "lineNumber": ["23", "24"],
-      "fullExpression": "groups.get(0).getDates()",
-      "currentLayer": 0,
-      "declarationInfo": null
-    }
-  ],
   "Dependency: groupId=joda-time, artifactId=joda-time, version=2.9.9, jarPath=/Users/yunzezhao/.m2/repository/joda-time/joda-time/2.9.9/joda-time-2.9.9.jar": [
     {
       "declaringType": "org.joda.time.Seconds",
@@ -2591,6 +1317,1291 @@
               "declarationEndLine": 661,
               "methodName": "getLocalMillis",
               "declarationSignature": "getLocalMillis()",
+              "innerMethodCalls": []
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "Dependency: groupId=org.slf4j, artifactId=slf4j-api, version=1.7.25, jarPath=/Users/yunzezhao/.m2/repository/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar": [
+    {
+      "declaringType": "org.slf4j.LoggerFactory",
+      "methodSignature": "getLogger(java.lang.Class<?>)",
+      "methodName": "getLogger",
+      "lineNumber": ["21"],
+      "fullExpression": "LoggerFactory.getLogger(FixtureConverterImpl.class)",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
+        "declarationStartLine": 382,
+        "declarationEndLine": 393,
+        "methodName": "getLogger",
+        "declarationSignature": "getLogger(java.lang.Class<?>)",
+        "innerMethodCalls": [
+          {
+            "declaringType": "org.slf4j.LoggerFactory",
+            "methodSignature": "getLogger(java.lang.String)",
+            "methodName": "getLogger",
+            "lineNumber": ["383"],
+            "fullExpression": "getLogger(clazz.getName())",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
+              "declarationStartLine": 356,
+              "declarationEndLine": 359,
+              "methodName": "getLogger",
+              "declarationSignature": "getLogger(java.lang.String)",
+              "innerMethodCalls": [
+                {
+                  "declaringType": "org.slf4j.LoggerFactory",
+                  "methodSignature": "getILoggerFactory()",
+                  "methodName": "getILoggerFactory",
+                  "lineNumber": ["357"],
+                  "fullExpression": "getILoggerFactory()",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
+                    "declarationStartLine": 407,
+                    "declarationEndLine": 429,
+                    "methodName": "getILoggerFactory",
+                    "declarationSignature": "getILoggerFactory()",
+                    "innerMethodCalls": [
+                      {
+                        "declaringType": "org.slf4j.LoggerFactory",
+                        "methodSignature": "performInitialization()",
+                        "methodName": "performInitialization",
+                        "lineNumber": ["412"],
+                        "fullExpression": "performInitialization()",
+                        "currentLayer": 3,
+                        "declarationInfo": {
+                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
+                          "declarationStartLine": 123,
+                          "declarationEndLine": 128,
+                          "methodName": "performInitialization",
+                          "declarationSignature": "performInitialization()",
+                          "innerMethodCalls": [
+                            {
+                              "declaringType": "org.slf4j.LoggerFactory",
+                              "methodSignature": "bind()",
+                              "methodName": "bind",
+                              "lineNumber": ["124"],
+                              "fullExpression": "bind()",
+                              "currentLayer": 4,
+                              "declarationInfo": {
+                                "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
+                                "declarationStartLine": 140,
+                                "declarationEndLine": 181,
+                                "methodName": "bind",
+                                "declarationSignature": "bind()",
+                                "innerMethodCalls": [
+                                  {
+                                    "declaringType": "org.slf4j.LoggerFactory",
+                                    "methodSignature": "findPossibleStaticLoggerBinderPathSet()",
+                                    "methodName": "findPossibleStaticLoggerBinderPathSet",
+                                    "lineNumber": ["146"],
+                                    "fullExpression": "findPossibleStaticLoggerBinderPathSet()",
+                                    "currentLayer": 5,
+                                    "declarationInfo": {
+                                      "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
+                                      "declarationStartLine": 292,
+                                      "declarationEndLine": 313,
+                                      "methodName": "findPossibleStaticLoggerBinderPathSet",
+                                      "declarationSignature": "findPossibleStaticLoggerBinderPathSet()",
+                                      "innerMethodCalls": []
+                                    }
+                                  },
+                                  {
+                                    "declaringType": "org.slf4j.LoggerFactory",
+                                    "methodSignature": "reportMultipleBindingAmbiguity(java.util.Set<java.net.URL>)",
+                                    "methodName": "reportMultipleBindingAmbiguity",
+                                    "lineNumber": ["147"],
+                                    "fullExpression": "reportMultipleBindingAmbiguity(staticLoggerBinderPathSet)",
+                                    "currentLayer": 5,
+                                    "declarationInfo": {
+                                      "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
+                                      "declarationStartLine": 324,
+                                      "declarationEndLine": 332,
+                                      "methodName": "reportMultipleBindingAmbiguity",
+                                      "declarationSignature": "reportMultipleBindingAmbiguity(java.util.Set<java.net.URL>)",
+                                      "innerMethodCalls": [
+                                        {
+                                          "declaringType": "org.slf4j.LoggerFactory",
+                                          "methodSignature": "isAmbiguousStaticLoggerBinderPathSet(java.util.Set<java.net.URL>)",
+                                          "methodName": "isAmbiguousStaticLoggerBinderPathSet",
+                                          "lineNumber": ["325"],
+                                          "fullExpression": "isAmbiguousStaticLoggerBinderPathSet(binderPathSet)",
+                                          "currentLayer": 6,
+                                          "declarationInfo": {
+                                            "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
+                                            "declarationStartLine": 315,
+                                            "declarationEndLine": 317,
+                                            "methodName": "isAmbiguousStaticLoggerBinderPathSet",
+                                            "declarationSignature": "isAmbiguousStaticLoggerBinderPathSet(java.util.Set<java.net.URL>)",
+                                            "innerMethodCalls": []
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "declaringType": "org.slf4j.LoggerFactory",
+                                    "methodSignature": "failedBinding(java.lang.Throwable)",
+                                    "methodName": "failedBinding",
+                                    "lineNumber": ["165", "178"],
+                                    "fullExpression": "failedBinding(ncde)",
+                                    "currentLayer": 5,
+                                    "declarationInfo": {
+                                      "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
+                                      "declarationStartLine": 194,
+                                      "declarationEndLine": 197,
+                                      "methodName": "failedBinding",
+                                      "declarationSignature": "failedBinding(java.lang.Throwable)",
+                                      "innerMethodCalls": [
+                                        {
+                                          "declaringType": "org.slf4j.helpers.Util",
+                                          "methodSignature": "report(java.lang.String, java.lang.Throwable)",
+                                          "methodName": "report",
+                                          "lineNumber": ["196"],
+                                          "fullExpression": "Util.report(\"Failed to instantiate SLF4J LoggerFactory\", t)",
+                                          "currentLayer": 6,
+                                          "declarationInfo": {
+                                            "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/Util.java",
+                                            "declarationStartLine": 121,
+                                            "declarationEndLine": 125,
+                                            "methodName": "report",
+                                            "declarationSignature": "report(java.lang.String, java.lang.Throwable)",
+                                            "innerMethodCalls": []
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "declaringType": "org.slf4j.LoggerFactory",
+                                    "methodSignature": "isAndroid()",
+                                    "methodName": "isAndroid",
+                                    "lineNumber": ["145"],
+                                    "fullExpression": "isAndroid()",
+                                    "currentLayer": 5,
+                                    "declarationInfo": {
+                                      "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
+                                      "declarationStartLine": 334,
+                                      "declarationEndLine": 339,
+                                      "methodName": "isAndroid",
+                                      "declarationSignature": "isAndroid()",
+                                      "innerMethodCalls": [
+                                        {
+                                          "declaringType": "org.slf4j.helpers.Util",
+                                          "methodSignature": "safeGetSystemProperty(java.lang.String)",
+                                          "methodName": "safeGetSystemProperty",
+                                          "lineNumber": ["335"],
+                                          "fullExpression": "Util.safeGetSystemProperty(JAVA_VENDOR_PROPERTY)",
+                                          "currentLayer": 6,
+                                          "declarationInfo": {
+                                            "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/Util.java",
+                                            "declarationStartLine": 39,
+                                            "declarationEndLine": 50,
+                                            "methodName": "safeGetSystemProperty",
+                                            "declarationSignature": "safeGetSystemProperty(java.lang.String)",
+                                            "innerMethodCalls": []
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "declaringType": "org.slf4j.LoggerFactory",
+                                    "methodSignature": "reportActualBinding(java.util.Set<java.net.URL>)",
+                                    "methodName": "reportActualBinding",
+                                    "lineNumber": ["152"],
+                                    "fullExpression": "reportActualBinding(staticLoggerBinderPathSet)",
+                                    "currentLayer": 5,
+                                    "declarationInfo": {
+                                      "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
+                                      "declarationStartLine": 341,
+                                      "declarationEndLine": 346,
+                                      "methodName": "reportActualBinding",
+                                      "declarationSignature": "reportActualBinding(java.util.Set<java.net.URL>)",
+                                      "innerMethodCalls": [
+                                        {
+                                          "declaringType": "org.slf4j.impl.StaticLoggerBinder",
+                                          "methodSignature": "getLoggerFactoryClassStr()",
+                                          "methodName": "getLoggerFactoryClassStr",
+                                          "lineNumber": ["344"],
+                                          "fullExpression": "StaticLoggerBinder.getSingleton().getLoggerFactoryClassStr()",
+                                          "currentLayer": 6,
+                                          "declarationInfo": {
+                                            "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/impl/StaticLoggerBinder.java",
+                                            "declarationStartLine": 70,
+                                            "declarationEndLine": 72,
+                                            "methodName": "getLoggerFactoryClassStr",
+                                            "declarationSignature": "getLoggerFactoryClassStr()",
+                                            "innerMethodCalls": []
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "declaringType": "org.slf4j.LoggerFactory",
+                                    "methodSignature": "fixSubstituteLoggers()",
+                                    "methodName": "fixSubstituteLoggers",
+                                    "lineNumber": ["153"],
+                                    "fullExpression": "fixSubstituteLoggers()",
+                                    "currentLayer": 5,
+                                    "declarationInfo": {
+                                      "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
+                                      "declarationStartLine": 183,
+                                      "declarationEndLine": 192,
+                                      "methodName": "fixSubstituteLoggers",
+                                      "declarationSignature": "fixSubstituteLoggers()",
+                                      "innerMethodCalls": [
+                                        {
+                                          "declaringType": "org.slf4j.LoggerFactory",
+                                          "methodSignature": "getLogger(java.lang.String)",
+                                          "methodName": "getLogger",
+                                          "lineNumber": ["187"],
+                                          "fullExpression": "getLogger(substLogger.getName())",
+                                          "currentLayer": 6,
+                                          "declarationInfo": {
+                                            "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
+                                            "declarationStartLine": 356,
+                                            "declarationEndLine": 359,
+                                            "methodName": "getLogger",
+                                            "declarationSignature": "getLogger(java.lang.String)",
+                                            "innerMethodCalls": []
+                                          }
+                                        },
+                                        {
+                                          "declaringType": "org.slf4j.helpers.SubstituteLogger",
+                                          "methodSignature": "getName()",
+                                          "methodName": "getName",
+                                          "lineNumber": ["187"],
+                                          "fullExpression": "substLogger.getName()",
+                                          "currentLayer": 6,
+                                          "declarationInfo": {
+                                            "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/SubstituteLogger.java",
+                                            "declarationStartLine": 64,
+                                            "declarationEndLine": 66,
+                                            "methodName": "getName",
+                                            "declarationSignature": "getName()",
+                                            "innerMethodCalls": []
+                                          }
+                                        },
+                                        {
+                                          "declaringType": "org.slf4j.helpers.SubstituteLoggerFactory",
+                                          "methodSignature": "getLoggers()",
+                                          "methodName": "getLoggers",
+                                          "lineNumber": ["186"],
+                                          "fullExpression": "SUBST_FACTORY.getLoggers()",
+                                          "currentLayer": 6,
+                                          "declarationInfo": {
+                                            "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/SubstituteLoggerFactory.java",
+                                            "declarationStartLine": 64,
+                                            "declarationEndLine": 66,
+                                            "methodName": "getLoggers",
+                                            "declarationSignature": "getLoggers()",
+                                            "innerMethodCalls": []
+                                          }
+                                        },
+                                        {
+                                          "declaringType": "org.slf4j.helpers.SubstituteLoggerFactory",
+                                          "methodSignature": "postInitialization()",
+                                          "methodName": "postInitialization",
+                                          "lineNumber": ["185"],
+                                          "fullExpression": "SUBST_FACTORY.postInitialization()",
+                                          "currentLayer": 6,
+                                          "declarationInfo": {
+                                            "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/SubstituteLoggerFactory.java",
+                                            "declarationStartLine": 72,
+                                            "declarationEndLine": 74,
+                                            "methodName": "postInitialization",
+                                            "declarationSignature": "postInitialization()",
+                                            "innerMethodCalls": []
+                                          }
+                                        },
+                                        {
+                                          "declaringType": "org.slf4j.helpers.SubstituteLogger",
+                                          "methodSignature": "setDelegate(org.slf4j.Logger)",
+                                          "methodName": "setDelegate",
+                                          "lineNumber": ["188"],
+                                          "fullExpression": "substLogger.setDelegate(logger)",
+                                          "currentLayer": 6,
+                                          "declarationInfo": {
+                                            "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/SubstituteLogger.java",
+                                            "declarationStartLine": 354,
+                                            "declarationEndLine": 356,
+                                            "methodName": "setDelegate",
+                                            "declarationSignature": "setDelegate(org.slf4j.Logger)",
+                                            "innerMethodCalls": []
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "declaringType": "org.slf4j.LoggerFactory",
+                                    "methodSignature": "replayEvents()",
+                                    "methodName": "replayEvents",
+                                    "lineNumber": ["154"],
+                                    "fullExpression": "replayEvents()",
+                                    "currentLayer": 5,
+                                    "declarationInfo": {
+                                      "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
+                                      "declarationStartLine": 199,
+                                      "declarationEndLine": 216,
+                                      "methodName": "replayEvents",
+                                      "declarationSignature": "replayEvents()",
+                                      "innerMethodCalls": [
+                                        {
+                                          "declaringType": "org.slf4j.LoggerFactory",
+                                          "methodSignature": "replaySingleEvent(org.slf4j.event.SubstituteLoggingEvent)",
+                                          "methodName": "replaySingleEvent",
+                                          "lineNumber": ["210"],
+                                          "fullExpression": "replaySingleEvent(event)",
+                                          "currentLayer": 6,
+                                          "declarationInfo": {
+                                            "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
+                                            "declarationStartLine": 228,
+                                            "declarationEndLine": 245,
+                                            "methodName": "replaySingleEvent",
+                                            "declarationSignature": "replaySingleEvent(org.slf4j.event.SubstituteLoggingEvent)",
+                                            "innerMethodCalls": [
+                                              {
+                                                "declaringType": "org.slf4j.helpers.SubstituteLogger",
+                                                "methodSignature": "log(org.slf4j.event.LoggingEvent)",
+                                                "methodName": "log",
+                                                "lineNumber": ["241"],
+                                                "fullExpression": "substLogger.log(event)",
+                                                "currentLayer": 7,
+                                                "declarationInfo": {
+                                                  "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/SubstituteLogger.java",
+                                                  "declarationStartLine": 371,
+                                                  "declarationEndLine": 380,
+                                                  "methodName": "log",
+                                                  "declarationSignature": "log(org.slf4j.event.LoggingEvent)",
+                                                  "innerMethodCalls": []
+                                                }
+                                              },
+                                              {
+                                                "declaringType": "org.slf4j.helpers.SubstituteLogger",
+                                                "methodSignature": "isDelegateNull()",
+                                                "methodName": "isDelegateNull",
+                                                "lineNumber": ["234"],
+                                                "fullExpression": "substLogger.isDelegateNull()",
+                                                "currentLayer": 7,
+                                                "declarationInfo": {
+                                                  "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/SubstituteLogger.java",
+                                                  "declarationStartLine": 383,
+                                                  "declarationEndLine": 385,
+                                                  "methodName": "isDelegateNull",
+                                                  "declarationSignature": "isDelegateNull()",
+                                                  "innerMethodCalls": []
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        {
+                                          "declaringType": "org.slf4j.LoggerFactory",
+                                          "methodSignature": "emitReplayOrSubstituionWarning(org.slf4j.event.SubstituteLoggingEvent, int)",
+                                          "methodName": "emitReplayOrSubstituionWarning",
+                                          "lineNumber": ["212"],
+                                          "fullExpression": "emitReplayOrSubstituionWarning(event, queueSize)",
+                                          "currentLayer": 6,
+                                          "declarationInfo": {
+                                            "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
+                                            "declarationStartLine": 218,
+                                            "declarationEndLine": 226,
+                                            "methodName": "emitReplayOrSubstituionWarning",
+                                            "declarationSignature": "emitReplayOrSubstituionWarning(org.slf4j.event.SubstituteLoggingEvent, int)",
+                                            "innerMethodCalls": [
+                                              {
+                                                "declaringType": "org.slf4j.LoggerFactory",
+                                                "methodSignature": "emitReplayWarning(int)",
+                                                "methodName": "emitReplayWarning",
+                                                "lineNumber": ["220"],
+                                                "fullExpression": "emitReplayWarning(queueSize)",
+                                                "currentLayer": 7,
+                                                "declarationInfo": {
+                                                  "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
+                                                  "declarationStartLine": 255,
+                                                  "declarationEndLine": 259,
+                                                  "methodName": "emitReplayWarning",
+                                                  "declarationSignature": "emitReplayWarning(int)",
+                                                  "innerMethodCalls": []
+                                                }
+                                              },
+                                              {
+                                                "declaringType": "org.slf4j.LoggerFactory",
+                                                "methodSignature": "emitSubstitutionWarning()",
+                                                "methodName": "emitSubstitutionWarning",
+                                                "lineNumber": ["224"],
+                                                "fullExpression": "emitSubstitutionWarning()",
+                                                "currentLayer": 7,
+                                                "declarationInfo": {
+                                                  "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
+                                                  "declarationStartLine": 247,
+                                                  "declarationEndLine": 253,
+                                                  "methodName": "emitSubstitutionWarning",
+                                                  "declarationSignature": "emitSubstitutionWarning()",
+                                                  "innerMethodCalls": []
+                                                }
+                                              },
+                                              {
+                                                "declaringType": "org.slf4j.helpers.SubstituteLogger",
+                                                "methodSignature": "isDelegateEventAware()",
+                                                "methodName": "isDelegateEventAware",
+                                                "lineNumber": ["219"],
+                                                "fullExpression": "event.getLogger().isDelegateEventAware()",
+                                                "currentLayer": 7,
+                                                "declarationInfo": {
+                                                  "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/SubstituteLogger.java",
+                                                  "declarationStartLine": 358,
+                                                  "declarationEndLine": 369,
+                                                  "methodName": "isDelegateEventAware",
+                                                  "declarationSignature": "isDelegateEventAware()",
+                                                  "innerMethodCalls": []
+                                                }
+                                              },
+                                              {
+                                                "declaringType": "org.slf4j.event.SubstituteLoggingEvent",
+                                                "methodSignature": "getLogger()",
+                                                "methodName": "getLogger",
+                                                "lineNumber": ["219", "221"],
+                                                "fullExpression": "event.getLogger()",
+                                                "currentLayer": 7,
+                                                "declarationInfo": {
+                                                  "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/event/SubstituteLoggingEvent.java",
+                                                  "declarationStartLine": 42,
+                                                  "declarationEndLine": 44,
+                                                  "methodName": "getLogger",
+                                                  "declarationSignature": "getLogger()",
+                                                  "innerMethodCalls": []
+                                                }
+                                              },
+                                              {
+                                                "declaringType": "org.slf4j.helpers.SubstituteLogger",
+                                                "methodSignature": "isDelegateNOP()",
+                                                "methodName": "isDelegateNOP",
+                                                "lineNumber": ["221"],
+                                                "fullExpression": "event.getLogger().isDelegateNOP()",
+                                                "currentLayer": 7,
+                                                "declarationInfo": {
+                                                  "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/SubstituteLogger.java",
+                                                  "declarationStartLine": 387,
+                                                  "declarationEndLine": 389,
+                                                  "methodName": "isDelegateNOP",
+                                                  "declarationSignature": "isDelegateNOP()",
+                                                  "innerMethodCalls": []
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        {
+                                          "declaringType": "org.slf4j.helpers.SubstituteLoggerFactory",
+                                          "methodSignature": "getEventQueue()",
+                                          "methodName": "getEventQueue",
+                                          "lineNumber": ["200"],
+                                          "fullExpression": "SUBST_FACTORY.getEventQueue()",
+                                          "currentLayer": 6,
+                                          "declarationInfo": {
+                                            "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/SubstituteLoggerFactory.java",
+                                            "declarationStartLine": 68,
+                                            "declarationEndLine": 70,
+                                            "methodName": "getEventQueue",
+                                            "declarationSignature": "getEventQueue()",
+                                            "innerMethodCalls": []
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "declaringType": "org.slf4j.helpers.Util",
+                                    "methodSignature": "report(java.lang.String)",
+                                    "methodName": "report",
+                                    "lineNumber": [
+                                      "161",
+                                      "162",
+                                      "163",
+                                      "172",
+                                      "173",
+                                      "174"
+                                    ],
+                                    "fullExpression": "Util.report(\"Failed to load class \\\"org.slf4j.impl.StaticLoggerBinder\\\".\")",
+                                    "currentLayer": 5,
+                                    "declarationInfo": {
+                                      "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/Util.java",
+                                      "declarationStartLine": 127,
+                                      "declarationEndLine": 129,
+                                      "methodName": "report",
+                                      "declarationSignature": "report(java.lang.String)",
+                                      "innerMethodCalls": []
+                                    }
+                                  },
+                                  {
+                                    "declaringType": "org.slf4j.helpers.SubstituteLoggerFactory",
+                                    "methodSignature": "clear()",
+                                    "methodName": "clear",
+                                    "lineNumber": ["156"],
+                                    "fullExpression": "SUBST_FACTORY.clear()",
+                                    "currentLayer": 5,
+                                    "declarationInfo": {
+                                      "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/SubstituteLoggerFactory.java",
+                                      "declarationStartLine": 76,
+                                      "declarationEndLine": 79,
+                                      "methodName": "clear",
+                                      "declarationSignature": "clear()",
+                                      "innerMethodCalls": []
+                                    }
+                                  },
+                                  {
+                                    "declaringType": "org.slf4j.LoggerFactory",
+                                    "methodSignature": "messageContainsOrgSlf4jImplStaticLoggerBinder(java.lang.String)",
+                                    "methodName": "messageContainsOrgSlf4jImplStaticLoggerBinder",
+                                    "lineNumber": ["159"],
+                                    "fullExpression": "messageContainsOrgSlf4jImplStaticLoggerBinder(msg)",
+                                    "currentLayer": 5,
+                                    "declarationInfo": {
+                                      "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
+                                      "declarationStartLine": 130,
+                                      "declarationEndLine": 138,
+                                      "methodName": "messageContainsOrgSlf4jImplStaticLoggerBinder",
+                                      "declarationSignature": "messageContainsOrgSlf4jImplStaticLoggerBinder(java.lang.String)",
+                                      "innerMethodCalls": []
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "declaringType": "org.slf4j.LoggerFactory",
+                              "methodSignature": "versionSanityCheck()",
+                              "methodName": "versionSanityCheck",
+                              "lineNumber": ["126"],
+                              "fullExpression": "versionSanityCheck()",
+                              "currentLayer": 4,
+                              "declarationInfo": {
+                                "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
+                                "declarationStartLine": 261,
+                                "declarationEndLine": 285,
+                                "methodName": "versionSanityCheck",
+                                "declarationSignature": "versionSanityCheck()",
+                                "innerMethodCalls": [
+                                  {
+                                    "declaringType": "org.slf4j.helpers.Util",
+                                    "methodSignature": "report(java.lang.String, java.lang.Throwable)",
+                                    "methodName": "report",
+                                    "lineNumber": ["283"],
+                                    "fullExpression": "Util.report(\"Unexpected problem occured during version sanity check\", e)",
+                                    "currentLayer": 5,
+                                    "declarationInfo": {
+                                      "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/Util.java",
+                                      "declarationStartLine": 121,
+                                      "declarationEndLine": 125,
+                                      "methodName": "report",
+                                      "declarationSignature": "report(java.lang.String, java.lang.Throwable)",
+                                      "innerMethodCalls": []
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "declaringType": "org.slf4j.impl.StaticLoggerBinder",
+                        "methodSignature": "getSingleton()",
+                        "methodName": "getSingleton",
+                        "lineNumber": ["418"],
+                        "fullExpression": "StaticLoggerBinder.getSingleton()",
+                        "currentLayer": 3,
+                        "declarationInfo": {
+                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/impl/StaticLoggerBinder.java",
+                          "declarationStartLine": 51,
+                          "declarationEndLine": 53,
+                          "methodName": "getSingleton",
+                          "declarationSignature": "getSingleton()",
+                          "innerMethodCalls": []
+                        }
+                      },
+                      {
+                        "declaringType": "org.slf4j.impl.StaticLoggerBinder",
+                        "methodSignature": "getLoggerFactory()",
+                        "methodName": "getLoggerFactory",
+                        "lineNumber": ["418"],
+                        "fullExpression": "StaticLoggerBinder.getSingleton().getLoggerFactory()",
+                        "currentLayer": 3,
+                        "declarationInfo": {
+                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/impl/StaticLoggerBinder.java",
+                          "declarationStartLine": 66,
+                          "declarationEndLine": 68,
+                          "methodName": "getLoggerFactory",
+                          "declarationSignature": "getLoggerFactory()",
+                          "innerMethodCalls": []
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "declaringType": "org.slf4j.ILoggerFactory",
+                  "methodSignature": "getLogger(java.lang.String)",
+                  "methodName": "getLogger",
+                  "lineNumber": ["358"],
+                  "fullExpression": "iLoggerFactory.getLogger(name)",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/ILoggerFactory.java",
+                    "declarationStartLine": 56,
+                    "declarationEndLine": 56,
+                    "methodName": "getLogger",
+                    "declarationSignature": "getLogger(java.lang.String)",
+                    "innerMethodCalls": []
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "declaringType": "org.slf4j.LoggerFactory",
+            "methodSignature": "nonMatchingClasses(java.lang.Class<?>, java.lang.Class<?>)",
+            "methodName": "nonMatchingClasses",
+            "lineNumber": ["386"],
+            "fullExpression": "nonMatchingClasses(clazz, autoComputedCallingClass)",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/LoggerFactory.java",
+              "declarationStartLine": 395,
+              "declarationEndLine": 397,
+              "methodName": "nonMatchingClasses",
+              "declarationSignature": "nonMatchingClasses(java.lang.Class<?>, java.lang.Class<?>)",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "org.slf4j.Logger",
+            "methodSignature": "getName()",
+            "methodName": "getName",
+            "lineNumber": ["387"],
+            "fullExpression": "logger.getName()",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/Logger.java",
+              "declarationStartLine": 77,
+              "declarationEndLine": 77,
+              "methodName": "getName",
+              "declarationSignature": "getName()",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "org.slf4j.helpers.Util",
+            "methodSignature": "report(java.lang.String)",
+            "methodName": "report",
+            "lineNumber": ["387", "389"],
+            "fullExpression": "Util.report(String.format(\"Detected logger name mismatch. Given name: \\\"%s\\\"; computed name: \\\"%s\\\".\", logger.getName(), autoComputedCallingClass.getName()))",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/Util.java",
+              "declarationStartLine": 127,
+              "declarationEndLine": 129,
+              "methodName": "report",
+              "declarationSignature": "report(java.lang.String)",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "org.slf4j.helpers.Util",
+            "methodSignature": "getCallingClass()",
+            "methodName": "getCallingClass",
+            "lineNumber": ["385"],
+            "fullExpression": "Util.getCallingClass()",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/Util.java",
+              "declarationStartLine": 99,
+              "declarationEndLine": 119,
+              "methodName": "getCallingClass",
+              "declarationSignature": "getCallingClass()",
+              "innerMethodCalls": [
+                {
+                  "declaringType": "org.slf4j.helpers.Util.ClassContextSecurityManager",
+                  "methodSignature": "getClassContext()",
+                  "methodName": "getClassContext",
+                  "lineNumber": ["103"],
+                  "fullExpression": "securityManager.getClassContext()",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/Util.java",
+                    "declarationStartLine": 66,
+                    "declarationEndLine": 68,
+                    "methodName": "getClassContext",
+                    "declarationSignature": "getClassContext()",
+                    "innerMethodCalls": []
+                  }
+                },
+                {
+                  "declaringType": "org.slf4j.helpers.Util",
+                  "methodSignature": "getSecurityManager()",
+                  "methodName": "getSecurityManager",
+                  "lineNumber": ["100"],
+                  "fullExpression": "getSecurityManager()",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/Util.java",
+                    "declarationStartLine": 74,
+                    "declarationEndLine": 84,
+                    "methodName": "getSecurityManager",
+                    "declarationSignature": "getSecurityManager()",
+                    "innerMethodCalls": [
+                      {
+                        "declaringType": "org.slf4j.helpers.Util",
+                        "methodSignature": "safeCreateSecurityManager()",
+                        "methodName": "safeCreateSecurityManager",
+                        "lineNumber": ["80"],
+                        "fullExpression": "safeCreateSecurityManager()",
+                        "currentLayer": 3,
+                        "declarationInfo": {
+                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/org.slf4j.slf4j-api/org/slf4j/helpers/Util.java",
+                          "declarationStartLine": 86,
+                          "declarationEndLine": 92,
+                          "methodName": "safeCreateSecurityManager",
+                          "declarationSignature": "safeCreateSecurityManager()",
+                          "innerMethodCalls": []
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "Dependency: groupId=com.joestelmach, artifactId=natty, version=0.13, jarPath=/Users/yunzezhao/.m2/repository/com/joestelmach/natty/0.13/natty-0.13.jar": [
+    {
+      "declaringType": "com.joestelmach.natty.Parser",
+      "methodSignature": "parse(java.lang.String)",
+      "methodName": "parse",
+      "lineNumber": ["22"],
+      "fullExpression": "dateParser.parse(source)",
+      "currentLayer": 0,
+      "declarationInfo": null
+    },
+    {
+      "declaringType": "com.joestelmach.natty.DateGroup",
+      "methodSignature": "getDates()",
+      "methodName": "getDates",
+      "lineNumber": ["23", "24"],
+      "fullExpression": "groups.get(0).getDates()",
+      "currentLayer": 0,
+      "declarationInfo": null
+    }
+  ],
+  "Dependency: groupId=org.yaml, artifactId=snakeyaml, version=1.26, jarPath=/Users/yunzezhao/.m2/repository/org/yaml/snakeyaml/1.26/snakeyaml-1.26.jar": [
+    {
+      "declaringType": "org.yaml.snakeyaml.Yaml",
+      "methodSignature": "loadAs(java.lang.String, java.lang.Class<T>)",
+      "methodName": "loadAs",
+      "lineNumber": ["22"],
+      "fullExpression": "buildYaml().loadAs(fixture, Map.class)",
+      "currentLayer": 0,
+      "declarationInfo": null
+    }
+  ],
+  "Dependency: groupId=com.google.guava, artifactId=guava, version=27.0.1-jre, jarPath=/Users/yunzezhao/.m2/repository/com/google/guava/guava/27.0.1-jre/guava-27.0.1-jre.jar": [
+    {
+      "declaringType": "com.google.common.base.Optional",
+      "methodSignature": "absent()",
+      "methodName": "absent",
+      "lineNumber": ["49", "72", "95", "118", "141", "164"],
+      "fullExpression": "Optional.absent()",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/base/Optional.java",
+        "declarationStartLine": 90,
+        "declarationEndLine": 92,
+        "methodName": "absent",
+        "declarationSignature": "absent()",
+        "innerMethodCalls": [
+          {
+            "declaringType": "com.google.common.base.Absent",
+            "methodSignature": "withType()",
+            "methodName": "withType",
+            "lineNumber": ["91"],
+            "fullExpression": "Absent.withType()",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/base/Absent.java",
+              "declarationStartLine": 29,
+              "declarationEndLine": 32,
+              "methodName": "withType",
+              "declarationSignature": "withType()",
+              "innerMethodCalls": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "declaringType": "com.google.common.primitives.Chars",
+      "methodSignature": "toArray(java.util.Collection<java.lang.Character>)",
+      "methodName": "toArray",
+      "lineNumber": ["84"],
+      "fullExpression": "Chars.toArray(wrapperList)",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/primitives/Chars.java",
+        "declarationStartLine": 420,
+        "declarationEndLine": 433,
+        "methodName": "toArray",
+        "declarationSignature": "toArray(java.util.Collection<java.lang.Character>)",
+        "innerMethodCalls": [
+          {
+            "declaringType": "com.google.common.primitives.Chars.CharArrayAsList",
+            "methodSignature": "toCharArray()",
+            "methodName": "toCharArray",
+            "lineNumber": ["422"],
+            "fullExpression": "((CharArrayAsList) collection).toCharArray()",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/primitives/Chars.java",
+              "declarationStartLine": 631,
+              "declarationEndLine": 633,
+              "methodName": "toCharArray",
+              "declarationSignature": "toCharArray()",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "com.google.common.base.Preconditions",
+            "methodSignature": "checkNotNull(T)",
+            "methodName": "checkNotNull",
+            "lineNumber": ["430"],
+            "fullExpression": "checkNotNull(boxedArray[i])",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/base/Preconditions.java",
+              "declarationStartLine": 874,
+              "declarationEndLine": 880,
+              "methodName": "checkNotNull",
+              "declarationSignature": "checkNotNull(T)",
+              "innerMethodCalls": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "declaringType": "com.google.common.reflect.TypeToken",
+      "methodSignature": "isSubtypeOf(com.google.common.reflect.TypeToken<? extends java.lang.Object>)",
+      "methodName": "isSubtypeOf",
+      "lineNumber": ["131", "132"],
+      "fullExpression": "typeToken.isSubtypeOf(TypeToken.of(List.class))",
+      "currentLayer": 0,
+      "declarationInfo": null
+    },
+    {
+      "declaringType": "com.google.common.reflect.TypeToken",
+      "methodSignature": "getComponentType()",
+      "methodName": "getComponentType",
+      "lineNumber": ["30"],
+      "fullExpression": "typeToken.getComponentType()",
+      "currentLayer": 0,
+      "declarationInfo": null
+    },
+    {
+      "declaringType": "com.google.common.reflect.Invokable",
+      "methodSignature": "getParameters()",
+      "methodName": "getParameters",
+      "lineNumber": ["46", "70", "94"],
+      "fullExpression": "Invokable.from(candidate).getParameters()",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/reflect/Invokable.java",
+        "declarationStartLine": 117,
+        "declarationEndLine": 128,
+        "methodName": "getParameters",
+        "declarationSignature": "getParameters()",
+        "innerMethodCalls": [
+          {
+            "declaringType": "com.google.common.collect.ImmutableList.Builder",
+            "methodSignature": "add(E)",
+            "methodName": "add",
+            "lineNumber": ["123"],
+            "fullExpression": "builder.add(new Parameter(this, i, TypeToken.of(parameterTypes[i]), annotations[i], annotatedTypes[i]))",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/collect/ImmutableList.java",
+              "declarationStartLine": 785,
+              "declarationEndLine": 792,
+              "methodName": "add",
+              "declarationSignature": "add(E)",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "com.google.common.reflect.Invokable",
+            "methodSignature": "getGenericParameterTypes()",
+            "methodName": "getGenericParameterTypes",
+            "lineNumber": ["118"],
+            "fullExpression": "getGenericParameterTypes()",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/reflect/Invokable.java",
+              "declarationStartLine": 294,
+              "declarationEndLine": 306,
+              "methodName": "getGenericParameterTypes",
+              "declarationSignature": "getGenericParameterTypes()",
+              "innerMethodCalls": [
+                {
+                  "declaringType": "com.google.common.reflect.Invokable",
+                  "methodSignature": "getDeclaringClass()",
+                  "methodName": "getDeclaringClass",
+                  "lineNumber": ["300"],
+                  "fullExpression": "getDeclaringClass()",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/reflect/Invokable.java",
+                    "declarationStartLine": 166,
+                    "declarationEndLine": 170,
+                    "methodName": "getDeclaringClass",
+                    "declarationSignature": "getDeclaringClass()",
+                    "innerMethodCalls": [
+                      {
+                        "declaringType": "com.google.common.reflect.Element",
+                        "methodSignature": "getDeclaringClass()",
+                        "methodName": "getDeclaringClass",
+                        "lineNumber": ["169"],
+                        "fullExpression": "super.getDeclaringClass()",
+                        "currentLayer": 3,
+                        "declarationInfo": {
+                          "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/reflect/Element.java",
+                          "declarationStartLine": 79,
+                          "declarationEndLine": 82,
+                          "methodName": "getDeclaringClass",
+                          "declarationSignature": "getDeclaringClass()",
+                          "innerMethodCalls": []
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "declaringType": "com.google.common.reflect.Invokable.ConstructorInvokable",
+                  "methodSignature": "mayNeedHiddenThis()",
+                  "methodName": "mayNeedHiddenThis",
+                  "lineNumber": ["297"],
+                  "fullExpression": "mayNeedHiddenThis()",
+                  "currentLayer": 2,
+                  "declarationInfo": {
+                    "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/reflect/Invokable.java",
+                    "declarationStartLine": 359,
+                    "declarationEndLine": 379,
+                    "methodName": "mayNeedHiddenThis",
+                    "declarationSignature": "mayNeedHiddenThis()",
+                    "innerMethodCalls": []
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "declaringType": "com.google.common.reflect.Invokable",
+            "methodSignature": "getParameterAnnotations()",
+            "methodName": "getParameterAnnotations",
+            "lineNumber": ["119"],
+            "fullExpression": "getParameterAnnotations()",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/reflect/Invokable.java",
+              "declarationStartLine": 323,
+              "declarationEndLine": 326,
+              "methodName": "getParameterAnnotations",
+              "declarationSignature": "getParameterAnnotations()",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "com.google.common.collect.ImmutableList",
+            "methodSignature": "builder()",
+            "methodName": "builder",
+            "lineNumber": ["121"],
+            "fullExpression": "ImmutableList.builder()",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/collect/ImmutableList.java",
+              "declarationStartLine": 708,
+              "declarationEndLine": 710,
+              "methodName": "builder",
+              "declarationSignature": "builder()",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "com.google.common.reflect.Invokable",
+            "methodSignature": "getAnnotatedParameterTypes()",
+            "methodName": "getAnnotatedParameterTypes",
+            "lineNumber": ["120"],
+            "fullExpression": "getAnnotatedParameterTypes()",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/reflect/Invokable.java",
+              "declarationStartLine": 308,
+              "declarationEndLine": 311,
+              "methodName": "getAnnotatedParameterTypes",
+              "declarationSignature": "getAnnotatedParameterTypes()",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "com.google.common.reflect.TypeToken",
+            "methodSignature": "of(java.lang.reflect.Type)",
+            "methodName": "of",
+            "lineNumber": ["125"],
+            "fullExpression": "TypeToken.of(parameterTypes[i])",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/reflect/TypeToken.java",
+              "declarationStartLine": 174,
+              "declarationEndLine": 176,
+              "methodName": "of",
+              "declarationSignature": "of(java.lang.reflect.Type)",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "com.google.common.collect.ImmutableList.Builder",
+            "methodSignature": "build()",
+            "methodName": "build",
+            "lineNumber": ["127"],
+            "fullExpression": "builder.build()",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/collect/ImmutableList.java",
+              "declarationStartLine": 863,
+              "declarationEndLine": 867,
+              "methodName": "build",
+              "declarationSignature": "build()",
+              "innerMethodCalls": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "declaringType": "com.google.common.reflect.TypeToken",
+      "methodSignature": "getType()",
+      "methodName": "getType",
+      "lineNumber": ["107", "165"],
+      "fullExpression": "typeToken.getType()",
+      "currentLayer": 0,
+      "declarationInfo": null
+    },
+    {
+      "declaringType": "com.google.common.reflect.TypeToken",
+      "methodSignature": "isSubtypeOf(java.lang.reflect.Type)",
+      "methodName": "isSubtypeOf",
+      "lineNumber": ["186"],
+      "fullExpression": "typeToken.isSubtypeOf(Map.class)",
+      "currentLayer": 0,
+      "declarationInfo": null
+    },
+    {
+      "declaringType": "com.google.common.base.Optional",
+      "methodSignature": "get()",
+      "methodName": "get",
+      "lineNumber": ["25", "35", "46", "57", "68", "79"],
+      "fullExpression": "((Optional<Integer>) result).get()",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/base/Optional.java",
+        "declarationStartLine": 180,
+        "declarationEndLine": 180,
+        "methodName": "get",
+        "declarationSignature": "get()",
+        "innerMethodCalls": []
+      }
+    },
+    {
+      "declaringType": "com.google.common.base.Optional",
+      "methodSignature": "of(T)",
+      "methodName": "of",
+      "lineNumber": ["51", "74", "97", "120", "143", "166"],
+      "fullExpression": "Optional.of((Integer) converted)",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/base/Optional.java",
+        "declarationStartLine": 102,
+        "declarationEndLine": 104,
+        "methodName": "of",
+        "declarationSignature": "of(T)",
+        "innerMethodCalls": [
+          {
+            "declaringType": "com.google.common.base.Preconditions",
+            "methodSignature": "checkNotNull(T)",
+            "methodName": "checkNotNull",
+            "lineNumber": ["103"],
+            "fullExpression": "checkNotNull(reference)",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/base/Preconditions.java",
+              "declarationStartLine": 874,
+              "declarationEndLine": 880,
+              "methodName": "checkNotNull",
+              "declarationSignature": "checkNotNull(T)",
+              "innerMethodCalls": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "declaringType": "com.google.common.reflect.TypeToken",
+      "methodSignature": "isPrimitive()",
+      "methodName": "isPrimitive",
+      "lineNumber": ["106", "164"],
+      "fullExpression": "typeToken.isPrimitive()",
+      "currentLayer": 0,
+      "declarationInfo": null
+    },
+    {
+      "declaringType": "com.google.common.reflect.TypeToken",
+      "methodSignature": "of(java.lang.Class<T>)",
+      "methodName": "of",
+      "lineNumber": ["108", "131", "132", "194", "195"],
+      "fullExpression": "TypeToken.of(wrapperClass)",
+      "currentLayer": 0,
+      "declarationInfo": null
+    },
+    {
+      "declaringType": "com.google.common.reflect.Invokable",
+      "methodSignature": "from(java.lang.reflect.Method)",
+      "methodName": "from",
+      "lineNumber": ["46", "70", "94"],
+      "fullExpression": "Invokable.from(candidate)",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/reflect/Invokable.java",
+        "declarationStartLine": 66,
+        "declarationEndLine": 68,
+        "methodName": "from",
+        "declarationSignature": "from(java.lang.reflect.Method)",
+        "innerMethodCalls": []
+      }
+    },
+    {
+      "declaringType": "com.google.common.reflect.TypeToken",
+      "methodSignature": "equals(java.lang.Object)",
+      "methodName": "equals",
+      "lineNumber": ["58", "81", "104", "127", "150", "173"],
+      "fullExpression": "targetTypeToken.equals(new TypeToken<Optional<Integer>>() {\n})",
+      "currentLayer": 0,
+      "declarationInfo": null
+    },
+    {
+      "declaringType": "com.google.common.reflect.Parameter",
+      "methodSignature": "getType()",
+      "methodName": "getType",
+      "lineNumber": ["49", "73", "96"],
+      "fullExpression": "paramTypes.get(0).getType()",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/reflect/Parameter.java",
+        "declarationStartLine": 56,
+        "declarationEndLine": 58,
+        "methodName": "getType",
+        "declarationSignature": "getType()",
+        "innerMethodCalls": []
+      }
+    },
+    {
+      "declaringType": "com.google.common.reflect.TypeToken",
+      "methodSignature": "getRawType()",
+      "methodName": "getRawType",
+      "lineNumber": [
+        "139",
+        "143",
+        "167",
+        "200",
+        "204",
+        "219",
+        "229",
+        "230",
+        "234"
+      ],
+      "fullExpression": "typeToken.getRawType()",
+      "currentLayer": 0,
+      "declarationInfo": null
+    },
+    {
+      "declaringType": "com.google.common.reflect.TypeToken",
+      "methodSignature": "isArray()",
+      "methodName": "isArray",
+      "lineNumber": ["130"],
+      "fullExpression": "typeToken.isArray()",
+      "currentLayer": 0,
+      "declarationInfo": null
+    },
+    {
+      "declaringType": "com.google.common.reflect.TypeToken",
+      "methodSignature": "of(java.lang.reflect.Type)",
+      "methodName": "of",
+      "lineNumber": ["38"],
+      "fullExpression": "TypeToken.of(type)",
+      "currentLayer": 0,
+      "declarationInfo": null
+    },
+    {
+      "declaringType": "com.google.common.primitives.Booleans",
+      "methodSignature": "toArray(java.util.Collection<java.lang.Boolean>)",
+      "methodName": "toArray",
+      "lineNumber": ["70"],
+      "fullExpression": "Booleans.toArray(wrapperList)",
+      "currentLayer": 0,
+      "declarationInfo": {
+        "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/primitives/Booleans.java",
+        "declarationStartLine": 343,
+        "declarationEndLine": 356,
+        "methodName": "toArray",
+        "declarationSignature": "toArray(java.util.Collection<java.lang.Boolean>)",
+        "innerMethodCalls": [
+          {
+            "declaringType": "com.google.common.base.Preconditions",
+            "methodSignature": "checkNotNull(T)",
+            "methodName": "checkNotNull",
+            "lineNumber": ["353"],
+            "fullExpression": "checkNotNull(boxedArray[i])",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/base/Preconditions.java",
+              "declarationStartLine": 874,
+              "declarationEndLine": 880,
+              "methodName": "checkNotNull",
+              "declarationSignature": "checkNotNull(T)",
+              "innerMethodCalls": []
+            }
+          },
+          {
+            "declaringType": "com.google.common.primitives.Booleans.BooleanArrayAsList",
+            "methodSignature": "toBooleanArray()",
+            "methodName": "toBooleanArray",
+            "lineNumber": ["345"],
+            "fullExpression": "((BooleanArrayAsList) collection).toBooleanArray()",
+            "currentLayer": 1,
+            "declarationInfo": {
+              "sourceFilePath": "/Users/yunzezhao/Code/CovSBOM/decompressed/com.google.guava.guava/com/google/common/primitives/Booleans.java",
+              "declarationStartLine": 500,
+              "declarationEndLine": 502,
+              "methodName": "toBooleanArray",
+              "declarationSignature": "toBooleanArray()",
               "innerMethodCalls": []
             }
           }

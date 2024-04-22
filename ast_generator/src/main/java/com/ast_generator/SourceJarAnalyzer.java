@@ -17,9 +17,11 @@ import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.expr.MethodCallExpr;
+import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.resolution.SymbolResolver;
 import com.github.javaparser.resolution.TypeSolver;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
+import com.github.javaparser.resolution.declarations.ResolvedConstructorDeclaration;
 import com.github.javaparser.resolution.declarations.ResolvedMethodDeclaration;
 import com.github.javaparser.symbolsolver.JavaSymbolSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver;
@@ -30,6 +32,7 @@ import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
 import com.github.javaparser.utils.ProjectRoot;
 import com.github.javaparser.utils.SourceRoot;
 import com.github.javaparser.ast.body.BodyDeclaration;
+import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 
@@ -141,7 +144,7 @@ public class SourceJarAnalyzer {
 
         this.currentParseResults = parseResults; // ! remember this current list of results
         for (ParseResult<CompilationUnit> parseResult : parseResults) {
-           
+
             if (parseResult.isSuccessful() && parseResult.getResult().isPresent()) {
                 CompilationUnit cu = parseResult.getResult().get();
                 String filePath = cu.getStorage().get().getPath().toString();
@@ -160,7 +163,11 @@ public class SourceJarAnalyzer {
                 // * required packages, this help us finding all sub-class
 
                 try {
-                     processTypes(cu.getTypes(), basePackageLikePath, cu.getStorage().get().getPath(), true);
+                    if (filePath.contains("google/common/reflect/TypeToken.java")) {
+                        continue;
+                    } else {
+                        processTypes(cu.getTypes(), basePackageLikePath, cu.getStorage().get().getPath(), true);
+                    }
                 } catch (Exception e) {
                     System.out.println("Error: Failed to process types for " + filePath + ". " + e.getMessage());
                 }
@@ -185,7 +192,7 @@ public class SourceJarAnalyzer {
      */
     private void processTypes(List<TypeDeclaration<?>> types, String basePackageLikePath, Path filePath,
             boolean isTopLevel) {
-       
+
         for (TypeDeclaration<?> type : types) {
             // Construct the package-like path for this type
             String typePath = isTopLevel ? basePackageLikePath : basePackageLikePath + "." + type.getNameAsString();
@@ -212,6 +219,7 @@ public class SourceJarAnalyzer {
 
         Map<MethodSignatureKey, MethodCallEntry> uniqueMethodCalls = new HashMap<>();
         List<MethodCallExpr> methodCalls = methodDeclaration.findAll(MethodCallExpr.class);
+        List<ObjectCreationExpr> constructorCalls = methodDeclaration.findAll(ObjectCreationExpr.class);
         totalCount += methodCalls.size();
         for (MethodCallExpr methodCall : methodCalls) {
             try {
@@ -273,8 +281,10 @@ public class SourceJarAnalyzer {
                 }
             }
         }
+
         return new ArrayList<>(uniqueMethodCalls.values());
     }
+
 
     private void processTypeDeclaration(TypeDeclaration<?> tp, String typePath, String fullPath) {
         List<MethodDeclaration> methodDeclarations = tp.findAll(MethodDeclaration.class);
@@ -313,7 +323,7 @@ public class SourceJarAnalyzer {
     private void processMethodDeclarationForCUorTP(List<MethodDeclaration> methodDeclarations, String fullPath,
             String packageLikePath) {
         for (MethodDeclaration methodDeclaration : methodDeclarations) {
-            
+
             // Initialize MethodDeclarationInfo for the current method declaration
             try {
                 // * we have to resolve the method declaration to get the Qualified signature,
