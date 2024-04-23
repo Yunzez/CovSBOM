@@ -1,27 +1,16 @@
 package com.ast_generator;
 
 import java.io.*;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.nio.file.*;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.zip.*;
-
-import com.github.javaparser.ParseProblemException;
 import com.github.javaparser.ParseResult;
 import com.github.javaparser.ParserConfiguration;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.ObjectCreationExpr;
-import com.github.javaparser.resolution.SymbolResolver;
-import com.github.javaparser.resolution.TypeSolver;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
-import com.github.javaparser.resolution.declarations.ResolvedConstructorDeclaration;
 import com.github.javaparser.resolution.declarations.ResolvedMethodDeclaration;
 import com.github.javaparser.symbolsolver.JavaSymbolSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver;
@@ -32,7 +21,6 @@ import com.github.javaparser.symbolsolver.utils.SymbolSolverCollectionStrategy;
 import com.github.javaparser.utils.ProjectRoot;
 import com.github.javaparser.utils.SourceRoot;
 import com.github.javaparser.ast.body.BodyDeclaration;
-import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 
@@ -93,10 +81,7 @@ public class SourceJarAnalyzer {
         System.out.println(" - - - - - - - - - - - - - ");
         System.out.println("Analyze decompressed path of used dependency: " + decompressedPath);
         System.out.println(loadingBuffer.getMethodCalls(dependency).size() + " method calls in loading buffer.");
-        if (decompressedPath.equals("net.bytebuddy.byte-buddy")) {
-            System.out.println("ByteBuddy detected, skipping.");
-            return;
-        }
+       
         // Process the decompressed directory
         processDecompressedDirectory();
         System.out.println("Total third party method calls: " + totalCount + ", Success: " + successCount + ", Fail: "
@@ -288,11 +273,7 @@ public class SourceJarAnalyzer {
 
     private void processTypeDeclaration(TypeDeclaration<?> tp, String typePath, String fullPath) {
         List<MethodDeclaration> methodDeclarations = tp.findAll(MethodDeclaration.class);
-        if (fullPath.contains("org/powermock/api/mockito/expectation/WithAnyArguments.java")) {
-            System.out.println("/expectation/WithAnyArguments.java file detected.");
-            System.out.println("Method declarations: " + methodDeclarations.size());
-            System.out.println("Type path: " + typePath);
-        }
+        
         if (methodDeclarations.size() > 0) {
             processMethodDeclarationForCUorTP(methodDeclarations, fullPath, typePath);
         }
