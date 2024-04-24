@@ -133,10 +133,6 @@ public class SourceJarAnalyzer {
             if (parseResult.isSuccessful() && parseResult.getResult().isPresent()) {
                 CompilationUnit cu = parseResult.getResult().get();
                 String filePath = cu.getStorage().get().getPath().toString();
-                if (filePath.toString().contains("org/powermock/api/mockito/expectation/")) {
-                    System.out.println("/expectation/*.java file detected.");
-                    System.out.println(filePath);
-                }
                 // * check if the current path is in the target package
                 filePath = filePath.split(decompressedPath)[1].substring(1);
 
@@ -148,11 +144,11 @@ public class SourceJarAnalyzer {
                 // * required packages, this help us finding all sub-class
 
                 try {
-                    if (filePath.contains("google/common/reflect/TypeToken.java")) {
-                        continue;
-                    } else {
+                    // if (filePath.contains("google/common/reflect/TypeToken.java")) {
+                    //     continue;
+                    // } else {
                         processTypes(cu.getTypes(), basePackageLikePath, cu.getStorage().get().getPath(), true);
-                    }
+                    // }
                 } catch (Exception e) {
                     System.out.println("Error: Failed to process types for " + filePath + ". " + e.getMessage());
                 }
