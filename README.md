@@ -39,10 +39,10 @@ mvn package
 To run CovSBOM and perform the analysis, use the following command:
 
 ```bash
-java -jar target/covsbom-1.0-SNAPSHOT.jar [options]
+java -jar target/covsbom-1.0-SNAPSHOT.jar 
 ```
 
-Replace `[options]` with specific commands or flags that your tool supports, based on your implementation details.
+and then follow the prompt coming up
 
 ## Contributing
 
