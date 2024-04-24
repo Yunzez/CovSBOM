@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { StageProps } from "../context/GlobalContext";
 import { useGlobalContext } from "../context/GlobalContext";
-import data from "../../../../asts/analysis/final_report_package_based.json";
+import data from "../../../../CovSBOM_output/analysis/spark-master/final_report_package_based.json";
 
 interface Dependency {
     sourceFilePath: string;

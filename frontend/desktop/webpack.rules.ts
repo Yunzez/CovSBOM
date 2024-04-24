@@ -32,5 +32,17 @@ export const rules: Required<ModuleOptions>['rules'] = [
     test: /\.tsx?$/,
     use: 'ts-loader',
     exclude: /node_modules/,
+  },
+  {
+    test: /\.svg$/,
+    use: [
+      {
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]',
+          outputPath: 'images/',
+        }
+      }
+    ]
   }
 ];
