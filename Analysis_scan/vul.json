@@ -1,0 +1,13 @@
+[
+    {
+      "type": "TemporaryFolder",
+      "dependencyGroupId": "junit",
+      "dependencyArtifactId": "junit"
+    },
+    {
+      "type": "TemporaryFolder",
+      "dependencyGroupId": "org.eclipse.jetty.websocket",
+      "dependencyArtifactId": "websocket-server"
+    }
+  ]
+  

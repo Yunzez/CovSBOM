@@ -1,0 +1,21 @@
+[
+    {
+        "type": "TemporaryFolder",
+        "dependencyGroupId": "junit",
+        "dependencyArtifactId": "junit",
+        "falsePositive": false,
+        "evidence": [
+            {
+                "declaringType": "org.junit.rules.TemporaryFolder",
+                "fullExpression": "temporaryFolder.newFolder()"
+            }
+        ]
+    },
+    {
+        "type": "TemporaryFolder",
+        "dependencyGroupId": "org.eclipse.jetty.websocket",
+        "dependencyArtifactId": "websocket-server",
+        "falsePositive": true,
+        "evidence": []
+    }
+]
