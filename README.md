@@ -28,18 +28,12 @@ Navigate into the cloned repository:
 cd CovSBOM
 ```
 
-Build the project using Maven:
-
-```bash
-mvn package
-```
-
 ## Usage
 
-To run CovSBOM and perform the analysis, use the following command:
+To run CovSBOM and perform the analysis, use the following command under the project directory:
 
 ```bash
-java -jar target/covsbom-1.0-SNAPSHOT.jar 
+java -jar Covsbom.jar 
 ```
 
 and then follow the prompt coming up

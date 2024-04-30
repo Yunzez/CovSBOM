@@ -16,22 +16,7 @@ interface DirectoryInputAttributes
 }
 
 function App() {
-  //   const {stage, setStage} = useGlobalContext();
 
-  //   const renderStage = () => {
-  //     switch (stage) {
-  //       case StageProps.SELECT:
-  //         return <SelectFile />;
-  //       case StageProps.ANALYZE:
-  //         return <Analyze />;
-  //       case StageProps.RESULTS:
-  //         return <Results />;
-  //       case StageProps.ERROR:
-  //         return <Error />;
-  //       default:
-  //         return <>Some error occured</>;
-  //     }
-  //   };
 
   return (
     <GlobalProvider>

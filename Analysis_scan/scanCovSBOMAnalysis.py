@@ -55,15 +55,21 @@ def main(sbom_file_path, vulnerabilities_file_path, output_file_path):
     with open(sbom_file_path, 'r') as file:
         sbom_data = json.load(file)
     
-    with open(vulnerabilities_file_path, 'r') as file:
-        vulnerabilities = json.load(file)
-
-    # Extract analysis section from SBOM
-    analysis_data = next(
-        (item['component'] for item in sbom_data.get('externalReferences', [])
-         if item.get('comment') == 'CovSBOM_Analysis results'),
-        {}
-    )
+    # Determine the SBOM format and extract analysis section
+    format = 'CDX' if 'externalReferences' in sbom_data else 'SPDX'
+    analysis_data = {}
+    if format == 'CDX':
+        analysis_data = next(
+            (item['component'] for item in sbom_data.get('externalReferences', [])
+             if item.get('comment') == 'CovSBOM_Analysis results'),
+            {}
+        )
+    elif format == 'SPDX':
+        analysis_data = next(
+            (item['component'] for item in sbom_data.get('externalRefs', [])
+             if item.get('comment') == 'CovSBOM_Analysis results'),
+            {}
+        )
 
     # Process vulnerabilities and determine false positives
     results = process_vulnerabilities(analysis_data, vulnerabilities)

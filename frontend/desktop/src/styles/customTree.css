@@ -1,0 +1,32 @@
+
+div#treeWrapper .customTree svg .node {
+    fill: #88c0d0 !important;
+    stroke: #4c566a;
+  }
+
+  .customTree .link {
+    fill: none;
+    stroke: #81a1c1; /* Link color */
+    stroke-width: 2.5px; /* Thickness of the links */
+  }
+  
+
+  .customTree .node:hover {
+    fill: #81a1c1;
+    cursor: pointer;
+  }
+  
+  .customTree text:hover {
+    fill: #bf616a;
+    cursor: pointer;
+  }
+  
+  .react-tooltip {
+    background-color: #2e3440 !important; /* Tooltip background color */
+    padding: 5px 10px !important;
+    border-radius: 4px !important;
+    color: white !important; /* Text color inside tooltip */
+  }
+
+  
+  
