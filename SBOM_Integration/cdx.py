@@ -27,7 +27,7 @@ def insert_analysis_to_sbom(sbom_path, analysis_path):
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
-        print("Usage: python script.py <path_to_sbom.json> <path_to_analysis.json>")
+        print("Usage: python3 script.py <path_to_sbom.json> <path_to_analysis.json>")
         sys.exit(1)
     
     sbom_path = sys.argv[1]

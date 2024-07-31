@@ -1,11 +1,19 @@
 [
     {
-      "type": "TemporaryFolder",
+      "Function": "newFolder()",
+      "SBOM_Format": "CycloneDX",
+      "CVE-ID": "your-cve-id",
+      "Sbom_scanning_tool": "OWASP Dependency-Check",
+      "class": "TemporaryFolder",
       "dependencyGroupId": "junit",
       "dependencyArtifactId": "junit"
     },
     {
-      "type": "TemporaryFolder",
+      "SBOM_Format": "CycloneDX",
+      "CVE-ID": "your-cve-id",
+      "Sbom_scanning_tool": "OWASP Dependency-Check",
+      "class": "TemporaryFolder",
+      "Function": "None",
       "dependencyGroupId": "org.eclipse.jetty.websocket",
       "dependencyArtifactId": "websocket-server"
     }
