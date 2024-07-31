@@ -20,10 +20,11 @@ def process_vulnerabilities(analysis_data, vulnerabilities):
     """
     results = []
     for vuln in vulnerabilities:
-        type_ = vuln['type']
+        type_ = vuln['class']
         group_id = vuln['dependencyGroupId']
         artifact_id = vuln['dependencyArtifactId']
 
+        print(f"Processing vulnerability: {type_} in {group_id}:{artifact_id}")
         # Initialize as true; set to false if found in analysis
         false_positive = True
         evidence = []
@@ -31,6 +32,7 @@ def process_vulnerabilities(analysis_data, vulnerabilities):
         # Search for matches in analysis data
         for key, components in analysis_data.items():
             if f"groupId={group_id}, artifactId={artifact_id}" in key:
+                print('found key')
                 for component in components:
                     if find_function_in_analysis(component, type_):
                         false_positive = False
@@ -44,7 +46,7 @@ def process_vulnerabilities(analysis_data, vulnerabilities):
 
         # Append result with evidence and false positive status
         vuln_result = vuln.copy()
-        vuln_result['falsePositive'] = false_positive
+        vuln_result['vulnerable'] = not false_positive
         vuln_result['evidence'] = evidence
         results.append(vuln_result)
     
@@ -54,10 +56,14 @@ def main(sbom_file_path, vulnerabilities_file_path, output_file_path):
     # Load the SBOM and vulnerabilities data
     with open(sbom_file_path, 'r') as file:
         sbom_data = json.load(file)
-    
+    with open(vulnerabilities_file_path, 'r') as file:
+        vulnerabilities = json.load(file)
+
+    print(vulnerabilities)
     # Determine the SBOM format and extract analysis section
     format = 'CDX' if 'externalReferences' in sbom_data else 'SPDX'
     analysis_data = {}
+
     if format == 'CDX':
         analysis_data = next(
             (item['component'] for item in sbom_data.get('externalReferences', [])
