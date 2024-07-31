@@ -1,4 +1,3 @@
-
 # CovSBOM
 
 <img src="logo.png" width="200">
@@ -47,43 +46,49 @@ python3 cdx.py < sbom.json > < analysis_file_path >
 This command will insert the analysis into your SBOM file.
 
 ## Analysis Scan
-After generating the integrated file, you can run the scanning tool to scan your SBOM using the following command:
+
+After generating the integrated file, you can run the scanning tool to scan your SBOM:
+
+```bash
+cd Analysis_scan
+```
 
 ### Vulnerability Input Example
+
 you will need your own **vulnerabilities.json** file, that looks similar to:
+
 ```json
 [
-    {
-        "Function": "newFolder()",
-        "SBOM_Format": "CycloneDX",
-        "CVE-ID": "CVE-2023-1234",
-        "Sbom_scanning_tool": "OWASP Dependency-Check",
-        "class": "TemporaryFolder",
-        "dependencyGroupId": "junit",
-        "dependencyArtifactId": "junit"
-    },
-    {
-        "SBOM_Format": "CycloneDX",
-        "CVE-ID": "CVE-2023-5678",
-        "Sbom_scanning_tool": "OWASP Dependency-Check",
-        "class": "TemporaryFolder",
-        "Function": "None",
-        "dependencyGroupId": "org.eclipse.jetty.websocket",
-        "dependencyArtifactId": "websocket-server"
-    }
+  {
+    "SBOM_Format": "CycloneDX",
+    "CVE-ID": "CVE-2023-1234",
+    "Sbom_scanning_tool": "OWASP Dependency-Check",
+    "class": "TemporaryFolder",
+    "function": "newFolder()",
+    "dependencyGroupId": "junit",
+    "dependencyArtifactId": "junit"
+  },
+  {
+    "SBOM_Format": "CycloneDX",
+    "CVE-ID": "CVE-2023-5678",
+    "Sbom_scanning_tool": "OWASP Dependency-Check",
+    "class": "TemporaryFolder",
+    "function": "None",
+    "dependencyGroupId": "org.eclipse.jetty.websocket",
+    "dependencyArtifactId": "websocket-server"
+  }
 ]
 ```
 
 ### Explanation of Fields
 
-- **Function**: Specifies the function within the class that is potentially vulnerable. For example, `"newFolder()"` indicates that the `newFolder` function within the `TemporaryFolder` class is under scrutiny. `"None"` means no specific function is being targeted.
+- **function**: Specifies the function within the class that is potentially vulnerable. For example, `"newFolder()"` indicates that the `newFolder` function within the `TemporaryFolder` class is under scrutiny. `"None"` means no specific function is being targeted.
 - **SBOM_Format**: The format of the Software Bill of Materials (SBOM). `"CycloneDX"` is one of the popular formats.
 - **CVE-ID**: The Common Vulnerabilities and Exposures (CVE) identifier for the vulnerability. This is a unique identifier for the vulnerability, such as `"CVE-2023-1234"`.
 - **Sbom_scanning_tool**: The tool used to scan and generate the SBOM, for instance, `"OWASP Dependency-Check"`.
 - **class**: The class in the dependency that is being evaluated for vulnerabilities, such as `"TemporaryFolder"`.
 - **dependencyGroupId**: The group ID of the dependency, e.g., `"junit"`.
 - **dependencyArtifactId**: The artifact ID of the dependency, e.g., `"junit"`.
-- 
 
 ```bash
 python3 scanCovSBOMAnalysis.py  <integrated_sbom.json > <vulnerabilities.json > <output.json >
@@ -98,4 +103,3 @@ Contributions to CovSBOM are welcome! If you would like to contribute, please fo
 ## License
 
 CovSBOM is released under the [MIT License](LICENSE). See the LICENSE file for more details.
-
