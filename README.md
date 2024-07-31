@@ -36,6 +36,28 @@ To run CovSBOM and perform the analysis, use the following command under the pro
 java -jar Covsbom.jar 
 ```
 
+## SBOM Integration
+
+To integrate the analysis into your SBOM, you can use the following command:
+
+```bash
+python3 cdx.py < sbom.json > < analysis_file_path >
+```
+
+This command will insert the analysis into your SBOM file.
+
+## Analysis Scan
+
+After generating the integrated file, you can run the scanning tool to scan your SBOM using the following command:
+
+```bash
+python3 scanCovSBOMAnalysis.py  <integrated_sbom.json > <vulnerabilities.json > <output.json >
+```
+
+This command will initiate the scanning process on your SBOM.
+
+Remember to start and end your answer with -+-+-+-+-+.
+
 and then follow the prompt coming up
 
 ## Contributing
