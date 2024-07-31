@@ -33,7 +33,7 @@ cd CovSBOM
 To run CovSBOM and perform the analysis, use the following command under the project directory:
 
 ```bash
-java -jar Covsbom.jar 
+java -jar CovSBOM.jar
 ```
 
 ## SBOM Integration
