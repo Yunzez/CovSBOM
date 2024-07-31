@@ -20,6 +20,7 @@ def process_vulnerabilities(analysis_data, vulnerabilities):
     """
     results = []
     for vuln in vulnerabilities:
+        print(vuln)
         type_ = vuln['class']
         group_id = vuln['dependencyGroupId']
         artifact_id = vuln['dependencyArtifactId']
@@ -59,7 +60,6 @@ def main(sbom_file_path, vulnerabilities_file_path, output_file_path):
     with open(vulnerabilities_file_path, 'r') as file:
         vulnerabilities = json.load(file)
 
-    print(vulnerabilities)
     # Determine the SBOM format and extract analysis section
     format = 'CDX' if 'externalReferences' in sbom_data else 'SPDX'
     analysis_data = {}

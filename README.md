@@ -96,6 +96,96 @@ python3 scanCovSBOMAnalysis.py  <integrated_sbom.json > <vulnerabilities.json > 
 
 This command will initiate the scanning process on your SBOM.
 
+### Output File Example
+
+```json
+[
+    {
+        "Function": "newFolder()",
+        "SBOM_Format": "CycloneDX",
+        "CVE-ID": "your-cve-id",
+        "Sbom_scanning_tool": "OWASP Dependency-Check",
+        "class": "TemporaryFolder",
+        "dependencyGroupId": "junit",
+        "dependencyArtifactId": "junit",
+        "vulnerable": true,
+        "evidence": [
+            {
+                "declaringType": "org.junit.rules.TemporaryFolder",
+                "fullExpression": "temporaryFolder.newFolder()"
+            }
+        ]
+    },
+    {
+        "SBOM_Format": "CycloneDX",
+        "CVE-ID": "your-cve-id",
+        "Sbom_scanning_tool": "OWASP Dependency-Check",
+        "class": "TemporaryFolder",
+        "Function": "None",
+        "dependencyGroupId": "org.eclipse.jetty.websocket",
+        "dependencyArtifactId": "websocket-server",
+        "vulnerable": false,
+        "evidence": []
+    }
+]
+```
+
+### Explanation of Fields
+
+- **Function**: The function within the class that was checked for vulnerabilities. For example, `"newFolder()"` indicates that the `newFolder` function within the `TemporaryFolder` class was checked.
+- **SBOM_Format**: The format of the Software Bill of Materials (SBOM). `"CycloneDX"` is one of the popular formats.
+- **CVE-ID**: The Common Vulnerabilities and Exposures (CVE) identifier for the vulnerability. This is a unique identifier for the vulnerability, such as `"your-cve-id"`.
+- **Sbom_scanning_tool**: The tool used to scan and generate the SBOM, in this case, `"OWASP Dependency-Check"`.
+- **class**: The class in the dependency that was evaluated for vulnerabilities, such as `"TemporaryFolder"`.
+- **dependencyGroupId**: The group ID of the dependency, e.g., `"junit"`.
+- **dependencyArtifactId**: The artifact ID of the dependency, e.g., `"junit"`.
+- **vulnerable**: A boolean value indicating whether the dependency is vulnerable (`true`) or not (`false`).
+- **evidence**: A list of evidence supporting the determination of vulnerability. Each piece of evidence includes:
+  - **declaringType**: The class type where the vulnerability was found, such as `"org.junit.rules.TemporaryFolder"`.
+  - **fullExpression**: The full expression in the code where the vulnerable function is called, such as `"temporaryFolder.newFolder()"`.
+
+### Example Outputs
+
+1. **Vulnerable Dependency**:
+    - **Example**: 
+        ```json
+        {
+            "Function": "newFolder()",
+            "SBOM_Format": "CycloneDX",
+            "CVE-ID": "your-cve-id",
+            "Sbom_scanning_tool": "OWASP Dependency-Check",
+            "class": "TemporaryFolder",
+            "dependencyGroupId": "junit",
+            "dependencyArtifactId": "junit",
+            "vulnerable": true,
+            "evidence": [
+                {
+                    "declaringType": "org.junit.rules.TemporaryFolder",
+                    "fullExpression": "temporaryFolder.newFolder()"
+                }
+            ]
+        }
+        ```
+    - **Explanation**: The `TemporaryFolder` class from the `junit` dependency is found to be vulnerable when calling the `newFolder()` function. The evidence provided includes the declaring type and the full expression of the vulnerability in the code.
+
+2. **Non-Vulnerable Dependency**:
+    - **Example**: 
+        ```json
+        {
+            "SBOM_Format": "CycloneDX",
+            "CVE-ID": "your-cve-id",
+            "Sbom_scanning_tool": "OWASP Dependency-Check",
+            "class": "TemporaryFolder",
+            "Function": "None",
+            "dependencyGroupId": "org.eclipse.jetty.websocket",
+            "dependencyArtifactId": "websocket-server",
+            "vulnerable": false,
+            "evidence": []
+        }
+        ```
+    - **Explanation**: The `TemporaryFolder` class from the `websocket-server` dependency (under `org.eclipse.jetty.websocket` group) is not found to be vulnerable. No specific function was checked, and no evidence was found indicating any vulnerability.
+    
+
 ## Contributing
 
 Contributions to CovSBOM are welcome! If you would like to contribute, please fork the repository and submit a pull request with your changes. For major changes, please open an issue first to discuss what you would like to change.
