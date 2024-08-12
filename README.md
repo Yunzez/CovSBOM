@@ -192,4 +192,4 @@ Contributions to CovSBOM are welcome! If you would like to contribute, please fo
 
 ## License
 
-CovSBOM is released under the [MIT License](LICENSE). See the LICENSE file for more details.
+CovSBOM is released under the [GNU General Public License v3.0](LICENSE). See the LICENSE file for more details.
