@@ -4,6 +4,17 @@
 
 **CovSBOM** is a robust static analysis tool designed to enhance Software Bill of Materials (SBOM) by integrating detailed static analysis to reduce false positive rates in vulnerability scans. This tool leverages and extends existing SBOM capabilities to provide deeper insights into code dependencies and security vulnerabilities. You can view this quick [tutorial](https://drive.google.com/file/d/1RQ8fvevT_mb7EY4UntxKEB81qBLRJGxr/view?usp=drive_link) to see how CovSBOM works or follow the documentation below.
 
+## Example Project:
+We use [Spark - a tiny web framework for Java 8](https://github.com/perwendel/spark) for example project, if you run CovSBOM and enter no source file, it would default to this example application for review purposes. 
+
+```bash
+java -jar CovSBOM.jar
+-------Initializing-------
+Please enter the path to the Java source file:  // leave this blank 
+rootDirectoryPath: /Code/CovSBOM
+Inferred path to pom.xml: Application/spark-master/pom.xml
+```
+
 ## Prerequisites
 
 Before you begin using CovSBOM, ensure that your environment is set up with the necessary Java libraries. The tool assumes that all dependencies and plugins are properly installed. If you have not yet set up the environment, follow the steps below to install the required components:
