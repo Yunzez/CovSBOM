@@ -47,6 +47,33 @@ java -jar CovSBOM.jar
 ```
 For a step-by-step guide, watch the [Tutorial Video](https://github.com/Yunzez/CovSBOM/blob/main/Tutorial/CovSBOM_Tutorial.mp4) to learn more.
 
+## File Structure: 
+
+### **1. ast_generator**
+This folder contains the core functionality of CovSBOM, which is responsible for multiple key processes:
+- **AST Generation**: Generates abstract syntax trees (ASTs) from the analyzed code.
+- **Decompiling Third-Party Libraries**: Handles the decompilation process for third-party libraries.
+- **Source Analysis**: Performs static analysis on the source code to detect vulnerabilities.
+- **CovSBOM Output**: Produces the main CovSBOM output, which integrates into the SBOM.
+
+### **2. CovSBOM_output/analysis**
+This folder stores the output files generated for each project. For each project, you will find three key files:
+
+- **method_calls.json**: 
+  - This file contains a record of all unique method calls to third-party libraries before decompilation. It helps track which methods in the target program invoke external libraries.
+
+- **final_report_file_based.json**: 
+  - This file provides detailed call stack information to third-party libraries on a per-file basis. It may contain duplicates when different files in the target program call the same method.
+
+- **final_report_package_base.json**: 
+  - This file eliminates duplicates by organizing the call stack data based on third-party library packages. It only provides information for packages that the target program reaches, offering a streamlined view of method calls to external libraries.
+
+### **3. SBOM_Integration**
+this folder contains the required scripts to insert analysis into SBOM for both CDX and SPDX format.
+
+### **4. Analysis_scan**
+this folder contains the required scripts to scan for vulnerabilities after SBOM integration.
+
 ## SBOM Integration
 
 To integrate the analysis into your SBOM, you can use the following command:
