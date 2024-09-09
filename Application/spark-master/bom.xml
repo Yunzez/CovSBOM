@@ -1,0 +1,1656 @@
+<?xml version="1.0" encoding="utf-8"?>
+<bom xmlns="http://cyclonedx.org/schema/bom/1.4" serialNumber="urn:uuid:f4cf2adc-283e-4bac-b4ab-4756b9de5242" version="1">
+  <metadata>
+    <timestamp>2024-04-29T17:32:22.460Z</timestamp>
+    <tools>
+      <tool>
+        <vendor>cyclonedx</vendor>
+        <name>cdxgen</name>
+        <version>8.6.0</version>
+      </tool>
+    </tools>
+    <authors>
+      <author>
+        <name>Prabhu Subramanian</name>
+        <email>prabhu@appthreat.com</email>
+      </author>
+    </authors>
+    <component type="framework" bom-ref="pkg:maven/com.sparkjava/spark-core@2.9.4-SNAPSHOT?type=bundle">
+      <author/>
+      <publisher/>
+      <group>com.sparkjava</group>
+      <name>spark-core</name>
+      <version>2.9.4-SNAPSHOT</version>
+      <description><![CDATA[A micro framework for creating web applications in Kotlin and Java 8 with minimal effort]]></description>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/com.sparkjava/spark-core@2.9.4-SNAPSHOT?type=bundle</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>http://www.sparkjava.com</url>
+        </reference>
+        <reference type="distribution">
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </reference>
+        <reference type="vcs">
+          <url>scm:git:git@github.com:perwendel/spark.git</url>
+        </reference>
+      </externalReferences>
+    </component>
+  </metadata>
+  <components>
+    <component type="library" bom-ref="pkg:maven/org.slf4j/slf4j-api@1.7.25?type=jar">
+      <author/>
+      <publisher>QOS.ch</publisher>
+      <group>org.slf4j</group>
+      <name>slf4j-api</name>
+      <version>1.7.25</version>
+      <description><![CDATA[The slf4j API]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">caafe376afb7086dcbee79f780394ca3</hash>
+        <hash alg="SHA-1">da76ca59f6a57ee3102f8f9bd9cee742973efa8a</hash>
+        <hash alg="SHA-256">18c4a0095d5c1da6b817592e767bb23d29dd2f560ad74df75ff3961dbde25b79</hash>
+        <hash alg="SHA-512">5dd6271fd5b34579d8e66271bab75c89baca8b2ebeaa9966de391284bd08f2d720083c6e0e1edda106ecf8a04e9a32116de6873f0f88c19c049c0fe27e5d820b</hash>
+        <hash alg="SHA-384">f2791380e87fccb18519efd016c03be11206984f4765586d348e57e2f33756b21ed51a95fa09679e1473a5bf5d2d76e1</hash>
+        <hash alg="SHA3-384">d621071a8bca1a32ac3603a816721fd93180a29e520d16a1c655686b169605f679818d6acc0000470ebe25265bdc9962</hash>
+        <hash alg="SHA3-256">abb590301fbb93baf4f7afe227f230ee7992d9a56f7034ef2c37447ac8c52a9b</hash>
+        <hash alg="SHA3-512">c025c503db0d09d0d435c1c96f0e7165f08375abc58eb4e4bf52b0b4689801019a7e966fa5372c03b0697083a992a0baceb7ab5d18659d262f5db4c9bca26584</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>MIT</id>
+          <url>https://opensource.org/licenses/MIT</url>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.slf4j/slf4j-api@1.7.25?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>http://www.slf4j.org</url>
+        </reference>
+        <reference type="distribution">
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </reference>
+        <reference type="vcs">
+          <url>https://github.com/qos-ch/slf4j/slf4j-api</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.slf4j/slf4j-simple@1.7.25?type=jar">
+      <author/>
+      <publisher>QOS.ch</publisher>
+      <group>org.slf4j</group>
+      <name>slf4j-simple</name>
+      <version>1.7.25</version>
+      <description><![CDATA[SLF4J Simple binding]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">722bb90689aecc523e3fe317e1f0984b</hash>
+        <hash alg="SHA-1">8dacf9514f0c707cbbcdd6fd699e8940d42fb54e</hash>
+        <hash alg="SHA-256">0966e86fffa5be52d3d9e7b89dd674d98a03eed0a454fbaf7c1bd9493bd9d874</hash>
+        <hash alg="SHA-512">d5effbfa105bcd615e56ef983075c9ef0f52bcfdbefa3ce8cea9550f25b859e48b32f2ec9aa7a305c6611a3be5e0cde0d269588d9c2897ca987359b77213331d</hash>
+        <hash alg="SHA-384">7d34c505efc47fb55f7e5da58535c71c4967a92f266d0896a49122a388178f46ed7e27427b75fc8f2b9eca3a01a83cf5</hash>
+        <hash alg="SHA3-384">caead9560aa9a3d82af771521c3c8513221760ff89dc2f8a298c7195c3a0ae59704933773644d63fd1f79a5e8519a601</hash>
+        <hash alg="SHA3-256">9e002bdb00506935b711a76116f5dc91098fa1900a95ff01cd173602dacfcdb6</hash>
+        <hash alg="SHA3-512">b6706c6ad7e5bbbe95206e6dbc3b90df352448e83c3d49149c589d86d6893e3200f752cb2b5765fb85c1369bb7c2c1c09c249a739d50f9c0b14fdf76a292c726</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>MIT</id>
+          <url>https://opensource.org/licenses/MIT</url>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.slf4j/slf4j-simple@1.7.25?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>http://www.slf4j.org</url>
+        </reference>
+        <reference type="distribution">
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </reference>
+        <reference type="vcs">
+          <url>https://github.com/qos-ch/slf4j/slf4j-simple</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.eclipse.jetty/jetty-server@9.4.48.v20220622?type=jar">
+      <author/>
+      <publisher>Webtide</publisher>
+      <group>org.eclipse.jetty</group>
+      <name>jetty-server</name>
+      <version>9.4.48.v20220622</version>
+      <description><![CDATA[The core jetty server artifact.]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">11f66d05aa4e992e9823836b2bd84f70</hash>
+        <hash alg="SHA-1">b91a0641cda31c93962503b88f783602d2bd8093</hash>
+        <hash alg="SHA-256">dbb2b64216b0f10db591319c313979c1389249a196afb9690c022a923c0f0f77</hash>
+        <hash alg="SHA-512">eb0c7fd8d0672c385434436d94662a30eade7d9456fc079d295d2112e6a581c3797dc013ce2c4131ca3a25a3b7951dd8ccadf6ff815fcb100da1646c03a2e4d1</hash>
+        <hash alg="SHA-384">ea5ea182be1bcc59cf67c12da5c037257508c3a8adc71ace5cdbe937899974fd860f0066c7ca7ac50ccc5fe059483f84</hash>
+        <hash alg="SHA3-384">5548a1e1a233bf79963f25f5ee05ed382201ee51e9f0ac1d91305ad4ba2c860d3b1e3b5f468fd9f8e0974555614cc012</hash>
+        <hash alg="SHA3-256">f7d0788d87c2b1a0b91355b3137715dd31adfd1dd00d6c2196dcae326d861da7</hash>
+        <hash alg="SHA3-512">1531374c69bfe8aea7d2707c88810b8ae4ea94271d6c56ef20dabc33dc4aad6beb3a3fccf7acc0e3359489db555715eb99f466b41eadd95cf7a81b20b4bc4781</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+        <license>
+          <id>EPL-1.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.eclipse.jetty/jetty-server@9.4.48.v20220622?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>https://eclipse.org/jetty/jetty-server</url>
+        </reference>
+        <reference type="distribution">
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/eclipse/jetty.project/issues</url>
+        </reference>
+        <reference type="mailing-list">
+          <url>https://dev.eclipse.org/mhonarc/lists/jetty-dev/maillist.html</url>
+        </reference>
+        <reference type="vcs">
+          <url>https://github.com/eclipse/jetty.project/jetty-server</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/javax.servlet/javax.servlet-api@3.1.0?type=jar">
+      <author/>
+      <publisher>GlassFish Community</publisher>
+      <group>javax.servlet</group>
+      <name>javax.servlet-api</name>
+      <version>3.1.0</version>
+      <description><![CDATA[Java.net - The Source for Java Technology Collaboration]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">79de69e9f5ed8c7fcb8342585732bbf7</hash>
+        <hash alg="SHA-1">3cd63d075497751784b2fa84be59432f4905bf7c</hash>
+        <hash alg="SHA-256">af456b2dd41c4e82cf54f3e743bc678973d9fe35bd4d3071fa05c7e5333b8482</hash>
+        <hash alg="SHA-512">32f7e3565c6cdf3d9a562f8fd597fe5059af0cf6b05b772a144a74bbc95927ac275eb38374538ec1c72adcce4c8e1e2c9f774a7b545db56b8085af0065e4a1e5</hash>
+        <hash alg="SHA-384">8bf960fd053ef6ad1c3535824311f676b9ad537678b85f855dd5d6d726e391f8a7be9c9c76a8ae3ce8bfe671c1e2c942</hash>
+        <hash alg="SHA3-384">e8f3282c08ceeed02947a13e886a3d75a6ea63e4f869a0e0bcbcf622e7cbffc81ed7bc045e82820443b6572c897cc4cc</hash>
+        <hash alg="SHA3-256">8acc3481503989e1a78ad619bcbdc005b616c13736522b52e5ae5d782e8a0216</hash>
+        <hash alg="SHA3-512">ab5f85d424640ddcf6fc13a41d12ffdee0be9508cd4cdc581168b31cf7917323f6e0d984a0631068e0e01c098098fe0037d1c4176352fd89ba3a4da5d641ca3d</hash>
+      </hashes>
+      <licenses>
+        <expression>(CDDL-1.0 OR GPL-2.0-with-classpath-exception)</expression>
+      </licenses>
+      <purl>pkg:maven/javax.servlet/javax.servlet-api@3.1.0?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>http://servlet-spec.java.net</url>
+        </reference>
+        <reference type="distribution">
+          <url>https://maven.java.net/service/local/staging/deploy/maven2/</url>
+        </reference>
+        <reference type="issue-tracker">
+          <url>http://java.net/jira/browse/SERVLET_SPEC</url>
+        </reference>
+        <reference type="mailing-list">
+          <url>users@servlet-spec.java.net</url>
+        </reference>
+        <reference type="vcs">
+          <url>http://java.net/projects/glassfish/sources/svn/show/tags/javax.servlet-api-3.1.0</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.eclipse.jetty/jetty-http@9.4.48.v20220622?type=jar">
+      <author/>
+      <publisher>Webtide</publisher>
+      <group>org.eclipse.jetty</group>
+      <name>jetty-http</name>
+      <version>9.4.48.v20220622</version>
+      <description><![CDATA[The Eclipse Jetty Project]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">ada5db67b9fea8de0720d7d750b5125c</hash>
+        <hash alg="SHA-1">8cb235e70bda0c5e97a41e7ee0ea33ee7f5bcc6a</hash>
+        <hash alg="SHA-256">c99914804c25288fde0470530411258ee4bab83b69ad764149c816c984f8175e</hash>
+        <hash alg="SHA-512">1afbff2f9fcccbb3aba6766eb854c6f2a86ef380fb9d5ec8f20b6ad509b3df6d025d65c86d3269dbb33b42a73881339b320a539f1609cdfa6ebe3e107ce40eb1</hash>
+        <hash alg="SHA-384">c095e2d9167f623edffcecafc94591d5b791106ce65575c2321c2ad1f8eeb2ba8b27485b7f2a04020853d25ff5236ac8</hash>
+        <hash alg="SHA3-384">99453025e3314fd708fb564ceac634cc42d379915e8bbf5cb5c203256b7f4b02aee060bafd86200e65d093443f6c9a77</hash>
+        <hash alg="SHA3-256">67c8aaf5fe81ce22fe7c5d1196aaba7acecf811ef16f82aa26991f7f9b73b1a0</hash>
+        <hash alg="SHA3-512">79e20415a558b6b9f628152ae0d3c65aea4a9e2cff98cbcc693477b0edd558893ccfed51127b70565152653a24c53c307f935e2bfcc7f9a69ad82b18957b6192</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+        <license>
+          <id>EPL-1.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.eclipse.jetty/jetty-http@9.4.48.v20220622?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>https://eclipse.org/jetty/jetty-http</url>
+        </reference>
+        <reference type="distribution">
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/eclipse/jetty.project/issues</url>
+        </reference>
+        <reference type="mailing-list">
+          <url>https://dev.eclipse.org/mhonarc/lists/jetty-dev/maillist.html</url>
+        </reference>
+        <reference type="vcs">
+          <url>https://github.com/eclipse/jetty.project/jetty-http</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.eclipse.jetty/jetty-io@9.4.48.v20220622?type=jar">
+      <author/>
+      <publisher>Webtide</publisher>
+      <group>org.eclipse.jetty</group>
+      <name>jetty-io</name>
+      <version>9.4.48.v20220622</version>
+      <description><![CDATA[The Eclipse Jetty Project]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">a64fa8ebc74f4c7e846f34b8b9ab0645</hash>
+        <hash alg="SHA-1">b09b55209d0a304e542f779750a01f6914dc55e7</hash>
+        <hash alg="SHA-256">4d2f60a0348905a0a70bb266d1eb23a29959281391aba54d17d4a3a0460b8b47</hash>
+        <hash alg="SHA-512">2887d83db6bba1a497932e94a2aa54c75fcd6d37f31d7d2f0b4e6f54a02e8e4f0a6bcfd3fb5907b86d84df9f1d0a85c2ed9f6fe91867e2540f2004f394ce4bad</hash>
+        <hash alg="SHA-384">2d604f8fd20c5ffe371c06ac371d1a119e575aec360541ac78b542e08167ae3d01df417f8efaa91de26d745d879e7eb9</hash>
+        <hash alg="SHA3-384">e9c0dc13192175a539c10881cbf44f3f9a390630c8d2a949bb5a37a7d394eac4dc62bba5c58aa3e3b2302f279ccd90ec</hash>
+        <hash alg="SHA3-256">a6958ff38cb1603be522b4a0f0e8fe29ffc275d9f3ba7ba4007d9903a5ba5989</hash>
+        <hash alg="SHA3-512">93f48d3a53d6749a479b75b5b34f1ab9445777cf38d030aa881564c9a18f00031d88c1a6fd7788425b23d2d3543c8167b5c37c2f1e047ad995bbe475f26692ad</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+        <license>
+          <id>EPL-1.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.eclipse.jetty/jetty-io@9.4.48.v20220622?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>https://eclipse.org/jetty/jetty-io</url>
+        </reference>
+        <reference type="distribution">
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/eclipse/jetty.project/issues</url>
+        </reference>
+        <reference type="mailing-list">
+          <url>https://dev.eclipse.org/mhonarc/lists/jetty-dev/maillist.html</url>
+        </reference>
+        <reference type="vcs">
+          <url>https://github.com/eclipse/jetty.project/jetty-io</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.eclipse.jetty/jetty-webapp@9.4.48.v20220622?type=jar">
+      <author/>
+      <publisher>Webtide</publisher>
+      <group>org.eclipse.jetty</group>
+      <name>jetty-webapp</name>
+      <version>9.4.48.v20220622</version>
+      <description><![CDATA[Jetty web application support]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">9c70011eb42d0b2581f80a411a768725</hash>
+        <hash alg="SHA-1">9317a8518674c54b5ed9ec5ece8fcad92af91802</hash>
+        <hash alg="SHA-256">bdb33dd7e9a30ea428f301010d08c7f69b37ec75dda340b79a86e95149fec0b2</hash>
+        <hash alg="SHA-512">f476c05ae431b15358c01274185698d2600ef5943f4ae4feb158fa4cfda6ac5ab3a4f620e4edc7c0ce69d1a1c88c0a7a8f39dd9c574aec12f4c77978a113d88f</hash>
+        <hash alg="SHA-384">70aa09b1dc2ea01b96a7c2300e87afecaa599c7161011d5c5fcfdadcfce66ff00d604d27b813d518adb7c79a01b9ac04</hash>
+        <hash alg="SHA3-384">377f06462c8034aa0d5a266aac68f3e6fe5399dbe4c3a9d42b97601d53db6d424f622a6b9ab9fbd41f71931ce67bafa1</hash>
+        <hash alg="SHA3-256">dde52cd8b45c26c770d9426ab1e3d14b288f21b2b216ce3f12c331105d5638bc</hash>
+        <hash alg="SHA3-512">166df865cd0a09ca8ee6b3fd4474c94f4a9d5a0ad7ca5338ea7137fab0e470f67f5ea8e028e90c42d9466f5a645a7dd3f8843de2c477615426a583ff2da596d8</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+        <license>
+          <id>EPL-1.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.eclipse.jetty/jetty-webapp@9.4.48.v20220622?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>https://eclipse.org/jetty/jetty-webapp</url>
+        </reference>
+        <reference type="distribution">
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/eclipse/jetty.project/issues</url>
+        </reference>
+        <reference type="mailing-list">
+          <url>https://dev.eclipse.org/mhonarc/lists/jetty-dev/maillist.html</url>
+        </reference>
+        <reference type="vcs">
+          <url>https://github.com/eclipse/jetty.project/jetty-webapp</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.eclipse.jetty/jetty-xml@9.4.48.v20220622?type=jar">
+      <author/>
+      <publisher>Webtide</publisher>
+      <group>org.eclipse.jetty</group>
+      <name>jetty-xml</name>
+      <version>9.4.48.v20220622</version>
+      <description><![CDATA[The jetty xml utilities.]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">ea799d326e665fa7e2035e12dbfeb442</hash>
+        <hash alg="SHA-1">2c8b7ad6b64437a693cd30666f3def666aac8207</hash>
+        <hash alg="SHA-256">fe94705c7f49fe56194abfc16050fafc44be0faf691a2e6dca13c5d343a2bea5</hash>
+        <hash alg="SHA-512">4946f3821a358c8d5275cf920ef924ed0cc96b349a7983ba12fb3216832fb88fe0285a9c1a21c89d6950990c2c6b4fbcf8590e64e6d3d3d5daabecf87d1192f6</hash>
+        <hash alg="SHA-384">9e7cfe27420663f98bd1bee5bff643ee00b548267898c63d911db9f642c489ab840bf8e98192a8a123ac788261057941</hash>
+        <hash alg="SHA3-384">d0c42099827327e842c2d8a05a1e22fc940609038d7ec4bcacd1a8058a20aa54199048c9c57a78a435e4d72ec713d1d5</hash>
+        <hash alg="SHA3-256">26b920e9f51a23a8167b4ba169644a3df91155b10cfbb6b6fc78c5958714881b</hash>
+        <hash alg="SHA3-512">dd1cd224725d373aac5050f316c31cd5b8f96bf6bbdd0cb036ca1d4f1da3ec6367a9d882e14cfbd6df19d9153a06eb13646db11984fffd8b590cb138fdf6f290</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+        <license>
+          <id>EPL-1.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.eclipse.jetty/jetty-xml@9.4.48.v20220622?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>https://eclipse.org/jetty/jetty-xml</url>
+        </reference>
+        <reference type="distribution">
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/eclipse/jetty.project/issues</url>
+        </reference>
+        <reference type="mailing-list">
+          <url>https://dev.eclipse.org/mhonarc/lists/jetty-dev/maillist.html</url>
+        </reference>
+        <reference type="vcs">
+          <url>https://github.com/eclipse/jetty.project/jetty-xml</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.eclipse.jetty/jetty-servlet@9.4.48.v20220622?type=jar">
+      <author/>
+      <publisher>Webtide</publisher>
+      <group>org.eclipse.jetty</group>
+      <name>jetty-servlet</name>
+      <version>9.4.48.v20220622</version>
+      <description><![CDATA[Jetty Servlet Container]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">1e7281a0df0d72d146ce3106a837a099</hash>
+        <hash alg="SHA-1">8a9a53e0aad3f194a4cc9940f7e9d5619254bf62</hash>
+        <hash alg="SHA-256">eabc36f43fb4080b7d02e1fbcad0b437e035d3adc7bfd7a89b3cdeb22247e682</hash>
+        <hash alg="SHA-512">eea3d6ecdb9cf5efbe58cb8fda133f69bfe9f1415b7260ad2efc6f50c73f3cefeab304ad778f5f3c5c2a17bacce71420737791ffe49ebf381ba4ce03ef5afe5c</hash>
+        <hash alg="SHA-384">f1169fcd61cd67d243cf4695983109a4c2dc7034828148c7b7e820cc1f4964aa75e9f55f2cfd5fa039d29ab21c9359a3</hash>
+        <hash alg="SHA3-384">16742ec373d1ee4742d05bd3f13aa34213c587820b9aea948822cfe3568cc2165f938657a8a18fce41c641d9f9f26b52</hash>
+        <hash alg="SHA3-256">b3c7b85bc217d34f4666a752800f4ae0dfcedbb1eb6088cca9af852ad4d756d8</hash>
+        <hash alg="SHA3-512">ae6361bbaeb36777c81a596961b9291fc31f677e4a8cd9291b01712981a37462154424cf344afb763b88fb48ee32ab071b03cf25091ce2cab58eb8c59b3ee46d</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+        <license>
+          <id>EPL-1.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.eclipse.jetty/jetty-servlet@9.4.48.v20220622?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>https://eclipse.org/jetty/jetty-servlet</url>
+        </reference>
+        <reference type="distribution">
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/eclipse/jetty.project/issues</url>
+        </reference>
+        <reference type="mailing-list">
+          <url>https://dev.eclipse.org/mhonarc/lists/jetty-dev/maillist.html</url>
+        </reference>
+        <reference type="vcs">
+          <url>https://github.com/eclipse/jetty.project/jetty-servlet</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.eclipse.jetty/jetty-security@9.4.48.v20220622?type=jar">
+      <author/>
+      <publisher>Webtide</publisher>
+      <group>org.eclipse.jetty</group>
+      <name>jetty-security</name>
+      <version>9.4.48.v20220622</version>
+      <description><![CDATA[Jetty security infrastructure]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">b27a38cb1391fe48bfb24b1fe0bcae4a</hash>
+        <hash alg="SHA-1">6114f92529e9cff489528e6be77b48526a92d577</hash>
+        <hash alg="SHA-256">43039b0f58a156a7f1b9b7750ad82f7fcdd5dba81717b970c381cb1b8618ff73</hash>
+        <hash alg="SHA-512">c387010213c76166902b45a5610ed2974fed7af63cf8a9dace2319daa77534a50fe209fa1e6f50e86b53262da8e8300f3e1e035dae6cc30542adbf24d26f47b9</hash>
+        <hash alg="SHA-384">40127ea6b0f367473e8074cf8986550383845f1d19387bee770bbcb04182c227094b52cc93d4a9334a07be2491cb6c47</hash>
+        <hash alg="SHA3-384">f28def57ba62fac8d2b3015123beb23fb0de54960292392464f78ec5ccc45b33ecac0638b6e8685a312835e6c363d611</hash>
+        <hash alg="SHA3-256">dfe1564f1b5d28de7056530ad12830d2218367eb7595547357026f2779f5050f</hash>
+        <hash alg="SHA3-512">9509120c97b453f03415426bf4d6b58cd57d831bea6a3f17ec82517055c65711738743c2f086977dd359064e7ca9ad3db791abdb94b260832fa6027f67d7cbf6</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+        <license>
+          <id>EPL-1.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.eclipse.jetty/jetty-security@9.4.48.v20220622?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>https://eclipse.org/jetty/jetty-security</url>
+        </reference>
+        <reference type="distribution">
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/eclipse/jetty.project/issues</url>
+        </reference>
+        <reference type="mailing-list">
+          <url>https://dev.eclipse.org/mhonarc/lists/jetty-dev/maillist.html</url>
+        </reference>
+        <reference type="vcs">
+          <url>https://github.com/eclipse/jetty.project/jetty-security</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.eclipse.jetty/jetty-util-ajax@9.4.48.v20220622?type=jar">
+      <author/>
+      <publisher>Webtide</publisher>
+      <group>org.eclipse.jetty</group>
+      <name>jetty-util-ajax</name>
+      <version>9.4.48.v20220622</version>
+      <description><![CDATA[JSON/Ajax Utility classes for Jetty]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">d6f651beb733473a3ee7ef1ff66a8649</hash>
+        <hash alg="SHA-1">def39454993d094df10b1689592d235e636d7dde</hash>
+        <hash alg="SHA-256">b5d4b40be3cf9f48b3d5f8e5918066724a620cb901684939c9f1dd7ec1b930cb</hash>
+        <hash alg="SHA-512">33a66c99274f91013dfbf5d2e163dd8436bfef761c55612e1d893208c0221414bf95ed755c7c9871c6083211bb6b4d94883e1e556b4eb99cf64be776fda8a6fb</hash>
+        <hash alg="SHA-384">41f41f982c2f4ab568deadcd9747ac0570f5f1921433ee02d07148e18df18b0b5864327e9db3f3f0fccbabb137d8dcd0</hash>
+        <hash alg="SHA3-384">1e15496b096d1019b8d4c0b428a2b03e80deb13aca67d509869fc1c92d1583b8acece2f46c8b03b4447400317d561a09</hash>
+        <hash alg="SHA3-256">9c0d70b627c5ec612758eb6c7711977a1cd255d166cb3acb833d6cea6a162ecd</hash>
+        <hash alg="SHA3-512">caee6ede9e68093be230cb20d9d32df0ef2e54779dcd387bfc1b3194290dc1659127944d1b314a619985dd67454c9011313f90e0fa6e50ac149e605978c3f8ac</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+        <license>
+          <id>EPL-1.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.eclipse.jetty/jetty-util-ajax@9.4.48.v20220622?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>https://eclipse.org/jetty/jetty-util-ajax</url>
+        </reference>
+        <reference type="distribution">
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/eclipse/jetty.project/issues</url>
+        </reference>
+        <reference type="mailing-list">
+          <url>https://dev.eclipse.org/mhonarc/lists/jetty-dev/maillist.html</url>
+        </reference>
+        <reference type="vcs">
+          <url>https://github.com/eclipse/jetty.project/jetty-util-ajax</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.eclipse.jetty.websocket/websocket-server@9.4.48.v20220622?type=jar">
+      <author/>
+      <publisher>Webtide</publisher>
+      <group>org.eclipse.jetty.websocket</group>
+      <name>websocket-server</name>
+      <version>9.4.48.v20220622</version>
+      <description><![CDATA[The Eclipse Jetty Project]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">ee0c25d21cf26be31f89ee23733bb9c1</hash>
+        <hash alg="SHA-1">317d5fcb9f4a11265201546a0f55a0c2f4b1dd5c</hash>
+        <hash alg="SHA-256">32ad18b3c610a5036c33d2e6bdf76eb46759fb8e067483d7a96f94e3909a4285</hash>
+        <hash alg="SHA-512">4012624d0fbb646751e993469791b9e9e24878167ee1738adeeb9eda556e23e65588d101607e5fcca99a3bfd71651b203c4f74d8201f54b300e6062246d70ba8</hash>
+        <hash alg="SHA-384">2fb27c3265ab5c175ccff11d3537f6488f283604ad1dc04a78dcf31c3434e502e980d0a8d26f0e1b09d07f2c45f99e8f</hash>
+        <hash alg="SHA3-384">dcb01f5daf4d8e34d948076408a8c236a5b4d9830b23502a5ee44c7f17fe7005643c8e14dbc7be5796edb9e17a51252a</hash>
+        <hash alg="SHA3-256">f99a255d5b12234c26476cdf9847691d1d83df87191213a14b47eec1ceda0e02</hash>
+        <hash alg="SHA3-512">d94232a7e88d118841d7e69d34357b688b06e95aa7bebd30fb7ebbac43ca1c063dc69bab281eeb18ae0236bfe25c0a9279c65279192cbc2b2be6718f12b1316a</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+        <license>
+          <id>EPL-1.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.eclipse.jetty.websocket/websocket-server@9.4.48.v20220622?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>https://eclipse.org/jetty/websocket-parent/websocket-server</url>
+        </reference>
+        <reference type="distribution">
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/eclipse/jetty.project/issues</url>
+        </reference>
+        <reference type="mailing-list">
+          <url>https://dev.eclipse.org/mhonarc/lists/jetty-dev/maillist.html</url>
+        </reference>
+        <reference type="vcs">
+          <url>https://github.com/eclipse/jetty.project/websocket-parent/websocket-server</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.eclipse.jetty.websocket/websocket-common@9.4.48.v20220622?type=jar">
+      <author/>
+      <publisher>Webtide</publisher>
+      <group>org.eclipse.jetty.websocket</group>
+      <name>websocket-common</name>
+      <version>9.4.48.v20220622</version>
+      <description><![CDATA[The Eclipse Jetty Project]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">c533e9ec7fa83676388aef6ae49a74e5</hash>
+        <hash alg="SHA-1">03953122cd495f64ff72831e889a5a661631f580</hash>
+        <hash alg="SHA-256">1f630339e7e7f6de5d7f47f9496495d7689ad41fc11565aaf11ce9e22ff6ccda</hash>
+        <hash alg="SHA-512">31cc85352840a09d672edeb79f9283ead6b6295486b150a39362cbef8effca79b4a497522563314f7ca3a47e1b96b44f5e259bd45c25aa4694e929889d04311d</hash>
+        <hash alg="SHA-384">bc69108bcada4c8c7fd4e8fe15bb6a496a521d5320b0a476c36428272b6caf5db8a7aa243a31fe4d28762b61b61a7753</hash>
+        <hash alg="SHA3-384">4f804133d4d4a87f27bad4c86591402e185834d1ce2e645c0fe827bab7cd5eebf718febe4036852728565ab6da166e10</hash>
+        <hash alg="SHA3-256">3a2ef306031afdc3714ffe2d8285b983e6887463307c7a5cd6a0e83104234364</hash>
+        <hash alg="SHA3-512">d2914b36f1959c870b62c2a5ad8741ab11b0718af8884a9a7cb89316221efebde998f970e8688d59df087eb606eb248a4102cdd81107004fb3747f8ff3a88035</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+        <license>
+          <id>EPL-1.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.eclipse.jetty.websocket/websocket-common@9.4.48.v20220622?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>https://eclipse.org/jetty/websocket-parent/websocket-common</url>
+        </reference>
+        <reference type="distribution">
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/eclipse/jetty.project/issues</url>
+        </reference>
+        <reference type="mailing-list">
+          <url>https://dev.eclipse.org/mhonarc/lists/jetty-dev/maillist.html</url>
+        </reference>
+        <reference type="vcs">
+          <url>https://github.com/eclipse/jetty.project/websocket-parent/websocket-common</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.eclipse.jetty.websocket/websocket-servlet@9.4.48.v20220622?type=jar">
+      <author/>
+      <publisher>Webtide</publisher>
+      <group>org.eclipse.jetty.websocket</group>
+      <name>websocket-servlet</name>
+      <version>9.4.48.v20220622</version>
+      <description><![CDATA[The Eclipse Jetty Project]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">9fc6d0839bfb55f91e0857e49af37e47</hash>
+        <hash alg="SHA-1">6216200152965667066df70b65698e3a063e383d</hash>
+        <hash alg="SHA-256">28aeea9ac33a3f6d22e31ed2a6079abc35ce3ec1d5c80e1cc13859f536680b25</hash>
+        <hash alg="SHA-512">49d58d5e6f8df6d3ece4d4a90784bdff728dae60447de2b504080944d13e9a3644b32882bc186df0d33d4cf097a0ced19ea9c0419a135174b13a3ad956625fb8</hash>
+        <hash alg="SHA-384">a47bc17c9b453afe9eb9e7a4e51ba1bd302899304b7b6efa3f465a9a7398d9fea96584536ef5f1f5b8631a4f481498ba</hash>
+        <hash alg="SHA3-384">62375cdd1678b2a070e1f584d97cb6e2742c59b9f3c4e3a638b0bdc0d6888c3b2641e7253c497c1d415205a92b42595e</hash>
+        <hash alg="SHA3-256">9ee677668b6b22e5cf98d2cfb91e48e4cad40e7d9d607fc59b23d4ee7a4fa5fc</hash>
+        <hash alg="SHA3-512">fe75d3edb4f2ba985a4b7f8215e03fe6f7774a72e117337e7041cfb50b3f8d4cdcd005d3b0e7c5a1704894509610a5d27c84da470dfb144150fa0948a825903c</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+        <license>
+          <id>EPL-1.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.eclipse.jetty.websocket/websocket-servlet@9.4.48.v20220622?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>https://eclipse.org/jetty/websocket-parent/websocket-servlet</url>
+        </reference>
+        <reference type="distribution">
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/eclipse/jetty.project/issues</url>
+        </reference>
+        <reference type="mailing-list">
+          <url>https://dev.eclipse.org/mhonarc/lists/jetty-dev/maillist.html</url>
+        </reference>
+        <reference type="vcs">
+          <url>https://github.com/eclipse/jetty.project/websocket-parent/websocket-servlet</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.eclipse.jetty.websocket/websocket-api@9.4.48.v20220622?type=jar">
+      <author/>
+      <publisher>Webtide</publisher>
+      <group>org.eclipse.jetty.websocket</group>
+      <name>websocket-api</name>
+      <version>9.4.48.v20220622</version>
+      <description><![CDATA[The Eclipse Jetty Project]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">81e6d92c840d6d1a430b25904a37bab9</hash>
+        <hash alg="SHA-1">76523923d4a5efabe05c2a7aa120282ac1db8c79</hash>
+        <hash alg="SHA-256">87fb052324d6c5e22f58fb729169913bb318d97921115640c3dca453c7eb19e1</hash>
+        <hash alg="SHA-512">ba240ae3da1a6aa66913e79d5c1acff9be054ad1b5c0091d0d026b609d9417842b02168d57ba07b1b10c74594d1d90d08d824821982ef79f477e2f2a7c932c2c</hash>
+        <hash alg="SHA-384">f45a351613dcc956446b91d0c4cc513de9534347bfd89ff8d44e96c73c827440846c4016c12fbd1346191b311b8efcee</hash>
+        <hash alg="SHA3-384">dafabf09d0ba3b22515c94dec02f86c0dacbbd6499cb70d8f0dfdac135d085f1854cc38a0c8631d56979e55469ebe8fe</hash>
+        <hash alg="SHA3-256">3bb3f546855eab1d5dc3bb1d8de0736a480ee87d71b0a68ecff648ca01e81fec</hash>
+        <hash alg="SHA3-512">e1bf684d8dd1ea88a64ee4bc792018a09a9da64bb66a3938ef055f1ee43bf87fb5fd23636aeb9c9fd19e189113c4e38f8d41b3a25abd490810665b8fcc1197fa</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+        <license>
+          <id>EPL-1.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.eclipse.jetty.websocket/websocket-api@9.4.48.v20220622?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>https://eclipse.org/jetty/websocket-parent/websocket-api</url>
+        </reference>
+        <reference type="distribution">
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/eclipse/jetty.project/issues</url>
+        </reference>
+        <reference type="mailing-list">
+          <url>https://dev.eclipse.org/mhonarc/lists/jetty-dev/maillist.html</url>
+        </reference>
+        <reference type="vcs">
+          <url>https://github.com/eclipse/jetty.project/websocket-parent/websocket-api</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/junit/junit@4.12?type=jar">
+      <author/>
+      <publisher>JUnit</publisher>
+      <group>junit</group>
+      <name>junit</name>
+      <version>4.12</version>
+      <description><![CDATA[JUnit is a unit testing framework for Java, created by Erich Gamma and Kent Beck.]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">5b38c40c97fbd0adee29f91e60405584</hash>
+        <hash alg="SHA-1">2973d150c0dc1fefe998f834810d68f278ea58ec</hash>
+        <hash alg="SHA-256">59721f0805e223d84b90677887d9ff567dc534d7c502ca903c0c2b17f05c116a</hash>
+        <hash alg="SHA-512">5974670c3d178a12da5929ba5dd9b4f5ff461bdc1b92618c2c36d53e88650df7adbf3c1684017bb082b477cb8f40f15dcf7526f06f06183f93118ba9ebeaccce</hash>
+        <hash alg="SHA-384">e2f0c2db405e282d0f84a1766b9e8d9736d4377e292a5ef8457aec10384f9077005865167025b2779634d75bcb4d62cd</hash>
+        <hash alg="SHA3-384">a24a1d6d5ffe2f9fc3a90a442c3d1d5a12ae7bda3c68996c3b50f00186a2f961808c5ef504a771e9d6ab95ee38a383f0</hash>
+        <hash alg="SHA3-256">02b1f076652120813646a0cb34350f0c73a3299b221567e089f6aaadf8ab444a</hash>
+        <hash alg="SHA3-512">9e8f7057647c11564178e4569cf4f5682d3688b49d81acc60fd301f61053932ee9ac109c19cb639f7710d23afc76cb106ebde0f8143e2fe5fa08605201720a8b</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>EPL-1.0</id>
+          <url>http://www.eclipse.org/legal/epl-v10.html</url>
+        </license>
+      </licenses>
+      <purl>pkg:maven/junit/junit@4.12?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>http://junit.org</url>
+        </reference>
+        <reference type="build-system">
+          <url>https://junit.ci.cloudbees.com/</url>
+        </reference>
+        <reference type="distribution">
+          <url>https://github.com/junit-team/junit/wiki/Download-and-Install</url>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/junit-team/junit/issues</url>
+        </reference>
+        <reference type="mailing-list">
+          <url>https://groups.yahoo.com/neo/groups/junit/info</url>
+        </reference>
+        <reference type="vcs">
+          <url>http://github.com/junit-team/junit/tree/master</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.hamcrest/hamcrest-core@1.3?type=jar">
+      <author/>
+      <publisher/>
+      <group>org.hamcrest</group>
+      <name>hamcrest-core</name>
+      <version>1.3</version>
+      <description><![CDATA[This is the core API of hamcrest matcher framework to be used by third-party framework providers. This includes the a foundation set of matcher implementations for common operations.]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">6393363b47ddcbba82321110c3e07519</hash>
+        <hash alg="SHA-1">42a25dc3219429f0e5d060061f71acb49bf010a0</hash>
+        <hash alg="SHA-256">66fdef91e9739348df7a096aa384a5685f4e875584cce89386a7a47251c4d8e9</hash>
+        <hash alg="SHA-512">e237ae735aac4fa5a7253ec693191f42ef7ddce384c11d29fbf605981c0be077d086757409acad53cb5b9e53d86a07cc428d459ff0f5b00d32a8cbbca390be49</hash>
+        <hash alg="SHA-384">4b5297d2a12cc32b824153afc83f1ba9f1869ca288330f0a2f759659d09e4c420eb6ba4a1efbfa0657b625edd41293d5</hash>
+        <hash alg="SHA3-384">b14d34985c0a78cf0ba19b5a18bffd403e08adcb2afde228ddef6e16121c7046dbebf58c04d3419311c4496c48aa93be</hash>
+        <hash alg="SHA3-256">f679af77deedf69b3c3066f7916583848c6fd32a950f9c0b0e2ef1da121717ba</hash>
+        <hash alg="SHA3-512">bca821931e438a1977b7b4356b5f8cebf485634f82159d505c48267c34e6a0f4fde9c2917331365f66dc0e52e2ca3a2db5256863584110c27ecebefc28741f63</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>BSD-3-Clause</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.hamcrest/hamcrest-core@1.3?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>https://github.com/hamcrest/JavaHamcrest/hamcrest-core</url>
+        </reference>
+        <reference type="vcs">
+          <url>https://github.com/hamcrest/JavaHamcrest/hamcrest-core</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.mockito/mockito-core@1.10.19?type=jar">
+      <author/>
+      <publisher/>
+      <group>org.mockito</group>
+      <name>mockito-core</name>
+      <version>1.10.19</version>
+      <description><![CDATA[Mock objects library for java]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">c1967f0a515c4b8155f62478ec823464</hash>
+        <hash alg="SHA-1">e8546f5bef4e061d8dd73895b4e8f40e3fe6effe</hash>
+        <hash alg="SHA-256">d5831ee4f71055800821a34a3051cf1ed5b3702f295ffebd50f65fb5d81a71b8</hash>
+        <hash alg="SHA-512">15222889398341f867c4e9cc2884cd37eafff68542a28c852382bded5d7d76b67831f006a36f8f069524ccf9acd1295f9b5267ec8b2f1f49470b3fc6aedfc548</hash>
+        <hash alg="SHA-384">21af70f9cdea1c17cdc44d480bdd9b9be93389034b0caef7cde51b8c2a476159632be2ea93c1771813eae7f175e10230</hash>
+        <hash alg="SHA3-384">9c43f5c8b963caca8afb62d11584888d5f8d3dbed96d7f86b46eb0324bb86eed54b00ee0706cd87f25e84ba1040addfa</hash>
+        <hash alg="SHA3-256">d87f2d6d89fb597753b7409ec0a85d3c2448a8913106f6aa8cc3062f837478ca</hash>
+        <hash alg="SHA3-512">bc944766340726a01dfe41daafa5adb39ea38850f462a800fe32ea56716aeb88fb24808fb59dc37db0ff1787a4b4290859dc8a9dd7b687fabf3f770bb575eddb</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>MIT</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.mockito/mockito-core@1.10.19?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>http://www.mockito.org</url>
+        </reference>
+        <reference type="vcs">
+          <url>http://github.com/mockito/mockito</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.objenesis/objenesis@2.1?type=jar">
+      <author/>
+      <publisher>Joe Walnes, Henri Tremblay, Leonardo Mesquita</publisher>
+      <group>org.objenesis</group>
+      <name>objenesis</name>
+      <version>2.1</version>
+      <description><![CDATA[A library for instantiating Java objects]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">32ccb1d20a42b5aaaceb90c9082a2efa</hash>
+        <hash alg="SHA-1">87c0ea803b69252868d09308b4618f766f135a96</hash>
+        <hash alg="SHA-256">c74330cc6b806c804fd37e74487b4fe5d7c2750c5e15fbc6efa13bdee1bdef80</hash>
+        <hash alg="SHA-512">1dec9ee30812b8006e536a2749c5781ccdc4b446539efb6fa534f22e70562033876bf2eb22c6946d617695729bd65f0f65b984f15f05ac63db5bed215e74427c</hash>
+        <hash alg="SHA-384">657b8a3b80a5475f198425396f7264301f9e0f3ad5dc336ef0c7b46874f5544861a8a2fd48cdb5f672e199a6935c19d1</hash>
+        <hash alg="SHA3-384">e526937d722aad1857869b2d2a0ba5c88815609308c00b776b51614e501de5d93d54978f5bb9cf496bdcc28b1dbd5775</hash>
+        <hash alg="SHA3-256">436cfbb9c208dd03c951708fa4ba6525e2a0b26a873d594a6fbe93ab49082c97</hash>
+        <hash alg="SHA3-512">1e7ee9411df7cfbf0669c38e4ef029155dd718b91db1d182841c740caf8c1057ed273a77f8e32d724c48aaf96815a26ab099c776511ffc5ef351d70ebfa70344</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.objenesis/objenesis@2.1?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>http://objenesis.org</url>
+        </reference>
+        <reference type="distribution">
+          <url>http://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </reference>
+        <reference type="vcs">
+          <url>https://github.com/easymock/easymock/objenesis</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.powermock/powermock-module-junit4@1.7.4?type=jar">
+      <author/>
+      <publisher/>
+      <group>org.powermock</group>
+      <name>powermock-module-junit4</name>
+      <version>1.7.4</version>
+      <description><![CDATA[PowerMock support module for JUnit 4.x.]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">9c3e967ab49e461f976cb4d3d5c83ea0</hash>
+        <hash alg="SHA-1">18cc40fb5e3997ad766405986bcbb64d6a4551a4</hash>
+        <hash alg="SHA-256">8271bc70cc8d396360d600396c795825c0121f72a537f25b23e0e86c0278fccc</hash>
+        <hash alg="SHA-512">1b40661454af2e4967e3addf4ce03bffc9511e3502b6e40d72b9b8971340b8aea0793a4943ba37badb6ccc435c837b0b0b0a4676cb556d3e78d23524d1f3cc76</hash>
+        <hash alg="SHA-384">68695c1dfc61dcfc5f44e51823cb6e37d19344818269f625decf5becb95b2f7346d323334ee021deb61e902539b91545</hash>
+        <hash alg="SHA3-384">6849c6dd422efa7831cb7c0cc05c4f0ddf54006128cecc8c319c38b47a11e1c97f8ff1ff2145288c5c0cebbece415248</hash>
+        <hash alg="SHA3-256">c7a1b59c051b881a32f1d4c7454bc29c147f2ff5bf19f3b81045d375206a477a</hash>
+        <hash alg="SHA3-512">14037d7394f44a3ef7131d5f1f2cfb723cb67e8b6fdc50409a2780726f4809440770c3b2ef3d783f44be90a6d97c1f2f07880c96686c0f77c4f4fc43962dae73</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.powermock/powermock-module-junit4@1.7.4?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>http://www.powermock.org</url>
+        </reference>
+        <reference type="build-system">
+          <url>https://travis-ci.org/powermock/powermock</url>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/powermock/powermock/issues</url>
+        </reference>
+        <reference type="vcs">
+          <url>https://github.com/powermock/powermock.git</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.powermock/powermock-module-junit4-common@1.7.4?type=jar">
+      <author/>
+      <publisher/>
+      <group>org.powermock</group>
+      <name>powermock-module-junit4-common</name>
+      <version>1.7.4</version>
+      <description><![CDATA[PowerMock support module for all versions of JUnit 4.x.]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">89c4b19e736d28c747913784f0841008</hash>
+        <hash alg="SHA-1">53a078efeb50a0a8ab80c2eb3ecf83219d64008c</hash>
+        <hash alg="SHA-256">af14d42765e1d09fe0aa362a5470e100aecb0274e0c2fa8d32c99035b2771039</hash>
+        <hash alg="SHA-512">f4d4f8313b44504944252ffa2354b8186123658112477a78ff0de1c875f2fef95f05b01f41b6c9380a0a2513edbf6261305c2c96828daf642ae28068d7a78bee</hash>
+        <hash alg="SHA-384">c71e8a41be032681e7e2a0a97096722e9a24e2469d6a29631616f324cbcc097d10ff82cb4707df77133ba825285fcdec</hash>
+        <hash alg="SHA3-384">2880297e82be4af6a214f10b11e85aa34161bcad9dbd9458bc79c76a5537dfb4d6d37ef8da50f414e6a8bdb572865a3d</hash>
+        <hash alg="SHA3-256">2d19b1842e9c0cc1c6dade62a6264d8193d78cb393d1df77befbd8cbd8fed586</hash>
+        <hash alg="SHA3-512">6693cb8da0c53dc04f963febbb024575bd67f71c7796280fd418a19d9b08b7d71eebea01e725d4625d3f4eec9e7bcd67cdcdecfb4740b21b92ba9c4792675a3f</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.powermock/powermock-module-junit4-common@1.7.4?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>http://www.powermock.org</url>
+        </reference>
+        <reference type="build-system">
+          <url>https://travis-ci.org/powermock/powermock</url>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/powermock/powermock/issues</url>
+        </reference>
+        <reference type="vcs">
+          <url>https://github.com/powermock/powermock.git</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.powermock/powermock-reflect@1.7.4?type=jar">
+      <author/>
+      <publisher/>
+      <group>org.powermock</group>
+      <name>powermock-reflect</name>
+      <version>1.7.4</version>
+      <description><![CDATA[Various utilities for accessing internals of a class.]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">99455ec48198298fdb8104c92b86b6ae</hash>
+        <hash alg="SHA-1">a484263077a371165c2fa96aa52935cd580a3e3c</hash>
+        <hash alg="SHA-256">01970886cf822f44fc0815c46b7fcf6d67efcc21d5dc2f8985ff1dbbfe3f24c6</hash>
+        <hash alg="SHA-512">53a534e6b52ed918504d031fd506a7dda5c9069448bfc6b10c106c700201defccaa51a78ae9c18fe6aa67daae52a2d7faf5d6bfb1ad102a86f24ceaa72ac193f</hash>
+        <hash alg="SHA-384">3b31ac5a8e17acb3d1e85c1f57d9004929f75a698c9cca0e0c4c60ac8e46a944829928bba1a98cafc4bde262e962d60d</hash>
+        <hash alg="SHA3-384">9a6b834376e39e4586a111e1ba6e8fe7ecc3b5cbf2c97b7ff8cad71fb0665ba9c2a1c5cfbc48aee60b756818eb11e263</hash>
+        <hash alg="SHA3-256">fa629b2992c33cf324dd3cdbe93841e5981cec136ef22137a8cb630e87d3805f</hash>
+        <hash alg="SHA3-512">21c3d8281cc3c96f393dfce7e1ed063ad41a9d158cfae8336c3f966ec97da5ac3576632fb805bbd9ffbb5e4b3fc79d58da0e7aa39df8c0506c52f0fdf2f9181a</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.powermock/powermock-reflect@1.7.4?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>http://www.powermock.org</url>
+        </reference>
+        <reference type="build-system">
+          <url>https://travis-ci.org/powermock/powermock</url>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/powermock/powermock/issues</url>
+        </reference>
+        <reference type="vcs">
+          <url>https://github.com/powermock/powermock.git</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.powermock/powermock-core@1.7.4?type=jar">
+      <author/>
+      <publisher/>
+      <group>org.powermock</group>
+      <name>powermock-core</name>
+      <version>1.7.4</version>
+      <description><![CDATA[Various utilities for accessing internals of a class.]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">5a4d4bc7158ae2a2f6cad52480ca82a6</hash>
+        <hash alg="SHA-1">2170b16d933fdd9815bc1f3871771ab30e9ad2fe</hash>
+        <hash alg="SHA-256">72d96da61d697f1834f05912d4d73f3697ee33e86716244b22902f251f19232f</hash>
+        <hash alg="SHA-512">80168e6bf52b77f068804c8456a903c12df6897390b599a457962a4358e813ccf8dcd236bc0717cec58165571241c131c3c18e0b7a164345b9cfc9c5f8c51ebe</hash>
+        <hash alg="SHA-384">d9ee7be0b1c71a89b4d94b60bbfdcc2dbe65cac3713d1171ec30546d1b6ecf34290441b3fea495f1f3fd280d47a77bd0</hash>
+        <hash alg="SHA3-384">c9fa9f3d925b2df5696cc8ab2eda49fe962698fc60095e83b349225b5991acda7157eeb33295c2eda9f2d84ad8e13c61</hash>
+        <hash alg="SHA3-256">fea98e8df73d648c431062c04eea5abbea1945c1904007abbdaf3d632c6b51ed</hash>
+        <hash alg="SHA3-512">75ae9b3cd1190c6c7618ff5b007bd71abb26d1fa8c09bec724854d34a7639ec653f4389b3ac6f44695afee481a91794fc284be4a3e18382d7286be1906a680f7</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.powermock/powermock-core@1.7.4?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>http://www.powermock.org</url>
+        </reference>
+        <reference type="build-system">
+          <url>https://travis-ci.org/powermock/powermock</url>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/powermock/powermock/issues</url>
+        </reference>
+        <reference type="vcs">
+          <url>https://github.com/powermock/powermock.git</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.javassist/javassist@3.21.0-GA?type=jar">
+      <author/>
+      <publisher>Shigeru Chiba, www.javassist.org</publisher>
+      <group>org.javassist</group>
+      <name>javassist</name>
+      <version>3.21.0-GA</version>
+      <description><![CDATA[Javassist (JAVA programming ASSISTant) makes Java bytecode manipulation simple. It is a class library for editing bytecodes in Java.]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">3dba2305f842c2891df0a0926e18bcfa</hash>
+        <hash alg="SHA-1">598244f595db5c5fb713731eddbb1c91a58d959b</hash>
+        <hash alg="SHA-256">7aa59e031f941984af07dacc6ca85e6dc9bd3a485e9aa2494cbc034efa1225d0</hash>
+        <hash alg="SHA-512">28b0c1ab9d5e74d0b5045f152e7ef6fc29bf6c27c085f6b874dadddacb7e68f49c1d9a5e97cf5002ee5076a63ce55a5c297f0427345728244efe0c8971155bd0</hash>
+        <hash alg="SHA-384">0dbc4a6fafe6dcbbb8914cb27460af9fed505ebb8b7a1a2b403fd82f580ff6d58d8b7f3f94b3b1ec8e3b755c093ca5e4</hash>
+        <hash alg="SHA3-384">adb47d3e75fff97972e79b867fdf4848517231c19b4cb95796e94bae06e4b29901b691daf1a47a8fb2a6a35abda9b9f1</hash>
+        <hash alg="SHA3-256">30705a98ba9704764ddf58f0235b654a08108087fa4aab249077318d3b4863c6</hash>
+        <hash alg="SHA3-512">88759fcf8a306a85bd95973b30abbbee6a0a4b40943d308b9218ff8c435bf872b9207ae5d50a11e1ea197c9d9787242569f5541e3714c848093535ec0c6dde3d</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>MPL-1.1</id>
+        </license>
+        <license>
+          <id>LGPL-2.1-only</id>
+        </license>
+        <license>
+          <id>Apache-2.0</id>
+          <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.javassist/javassist@3.21.0-GA?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>http://www.javassist.org/</url>
+        </reference>
+        <reference type="distribution">
+          <url>https://repository.jboss.org/nexus/service/local/staging/deploy/maven2/</url>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://jira.jboss.org/jira/browse/JASSIST/</url>
+        </reference>
+        <reference type="vcs">
+          <url>scm:git:git@github.com:jboss-javassist/javassist.git</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.powermock/powermock-api-mockito@1.7.4?type=jar">
+      <author/>
+      <publisher/>
+      <group>org.powermock</group>
+      <name>powermock-api-mockito</name>
+      <version>1.7.4</version>
+      <description><![CDATA[PowerMock API for Mockito 1.+..]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">b3551c51cf2f539722a22d18a2fcc63f</hash>
+        <hash alg="SHA-1">ae9398856e5264c0742227b9db3a395a753d9aaf</hash>
+        <hash alg="SHA-256">24811f7229a13e92ce759da42854bd022369929aec3de84ae1cda7e278c88447</hash>
+        <hash alg="SHA-512">d1901e7fe145c12d4cfed1b7083ef468a2ec0070121f944dad7712c4dcd901c13d5aa672539ff25934939b4eeba7a9845072b67ff0be1894429a0d81897ba656</hash>
+        <hash alg="SHA-384">eab0b603e3f28b04d972325d6fc4e122bbf7927ef223128b96e186b1d6b6484c97ed607166812d8e958415fe7f51d4ad</hash>
+        <hash alg="SHA3-384">f897f0a90f354ec4abd2736388b9398e30268f305fbad9c7c89150dd20f2c26374df84027659ccc8f42b0e423bcccdb7</hash>
+        <hash alg="SHA3-256">a6a4383834070e4398d27667363ed67325558f57e48dbe7ead98a0b4b92bc57a</hash>
+        <hash alg="SHA3-512">3e7dd369f386a5cd321d97b6b12cb47251293aefa4835cba726b45af17f89334de3ae317969960b347ecb69371b41329ec12099aef6c3a81357e1c60d451326f</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.powermock/powermock-api-mockito@1.7.4?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>http://www.powermock.org</url>
+        </reference>
+        <reference type="build-system">
+          <url>https://travis-ci.org/powermock/powermock</url>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/powermock/powermock/issues</url>
+        </reference>
+        <reference type="vcs">
+          <url>https://github.com/powermock/powermock.git</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.powermock/powermock-api-mockito-common@1.7.4?type=jar">
+      <author/>
+      <publisher/>
+      <group>org.powermock</group>
+      <name>powermock-api-mockito-common</name>
+      <version>1.7.4</version>
+      <description><![CDATA[PowerMock API for Mockito. Common classes.]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">39e65ecb1987a65e03e72a2d4923c4f6</hash>
+        <hash alg="SHA-1">7db8344c2c34baab81ac3f6e9ad1cf45e1d08d37</hash>
+        <hash alg="SHA-256">9b216ae6583ae2b073a30677307c661a5548d3bdf5b5999daae080a735894bb3</hash>
+        <hash alg="SHA-512">19cf6f45997116d389300969198855c8f0c3d851b8572339acc21394214dd1899496c398b065651be0775b01e05a0c6244bf21256f9d1e59c47bcae5ac224c19</hash>
+        <hash alg="SHA-384">51d93db9c1f1d2baf7ba21d1faacbfa35d4a1160b8127343565dc575f80453dd824dccf677e0c85e34121b11ed3743de</hash>
+        <hash alg="SHA3-384">3b32653659d03ef5c0e5e724e68b645ebf2c1a5c6b4869ad031c8d2bef61424178ca7ffad99aab05afb835fad8e90810</hash>
+        <hash alg="SHA3-256">294ce103f887c5896453a8f906abb9a15f307254e7b88336743eaf0dfbc59138</hash>
+        <hash alg="SHA3-512">58d9500d0f8220140adbf817db978346cbccea281632f2c6777c603abe97a51b66e6afca6dcd9c015884686f815cd0ee06192c5c3b0720c30516a49384ed4622</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.powermock/powermock-api-mockito-common@1.7.4?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>http://www.powermock.org</url>
+        </reference>
+        <reference type="build-system">
+          <url>https://travis-ci.org/powermock/powermock</url>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/powermock/powermock/issues</url>
+        </reference>
+        <reference type="vcs">
+          <url>https://github.com/powermock/powermock.git</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.powermock/powermock-api-support@1.7.4?type=jar">
+      <author/>
+      <publisher/>
+      <group>org.powermock</group>
+      <name>powermock-api-support</name>
+      <version>1.7.4</version>
+      <description><![CDATA[PowerMock API Utility classes.]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">019fea77211f3f7f74eb5b35cc73a476</hash>
+        <hash alg="SHA-1">688c8cb384a31060fc04130eec1c6e68546d0e3e</hash>
+        <hash alg="SHA-256">faa0ef7f926dc1e27764dfb0d3da34dd8b37ed6d870cabcca9c3ca808dc2d278</hash>
+        <hash alg="SHA-512">d953e56ddf39194254071440d0497a58b00bde546505dc5922c9a8d0a0f0d8cb13afbe2b5df604326e184edd166896a5b9a2092bff048b7b56ee0839ea85dd64</hash>
+        <hash alg="SHA-384">27b08cb0a823c7f666f4e0892659909f81858b593e86084bcb24440194b3a88711ed7db4262288a18e0bf41044433663</hash>
+        <hash alg="SHA3-384">c4a85962ed44d7687d95438a684b931762bd128dc817954b541b788a505d0192b1f367fca686dd961590b7999b9b35bb</hash>
+        <hash alg="SHA3-256">df9705bfcb2890268862954da1748fe737ab0fa57f49f1585044c353fed8d32e</hash>
+        <hash alg="SHA3-512">4805cf9040022e9484695f0faf45a07edeadcd89172a0ad5537f9ec06211ac6f045e5b08ed05c98aa122a056482298afb75f021a261ce45568a96c147ddb7890</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.powermock/powermock-api-support@1.7.4?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>http://www.powermock.org</url>
+        </reference>
+        <reference type="build-system">
+          <url>https://travis-ci.org/powermock/powermock</url>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/powermock/powermock/issues</url>
+        </reference>
+        <reference type="vcs">
+          <url>https://github.com/powermock/powermock.git</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.apache.httpcomponents/httpclient@4.5.6?type=jar">
+      <author/>
+      <publisher>The Apache Software Foundation</publisher>
+      <group>org.apache.httpcomponents</group>
+      <name>httpclient</name>
+      <version>4.5.6</version>
+      <description><![CDATA[Apache HttpComponents Client]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">877aca56579fea38c6358d06408976ba</hash>
+        <hash alg="SHA-1">1afe5621985efe90a92d0fbc9be86271efbe796f</hash>
+        <hash alg="SHA-256">c03f813195e7a80e3608d0ddd8da80b21696a4c92a6a2298865bf149071551c7</hash>
+        <hash alg="SHA-512">32cb1ee6e34c883ff7f4ade7eaf563152962b0e40e6795f93d1600ffe1ced7102062c8d0c2c31f4fc9606f1f500ea554e5d83b7ae650c1d78a3be312808e6f35</hash>
+        <hash alg="SHA-384">b34eb7c27c43a0934b2a6ca8dcc9508ecd30fef0e5f6f47f3e2a5e504e2b538b0c31a31a9c755bd1dbde313a62795b15</hash>
+        <hash alg="SHA3-384">6329362614b2f21e483c488777e7c747b1c70d26e7b59a535dc881dd93e2fc2440476996ccd14d17cb132252348b4ac3</hash>
+        <hash alg="SHA3-256">91bdf9371484cc1cb4dbd3def9ee7a8a7712cfabc1e87b7ed69d5bc09c02d909</hash>
+        <hash alg="SHA3-512">3b01e6443d24bea0492148ad4924386da974565336a93b52765d6bce778643d8c2e1bfb29861d93894b4d4e0e3e9c03693697193cd6f539c037515a0017bf4d0</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.apache.httpcomponents/httpclient@4.5.6?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>http://hc.apache.org/httpcomponents-client</url>
+        </reference>
+        <reference type="distribution">
+          <url>https://repository.apache.org/service/local/staging/deploy/maven2</url>
+        </reference>
+        <reference type="issue-tracker">
+          <url>http://issues.apache.org/jira/browse/HTTPCLIENT</url>
+        </reference>
+        <reference type="mailing-list">
+          <url>http://mail-archives.apache.org/mod_mbox/hc-httpclient-users/</url>
+        </reference>
+        <reference type="vcs">
+          <url>https://github.com/apache/httpcomponents-client/tree/4.5.6/httpclient</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.apache.httpcomponents/httpcore@4.4.10?type=jar">
+      <author/>
+      <publisher>The Apache Software Foundation</publisher>
+      <group>org.apache.httpcomponents</group>
+      <name>httpcore</name>
+      <version>4.4.10</version>
+      <description><![CDATA[Apache HttpComponents Core (blocking I/O)]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">0aa2d618716ab34e5c0389b44814700a</hash>
+        <hash alg="SHA-1">acc54d9b28bdffe4bbde89ed2e4a1e86b5285e2b</hash>
+        <hash alg="SHA-256">78ba1096561957db1b55200a159b648876430342d15d461277e62360da19f6fd</hash>
+        <hash alg="SHA-512">7f58003e9eec977627401c4c6bc720af257094f492b0f73c43fb547e0d161017657f5c9c0b834704c5c00112b91e88ee9e4c255cc1e31aa62ba979d21393aed4</hash>
+        <hash alg="SHA-384">f0d4381a3c5a6f62ac920762a9315a56097c3917f1b57fab9e63f5236ed683170b04401a9dfcef104b03c8a32f79c529</hash>
+        <hash alg="SHA3-384">13a64af14dae22f98c0ab1a4fa1c3fcf2eda89b263adff25dd7fcd825eec772ff4832aa02cb0f091a5e2f727d3826d73</hash>
+        <hash alg="SHA3-256">a7197c7f9b99a49f35add81ed8a7a96e4ea7e5a3562a7831e1ebd4b2a65ddffa</hash>
+        <hash alg="SHA3-512">74499cc37209bbf7637984c239a67d3651bb5b7235e18d437d77317b7df139e0c2da58b874f7618e1f74cfa7d647b0090f986b0f4e33ed2be116cd1fcbc2e0fe</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.apache.httpcomponents/httpcore@4.4.10?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>http://hc.apache.org/httpcomponents-core-ga</url>
+        </reference>
+        <reference type="distribution">
+          <url>https://repository.apache.org/service/local/staging/deploy/maven2</url>
+        </reference>
+        <reference type="issue-tracker">
+          <url>http://issues.apache.org/jira/browse/HTTPCORE</url>
+        </reference>
+        <reference type="mailing-list">
+          <url>http://mail-archives.apache.org/mod_mbox/hc-httpclient-users/</url>
+        </reference>
+        <reference type="vcs">
+          <url>https://github.com/apache/httpcomponents-core/tree/4.4.10/httpcore</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="framework" bom-ref="pkg:maven/commons-logging/commons-logging@1.2?type=jar">
+      <author/>
+      <publisher>The Apache Software Foundation</publisher>
+      <group>commons-logging</group>
+      <name>commons-logging</name>
+      <version>1.2</version>
+      <description><![CDATA[Apache Commons Logging is a thin adapter allowing configurable bridging to other, well known logging systems.]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">040b4b4d8eac886f6b4a2a3bd2f31b00</hash>
+        <hash alg="SHA-1">4bfc12adfe4842bf07b657f0369c4cb522955686</hash>
+        <hash alg="SHA-256">daddea1ea0be0f56978ab3006b8ac92834afeefbd9b7e4e6316fca57df0fa636</hash>
+        <hash alg="SHA-512">ed00dbfabd9ae00efa26dd400983601d076fe36408b7d6520084b447e5d1fa527ce65bd6afdcb58506c3a808323d28e88f26cb99c6f5db9ff64f6525ecdfa557</hash>
+        <hash alg="SHA-384">ac20720d7156131478205f1b454395abf84cfc8da2f163301af32f63bd3c4764bd26cb54ed53800f33193ae591f3ce9c</hash>
+        <hash alg="SHA3-384">628eb4407e95dca84da1a06b08a6d9b832a49de8472b1b217e8607f08efeeed18b996232d64dd07f03e78e0e3bb4b078</hash>
+        <hash alg="SHA3-256">9aab62deccf156ee6e324c925dfc30ecb53e8465802863a551901a461424e807</hash>
+        <hash alg="SHA3-512">3fd76857f6d20c03799537cc961c1c4ddf1c375c6c192fb982363e3b9397ba138b77f24ef38b4202f44e37586789c0320e4de18fdadd2772304fd14a9b26d552</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/commons-logging/commons-logging@1.2?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>http://commons.apache.org/proper/commons-logging/</url>
+        </reference>
+        <reference type="build-system">
+          <url>https://continuum-ci.apache.org/</url>
+        </reference>
+        <reference type="distribution">
+          <url>https://repository.apache.org/service/local/staging/deploy/maven2</url>
+        </reference>
+        <reference type="issue-tracker">
+          <url>http://issues.apache.org/jira/browse/LOGGING</url>
+        </reference>
+        <reference type="mailing-list">
+          <url>http://mail-archives.apache.org/mod_mbox/commons-user/</url>
+        </reference>
+        <reference type="vcs">
+          <url>http://svn.apache.org/repos/asf/commons/proper/logging/trunk</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/commons-codec/commons-codec@1.10?type=jar">
+      <author/>
+      <publisher>The Apache Software Foundation</publisher>
+      <group>commons-codec</group>
+      <name>commons-codec</name>
+      <version>1.10</version>
+      <description><![CDATA[The Apache Commons Codec package contains simple encoder and decoders for various formats such as Base64 and Hexadecimal. In addition to these widely used encoders and decoders, the codec package also maintains a collection of phonetic encoding utilities.]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">353cf6a2bdba09595ccfa073b78c7fcb</hash>
+        <hash alg="SHA-1">4b95f4897fa13f2cd904aee711aeafc0c5295cd8</hash>
+        <hash alg="SHA-256">4241dfa94e711d435f29a4604a3e2de5c4aa3c165e23bd066be6fc1fc4309569</hash>
+        <hash alg="SHA-512">8edecc0faf38e8620460909d8191837f34e2bb2ce853677c486c5e79bb79e88d043c3aed69c11f1365c4884827052ee4e1c18ca56e38d1a5bc0ce15c57daeee3</hash>
+        <hash alg="SHA-384">8412e1f64746422f1875a811c71c51b6e45512a6255ff47e3b2b437bf6fb12eeea3910e3c1a0bb3caad672d3ae15852d</hash>
+        <hash alg="SHA3-384">7a02456a52fb37324fdc2d31f6ef958b898de479fedf32244facf7104b3dc1834761cc1f90c5dad74be76fcd980d09c5</hash>
+        <hash alg="SHA3-256">5491c5ce96af7ee3af286d6095baf71cffbc80e110b3a6c5951b3a108d717343</hash>
+        <hash alg="SHA3-512">473ad932b9f0851c7548e47304ce30567fb528ece28df818b61f42ea04f6198ef60f6f73c7b22cff612d61d3a6efaf0c7a0dec3922fea2bf4493d32f0a6dff41</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/commons-codec/commons-codec@1.10?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>http://commons.apache.org/proper/commons-codec/</url>
+        </reference>
+        <reference type="build-system">
+          <url>https://continuum-ci.apache.org/</url>
+        </reference>
+        <reference type="distribution">
+          <url>https://repository.apache.org/service/local/staging/deploy/maven2</url>
+        </reference>
+        <reference type="issue-tracker">
+          <url>http://issues.apache.org/jira/browse/CODEC</url>
+        </reference>
+        <reference type="mailing-list">
+          <url>http://mail-archives.apache.org/mod_mbox/commons-user/</url>
+        </reference>
+        <reference type="vcs">
+          <url>http://svn.apache.org/viewvc/commons/proper/codec/trunk</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.freemarker/freemarker@2.3.28?type=jar">
+      <author/>
+      <publisher>Apache Software Foundation</publisher>
+      <group>org.freemarker</group>
+      <name>freemarker</name>
+      <version>2.3.28</version>
+      <description><![CDATA[FreeMarker is a "template engine"; a generic tool to generate text output based on templates.]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">c5e35d814518da7b0247d42311b8e296</hash>
+        <hash alg="SHA-1">7200064467a935052f99d114c2c05c3d189bc6d6</hash>
+        <hash alg="SHA-256">de92d103d3a86c2287307218ff50dc1c941de283f7b9e1fb23e93fc7220838bf</hash>
+        <hash alg="SHA-512">44435cb2b6ba02abacdc4a21bea44a2dc50faa1b486fc5b2f79097a68f1f98ca24aa835448ac5dec33a1869eed1b8a32ac285e95fdabbdafaa810d575951894e</hash>
+        <hash alg="SHA-384">3aef324f7ee0a8e356e291f7b81564c907fbcb287da399515e814411c7c622238cf129b65ad0928c65b9c4ba7544ac2a</hash>
+        <hash alg="SHA3-384">fb0ec37103eceb4dda853bb589794b3f04870e1cfe24031b572c130a9132f5d9fc1a6450dc1644f875b980a52dac0d8b</hash>
+        <hash alg="SHA3-256">d55883bf61b72d616dcd12e87d6f90b3b1fc761fcbcf5b8f3860e17bb34fc654</hash>
+        <hash alg="SHA3-512">7664cb34b0598e0eec19ecba1fba7b83ff09b574bf2320b84a09016d88aaabf902460e3bcd2b2290f59988462b8594e817eebcd777321608762dc141c1335a20</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.freemarker/freemarker@2.3.28?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>https://freemarker.apache.org/</url>
+        </reference>
+        <reference type="distribution">
+          <url>https://repository.apache.org/service/local/staging/deploy/maven2</url>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://issues.apache.org/jira/browse/FREEMARKER/</url>
+        </reference>
+        <reference type="mailing-list">
+          <url>http://mail-archives.apache.org/mod_mbox/freemarker-dev/</url>
+        </reference>
+        <reference type="vcs">
+          <url>https://git-wip-us.apache.org/repos/asf?p=freemarker.git</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/com.google.code.gson/gson@2.8.5?type=jar">
+      <author/>
+      <publisher/>
+      <group>com.google.code.gson</group>
+      <name>gson</name>
+      <version>2.8.5</version>
+      <description><![CDATA[Gson JSON library]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">089104cb90d8b4e1aa00b1f5faef0742</hash>
+        <hash alg="SHA-1">f645ed69d595b24d4cf8b3fbb64cc505bede8829</hash>
+        <hash alg="SHA-256">233a0149fc365c9f6edbd683cfe266b19bdc773be98eabdaf6b3c924b48e7d81</hash>
+        <hash alg="SHA-512">5dd7214c542a7b93aab3eab0ba13e4ac3d6ddb05c795fb6d3992e21925a98dce87cb186ac67b4d3ad146f96e14d38b3892837eca57a27b4e845aca6d4e4f708a</hash>
+        <hash alg="SHA-384">77f4d6efe8d9cf78b72f34e439035d266db1b82c9d96e6b78e6c571d4c719bb5f2b78e8377263280c6cc9dffe18b3d16</hash>
+        <hash alg="SHA3-384">953e2eca6de4a05e1cf86a9750aa9f1d10bfd06a15f7eaab4a59716cbec74a7bf6c5f421b1752d487882954daecc5781</hash>
+        <hash alg="SHA3-256">94cde12c15a685a10309653cfef73d14d09b340f1b8f0a9a04267136e9bf2820</hash>
+        <hash alg="SHA3-512">0aed985c19435fb6d5e04a79a7553f56a66814157ac93addcb24f9286321d0063b69ac008501f0e22f691ecb15a50491d3313aee73a745286454817e2f410fe9</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/com.google.code.gson/gson@2.8.5?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>https://github.com/google/gson/gson</url>
+        </reference>
+        <reference type="distribution">
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/google/gson/issues</url>
+        </reference>
+        <reference type="vcs">
+          <url>https://github.com/google/gson/gson/</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.eclipse.jetty.websocket/websocket-client@9.4.48.v20220622?type=jar">
+      <author/>
+      <publisher>Webtide</publisher>
+      <group>org.eclipse.jetty.websocket</group>
+      <name>websocket-client</name>
+      <version>9.4.48.v20220622</version>
+      <description><![CDATA[The Eclipse Jetty Project]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">1f74bb095077aa177667a7fd1e31e90e</hash>
+        <hash alg="SHA-1">e5536fc714ab049505f99ad799a831f7be36bbf0</hash>
+        <hash alg="SHA-256">432d9d85734be8acbdbc3656200d2b1d540574c9bebe0b4f75a3f8bbe402a2f1</hash>
+        <hash alg="SHA-512">2a8bd1f65b0e58dcba049b6240c570a02e1d24423b76d6b8a269a8f14328606587235136a1febc28a868038941df795de22f5c58a3a86482f97fe02ad1b30407</hash>
+        <hash alg="SHA-384">7921ae20a6547ac541da43c8c8e68ef91dc3356c4999fc848c3e069204bf9b835739659465b3d95bd57d6eab61ca98ec</hash>
+        <hash alg="SHA3-384">91c6e11faa2cff69dfd4a20b153478821e5c5b2105c1329c56ba7fd8b86ded777e3dc524fbd6580e58215207597af07c</hash>
+        <hash alg="SHA3-256">a71586c169e19f0e42d75b838fac1a5734b288239e5d0436df7272d2bdd11f78</hash>
+        <hash alg="SHA3-512">46bed0bcc49b9768dd12808663f76c4b86c8256b06ba145e9ef010540a862606bc483461ce5d1ae7709481107aada260d5f367f803453dd8738c48aa052c27c7</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+        <license>
+          <id>EPL-1.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.eclipse.jetty.websocket/websocket-client@9.4.48.v20220622?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>https://eclipse.org/jetty/websocket-parent/websocket-client</url>
+        </reference>
+        <reference type="distribution">
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/eclipse/jetty.project/issues</url>
+        </reference>
+        <reference type="mailing-list">
+          <url>https://dev.eclipse.org/mhonarc/lists/jetty-dev/maillist.html</url>
+        </reference>
+        <reference type="vcs">
+          <url>https://github.com/eclipse/jetty.project/websocket-parent/websocket-client</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.eclipse.jetty/jetty-client@9.4.48.v20220622?type=jar">
+      <author/>
+      <publisher>Webtide</publisher>
+      <group>org.eclipse.jetty</group>
+      <name>jetty-client</name>
+      <version>9.4.48.v20220622</version>
+      <description><![CDATA[The Eclipse Jetty Project]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">a94cf822833e096125f1e28bb6692365</hash>
+        <hash alg="SHA-1">fc2e953a7030045e1ca467d57e200856a170848e</hash>
+        <hash alg="SHA-256">7f89fe0900d36b296275999992a6ad76d523be35487d613d8fb56434c34d1d15</hash>
+        <hash alg="SHA-512">cb1fc80d304ebdddd7603180f104de940356e05df4660bbaa4aa5e739a9405e1d4d599ac8eca98f562306377e62cb9e23df3b8f30fddb010aae67260f2d74fe2</hash>
+        <hash alg="SHA-384">766e12ca5e8b2eb6ac22af10964c10468ba4c8f182cb6669c794bc40bd687c0e9f664c5cdedff6694b8e8504aae41c4d</hash>
+        <hash alg="SHA3-384">2eba489939c6db41dfefa146ae946d3c4777e5e84e203bf0d0a033b394b0675d2266fb7b243764bfa5616dae4bef67ef</hash>
+        <hash alg="SHA3-256">8f312990d2c9fb568fd6cd2a06b703effd5357a2a59a7f937e1814632a806825</hash>
+        <hash alg="SHA3-512">be56466903e2d391cbabfdc88a5fc2bec9cb425a8bdee198736424f252a687e1ec9ae276f18a65a2b72d30e3c42ab8382ed9bd9c894bd60d2d093e6cd123bd32</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+        <license>
+          <id>EPL-1.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.eclipse.jetty/jetty-client@9.4.48.v20220622?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>https://eclipse.org/jetty/jetty-client</url>
+        </reference>
+        <reference type="distribution">
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/eclipse/jetty.project/issues</url>
+        </reference>
+        <reference type="mailing-list">
+          <url>https://dev.eclipse.org/mhonarc/lists/jetty-dev/maillist.html</url>
+        </reference>
+        <reference type="vcs">
+          <url>https://github.com/eclipse/jetty.project/jetty-client</url>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.eclipse.jetty/jetty-util@9.4.48.v20220622?type=jar">
+      <author/>
+      <publisher>Webtide</publisher>
+      <group>org.eclipse.jetty</group>
+      <name>jetty-util</name>
+      <version>9.4.48.v20220622</version>
+      <description><![CDATA[Utility classes for Jetty]]></description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">e7d823f303f92de1d4ea694d9ec602de</hash>
+        <hash alg="SHA-1">7efc06f7ec0ff33d8c219bcc8c7415280c103669</hash>
+        <hash alg="SHA-256">24cafd449ca4b4bea9c2792b28fc6fe1c43beb628c0c1a0a72ee33afeac82b87</hash>
+        <hash alg="SHA-512">960ce187a62970475c83c372325ed7b0ff6dec8e15817f65a71ee71a661f74a870a7512ca5601d8cb38c7511b4141fa226a45edf6c7422f96808c4ee020ee3b3</hash>
+        <hash alg="SHA-384">cccf00ff8b1a7477085f5e6c2f2d14e36a61e1e8faa69bbd529dd3fdd76c223aa59a7caba705faf25e8c729a6c6e6080</hash>
+        <hash alg="SHA3-384">b5bae0e3b2a009bee06785c9029785cc9168f1f1fc7a2c5363a55115dafdffd8f9022a86f437ece273a70e1787be2db0</hash>
+        <hash alg="SHA3-256">c0dfd77487ffcaf0466fb32e23dd2606cc8d2c83a268d595bd17993346127338</hash>
+        <hash alg="SHA3-512">5af8b481bbd0bee48d7bcf1c11878ace13e40543ce6f277ce8664f398b791385a6289c505d7a8b6c28e92636c0d7b4b5c0329b1dea6e412ed9c0adbecdbd5372</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+        <license>
+          <id>EPL-1.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.eclipse.jetty/jetty-util@9.4.48.v20220622?type=jar</purl>
+      <externalReferences>
+        <reference type="website">
+          <url>https://eclipse.org/jetty/jetty-util</url>
+        </reference>
+        <reference type="distribution">
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/eclipse/jetty.project/issues</url>
+        </reference>
+        <reference type="mailing-list">
+          <url>https://dev.eclipse.org/mhonarc/lists/jetty-dev/maillist.html</url>
+        </reference>
+        <reference type="vcs">
+          <url>https://github.com/eclipse/jetty.project/jetty-util</url>
+        </reference>
+      </externalReferences>
+    </component>
+  </components>
+  <externalReferences>
+    <reference type="other">
+      <url>.</url>
+      <comment>Base path</comment>
+    </reference>
+    <reference type="other">
+      <url>/Users/yunzezhao/Code/CovSBOM/Application/spark-master/pom.xml</url>
+      <comment>Package file</comment>
+    </reference>
+  </externalReferences>
+  <dependencies>
+    <dependency ref="pkg:maven/com.sparkjava/spark-core@2.9.4-SNAPSHOT?type=bundle">
+      <dependency ref="pkg:maven/org.eclipse.jetty.websocket/websocket-client@9.4.48.v20220622?type=jar"/>
+    </dependency>
+    <dependency ref="pkg:maven/org.slf4j/slf4j-api@1.7.25?type=jar"/>
+    <dependency ref="pkg:maven/org.slf4j/slf4j-simple@1.7.25?type=jar">
+      <dependency ref="pkg:maven/org.slf4j/slf4j-api@1.7.25?type=jar"/>
+    </dependency>
+    <dependency ref="pkg:maven/org.eclipse.jetty/jetty-server@9.4.48.v20220622?type=jar">
+      <dependency ref="pkg:maven/org.eclipse.jetty/jetty-io@9.4.48.v20220622?type=jar"/>
+    </dependency>
+    <dependency ref="pkg:maven/javax.servlet/javax.servlet-api@3.1.0?type=jar"/>
+    <dependency ref="pkg:maven/org.eclipse.jetty/jetty-http@9.4.48.v20220622?type=jar">
+      <dependency ref="pkg:maven/org.eclipse.jetty/jetty-io@9.4.48.v20220622?type=jar"/>
+    </dependency>
+    <dependency ref="pkg:maven/org.eclipse.jetty/jetty-util@9.4.48.v20220622?type=jar"/>
+    <dependency ref="pkg:maven/org.eclipse.jetty/jetty-io@9.4.48.v20220622?type=jar">
+      <dependency ref="pkg:maven/org.eclipse.jetty/jetty-util@9.4.48.v20220622?type=jar"/>
+    </dependency>
+    <dependency ref="pkg:maven/org.eclipse.jetty/jetty-webapp@9.4.48.v20220622?type=jar">
+      <dependency ref="pkg:maven/org.eclipse.jetty/jetty-servlet@9.4.48.v20220622?type=jar"/>
+    </dependency>
+    <dependency ref="pkg:maven/org.eclipse.jetty/jetty-xml@9.4.48.v20220622?type=jar">
+      <dependency ref="pkg:maven/org.eclipse.jetty/jetty-util@9.4.48.v20220622?type=jar"/>
+    </dependency>
+    <dependency ref="pkg:maven/org.eclipse.jetty/jetty-servlet@9.4.48.v20220622?type=jar">
+      <dependency ref="pkg:maven/org.eclipse.jetty/jetty-util-ajax@9.4.48.v20220622?type=jar"/>
+    </dependency>
+    <dependency ref="pkg:maven/org.eclipse.jetty/jetty-security@9.4.48.v20220622?type=jar">
+      <dependency ref="pkg:maven/org.eclipse.jetty/jetty-server@9.4.48.v20220622?type=jar"/>
+    </dependency>
+    <dependency ref="pkg:maven/org.eclipse.jetty/jetty-util-ajax@9.4.48.v20220622?type=jar">
+      <dependency ref="pkg:maven/org.eclipse.jetty/jetty-util@9.4.48.v20220622?type=jar"/>
+    </dependency>
+    <dependency ref="pkg:maven/org.eclipse.jetty.websocket/websocket-server@9.4.48.v20220622?type=jar">
+      <dependency ref="pkg:maven/org.eclipse.jetty/jetty-http@9.4.48.v20220622?type=jar"/>
+    </dependency>
+    <dependency ref="pkg:maven/org.eclipse.jetty.websocket/websocket-common@9.4.48.v20220622?type=jar">
+      <dependency ref="pkg:maven/org.eclipse.jetty/jetty-io@9.4.48.v20220622?type=jar"/>
+    </dependency>
+    <dependency ref="pkg:maven/org.eclipse.jetty.websocket/websocket-api@9.4.48.v20220622?type=jar"/>
+    <dependency ref="pkg:maven/org.eclipse.jetty.websocket/websocket-client@9.4.48.v20220622?type=jar">
+      <dependency ref="pkg:maven/org.eclipse.jetty.websocket/websocket-common@9.4.48.v20220622?type=jar"/>
+    </dependency>
+    <dependency ref="pkg:maven/org.eclipse.jetty/jetty-client@9.4.48.v20220622?type=jar">
+      <dependency ref="pkg:maven/org.eclipse.jetty/jetty-io@9.4.48.v20220622?type=jar"/>
+    </dependency>
+    <dependency ref="pkg:maven/org.eclipse.jetty.websocket/websocket-servlet@9.4.48.v20220622?type=jar">
+      <dependency ref="pkg:maven/javax.servlet/javax.servlet-api@3.1.0?type=jar"/>
+    </dependency>
+    <dependency ref="pkg:maven/junit/junit@4.12?type=jar">
+      <dependency ref="pkg:maven/org.hamcrest/hamcrest-core@1.3?type=jar"/>
+    </dependency>
+    <dependency ref="pkg:maven/org.hamcrest/hamcrest-core@1.3?type=jar"/>
+    <dependency ref="pkg:maven/org.mockito/mockito-core@1.10.19?type=jar">
+      <dependency ref="pkg:maven/org.objenesis/objenesis@2.1?type=jar"/>
+    </dependency>
+    <dependency ref="pkg:maven/org.objenesis/objenesis@2.1?type=jar"/>
+    <dependency ref="pkg:maven/org.powermock/powermock-module-junit4@1.7.4?type=jar">
+      <dependency ref="pkg:maven/org.hamcrest/hamcrest-core@1.3?type=jar"/>
+    </dependency>
+    <dependency ref="pkg:maven/org.powermock/powermock-module-junit4-common@1.7.4?type=jar">
+      <dependency ref="pkg:maven/org.hamcrest/hamcrest-core@1.3?type=jar"/>
+    </dependency>
+    <dependency ref="pkg:maven/org.powermock/powermock-reflect@1.7.4?type=jar">
+      <dependency ref="pkg:maven/org.objenesis/objenesis@2.1?type=jar"/>
+    </dependency>
+    <dependency ref="pkg:maven/org.powermock/powermock-core@1.7.4?type=jar">
+      <dependency ref="pkg:maven/org.mockito/mockito-core@1.10.19?type=jar"/>
+    </dependency>
+    <dependency ref="pkg:maven/org.javassist/javassist@3.21.0-GA?type=jar"/>
+    <dependency ref="pkg:maven/org.powermock/powermock-api-mockito@1.7.4?type=jar">
+      <dependency ref="pkg:maven/org.mockito/mockito-core@1.10.19?type=jar"/>
+    </dependency>
+    <dependency ref="pkg:maven/org.powermock/powermock-api-mockito-common@1.7.4?type=jar">
+      <dependency ref="pkg:maven/org.mockito/mockito-core@1.10.19?type=jar"/>
+    </dependency>
+    <dependency ref="pkg:maven/org.powermock/powermock-api-support@1.7.4?type=jar">
+      <dependency ref="pkg:maven/org.powermock/powermock-core@1.7.4?type=jar"/>
+    </dependency>
+    <dependency ref="pkg:maven/org.apache.httpcomponents/httpclient@4.5.6?type=jar">
+      <dependency ref="pkg:maven/commons-codec/commons-codec@1.10?type=jar"/>
+    </dependency>
+    <dependency ref="pkg:maven/org.apache.httpcomponents/httpcore@4.4.10?type=jar"/>
+    <dependency ref="pkg:maven/commons-logging/commons-logging@1.2?type=jar"/>
+    <dependency ref="pkg:maven/commons-codec/commons-codec@1.10?type=jar"/>
+    <dependency ref="pkg:maven/org.freemarker/freemarker@2.3.28?type=jar"/>
+    <dependency ref="pkg:maven/com.google.code.gson/gson@2.8.5?type=jar"/>
+  </dependencies>
+</bom>
