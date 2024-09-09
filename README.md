@@ -5,8 +5,9 @@
 **CovSBOM** is a robust static analysis tool designed to enhance Software Bill of Materials (SBOM) by integrating detailed static analysis to reduce false positive rates in vulnerability scans. This tool leverages and extends existing SBOM capabilities to provide deeper insights into code dependencies and security vulnerabilities. You can view this quick [tutorial](https://drive.google.com/file/d/1RQ8fvevT_mb7EY4UntxKEB81qBLRJGxr/view?usp=drive_link) to see how CovSBOM works or follow the documentation below.
 
 
-## File Structure: 
-
+## File Structure/Artifacts Description: 
+<details>
+  <summary>Click to expand file structure explanations</summary>
 ### **1. ast_generator**
 This folder contains the core functionality of CovSBOM. Below is a description of the key files:
 
@@ -69,9 +70,7 @@ This folder contains the core functionality of CovSBOM. Below is a description o
 
 - **Utils.java**:  
   A utility class providing common functions and helpers used throughout the analysis.
----
 
-This explanation should give you a solid base, but feel free to modify the descriptions based on the specific functionality of each file. Let me know if you need further refinements!
 
 ### **2. CovSBOM_output/analysis**
 This folder stores the output files generated for each project after analysis. For each project, you will find three key files:
@@ -96,6 +95,7 @@ This folder contains scripts that scan for vulnerabilities after SBOM integratio
 
 - **scanCovSBOMAnalysis.py**: Scans the SBOM for vulnerabilities using the integrated analysis results. This script requires a JSON file as input, which contains known vulnerabilities (e.g., CVE IDs).
 
+</details>
 
 ## Example Project:
 We use [Spark - a tiny web framework for Java 8](https://github.com/perwendel/spark) for example project, if you run CovSBOM and enter no source file, it would default to this example application for review purposes. 
