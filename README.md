@@ -38,6 +38,16 @@ this folder contains the required scripts to scan for vulnerabilities after SBOM
 We use [Spark - a tiny web framework for Java 8](https://github.com/perwendel/spark) for example project, if you run CovSBOM and enter no source file, it would default to this example application for review purposes. 
 
 ```bash
+// install required packages first
+cd Application/spark-master
+mvn install -DskipTests
+mvn dependency:sources
+
+// back to project main folder
+cd ../..
+
+// now run the example:
+
 java -jar CovSBOM.jar
 -------Initializing-------
 Please enter the path to the Java source file:  // leave this blank 
@@ -47,7 +57,7 @@ Inferred path to pom.xml: Application/spark-master/pom.xml
 
 ## Prerequisites
 
-Before you begin using CovSBOM, ensure that your environment is set up with the necessary Java libraries. The tool assumes that all dependencies and plugins are properly installed. If you have not yet set up the environment, follow the steps below to install the required components:
+Before you begin using CovSBOM, ensure that your environment is set up with the necessary Java libraries. The tool ##assumes that all dependencies and plugins are properly installed##. If you have not yet set up the environment, follow the steps below to ##install the required components##:
 
 ```bash
 mvn install -DskipTests
