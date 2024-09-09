@@ -8,7 +8,8 @@
 ## File Structure/Artifacts Description: 
 <details>
   <summary>Click to expand file structure explanations</summary>
-### **1. ast_generator**
+
+  ### **1. ast_generator**
 This folder contains the core functionality of CovSBOM. Below is a description of the key files:
 
 - **DeclaringTypeToDependencyResolver.java**:  
