@@ -151,7 +151,7 @@ To run CovSBOM and perform the analysis, use the following command under the pro
 ```bash
 java -jar CovSBOM.jar
 ```
-For a step-by-step guide, watch the [Tutorial Video](https://github.com/Yunzez/CovSBOM/blob/main/Tutorial/CovSBOM_Tutorial.mp4) to learn more.
+For a step-by-step guide, watch the Tutorial Video on [zenodo](10.5281/zenodo.13737434) to learn more.
 
 Here's a refined version of your console output explanation:
 
