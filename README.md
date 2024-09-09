@@ -120,8 +120,14 @@ Inferred path to pom.xml: Application/spark-master/pom.xml
 ```
 
 ## Prerequisites
+CovSBOM requires Java 8 or higher. To check your installed Java version, run:
+
+```bash
+java -version
+```
 
 Before you begin using CovSBOM, ensure that your environment is set up with the necessary Java libraries. The tool **assumes that all dependencies and plugins are properly installed**. If you have not yet set up the environment, follow the steps below to **install the required components**:
+
 
 ```bash
 mvn clean install -DskipTests
