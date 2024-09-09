@@ -135,7 +135,6 @@ public class DependencyAnalyzer {
 
         for (DependencyNode dependency : doneBuffer.getKeys()) {
             if (dependency.toShortString().contains("org.apache.httpcomponents:httpclient")) {
-                System.out.println("doneBuffer for org.apache.httpcomponents:httpclient");
                 doneBuffer.getMethodCalls(dependency).forEach(methodSignatureKey -> {
                     if (methodSignatureKey.getDeclaringType().contains("org.apache.http.util.TextUtils")) {
                         System.out.println("found org.apache.http.util.TextUtils type function marked as done");

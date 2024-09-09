@@ -15,6 +15,7 @@ def insert_analysis_to_sbom(sbom_path, analysis_path):
         sbom['externalReferences'] = []
     
     # Add the analysis data to 'externalReferences'
+    
     sbom['externalReferences'].append({
         "type": "other",
         "comment": "CovSBOM_Analysis results",
