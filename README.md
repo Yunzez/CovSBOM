@@ -40,7 +40,7 @@ We use [Spark - a tiny web framework for Java 8](https://github.com/perwendel/sp
 ```bash
 // install required packages first
 cd Application/spark-master
-mvn install -DskipTests
+mvn clean install -DskipTests
 mvn dependency:sources
 
 // back to project main folder
@@ -60,7 +60,7 @@ Inferred path to pom.xml: Application/spark-master/pom.xml
 Before you begin using CovSBOM, ensure that your environment is set up with the necessary Java libraries. The tool ##assumes that all dependencies and plugins are properly installed##. If you have not yet set up the environment, follow the steps below to ##install the required components##:
 
 ```bash
-mvn install -DskipTests
+mvn clean install -DskipTests
 mvn dependency:sources
 ```
 
