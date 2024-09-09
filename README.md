@@ -32,7 +32,6 @@ this folder contains the required scripts to insert analysis into SBOM for both 
 ### **4. Analysis_scan**
 this folder contains the required scripts to scan for vulnerabilities after SBOM integration.
 
----
 
 ## Example Project:
 We use [Spark - a tiny web framework for Java 8](https://github.com/perwendel/spark) for example project, if you run CovSBOM and enter no source file, it would default to this example application for review purposes. 
@@ -89,11 +88,9 @@ For a step-by-step guide, watch the [Tutorial Video](https://github.com/Yunzez/C
 
 Here's a refined version of your console output explanation:
 
----
+
 
 ## Console Output Explanation
-
-At the end of CovSBOM's execution, there are a few key outputs that are important to understand:
 
 - **`<Package name> : []`**  
   This output shows the method call loading buffer for a specific package. An empty buffer (`[]`) indicates that all methods within the package were successfully resolved. If the buffer is not empty, it will display unresolved type names within that package, meaning that CovSBOM could not resolve or find certain files in that package.
