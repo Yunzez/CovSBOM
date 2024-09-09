@@ -153,7 +153,16 @@ For a step-by-step guide, watch the [Tutorial Video](https://github.com/Yunzez/C
 
 Here's a refined version of your console output explanation:
 
+## Produce CovSBOM.jar
+to get CovSBOM.jar, compile the ast_generator project
+```bash
+cd ast_generator
+mvn clean package
 
+// we can rename the snapshot and move it to the project folder
+cd target
+mv CovSBOM-1.0-SNAPSHOT.jar ../../CovSBOM.jar
+```
 
 ## Console Output Explanation
 
