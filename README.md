@@ -2,7 +2,7 @@
 
 <img src="logo.png" width="200">
 
-**CovSBOM** is a robust static analysis tool designed to enhance Software Bill of Materials (SBOM) by integrating detailed static analysis to reduce false positive rates in vulnerability scans. This tool leverages and extends existing SBOM capabilities to provide deeper insights into code dependencies and security vulnerabilities. You can view this quick [tutorial](https://drive.google.com/file/d/1RQ8fvevT_mb7EY4UntxKEB81qBLRJGxr/view?usp=drive_link) to see how CovSBOM works or follow the documentation below.
+**CovSBOM** is a static analysis tool designed to enhance Software Bill of Materials (SBOM) by integrating detailed static analysis to reduce false positive rates in vulnerability scans. This tool leverages and extends existing SBOM capabilities to provide deeper insights into code dependencies and security vulnerabilities. You can view this quick [tutorial](https://drive.google.com/file/d/1RQ8fvevT_mb7EY4UntxKEB81qBLRJGxr/view?usp=drive_link) to see how CovSBOM works or follow the documentation below.
 
 
 ## File Structure/Artifacts Description: 
