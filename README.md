@@ -8,29 +8,93 @@
 ## File Structure: 
 
 ### **1. ast_generator**
-This folder contains the core functionality of CovSBOM, which is responsible for multiple key processes:
-- **AST Generation**: Generates abstract syntax trees (ASTs) from the analyzed code.
-- **Decompiling Third-Party Libraries**: Handles the decompilation process for third-party libraries.
-- **Source Analysis**: Performs static analysis on the source code to detect vulnerabilities.
-- **CovSBOM Output**: Produces the main CovSBOM output, which integrates into the SBOM.
+This folder contains the core functionality of CovSBOM. Below is a description of the key files:
+
+- **DeclaringTypeToDependencyResolver.java**:  
+  Responsible for mapping declaring types in the source code to their corresponding third-party dependencies, helping to resolve which external libraries are being used.
+
+- **Dependency.java**:  
+  Defines a `Dependency` class that represents a third-party library or component in the project. This class likely contains attributes like group ID, artifact ID, and version for each dependency.
+
+- **DependencyAnalyzer.java**:  
+  This file contains logic to analyze the dependencies of the target project. It would scan the project's code to identify and classify the external libraries being used.
+
+- **DependencyNode.java**:  
+  Defines a node in a dependency tree, representing a single dependency and its relationship to other dependencies. Useful for constructing hierarchical relationships between libraries.
+
+- **DependencyProcessor.java**:  
+  It is responsible for processing dependencies in a Maven project, generating Abstract Syntax Trees (ASTs) for each dependency, and serializing these ASTs into JSON format.
+  
+- **DirectoryProcessor.java**:  
+  Handles the processing of directories in the target project.
+  
+- **FunctionSignatureExtractor.java**:  
+  Extracts method signatures and third-party import statements from a given Java `CompilationUnit` (AST). It uses a visitor pattern to traverse the AST and identify method calls and imports, checking them against a  dependency map to determine if they are third-party.
+  
+- **Main.java**:  
+  The entry point for the application, orchestrating the various analysis tasks. This file coordinates AST generation, dependency analysis, and output generation.
+
+- **MavenDependencyTree.java**:  
+  Represents the Maven dependency tree of the project. This file parses Maven’s `pom.xml` to identify all direct and transitive dependencies of the project.
+
+- **mavenDependencyTreeRunner.sh**:  
+  A shell script used to run the Maven dependency tree generation process. This script automates the process of obtaining and analyzing the Maven dependency structure.
+
+- **MavenEvaluator.java**:  
+  Provides methods for evaluating Maven properties and retrieving information about a Maven project.
+
+- **MavenModuleParser.java**:  
+  Parses Maven modules in multi-module projects. It ensures that each module’s dependencies and relationships are correctly identified for comprehensive analysis.
+
+- **MethodCallBuffer.java**:  
+  A buffer that temporarily holds method calls extracted during the analysis process. It ensures efficient processing of method call data before it’s written to output files.
+
+- **MethodCallEntry.java**:  
+  Represents a single method call entry, storing information about the method being called, the declaring class, and any associated dependencies.
+
+- **MethodCallReporter.java**:  
+  Provides methods for adding method call entries to the report, setting the package name of the project, adding declaration information for methods, generating JSON reports, and retrieving information from the report.
+  
+- **MethodDeclarationInfo.java**:  
+  Holds metadata about method declarations in the source code. This class likely stores details about the method’s signature, return type, and the declaring class.
+
+- **MethodSignatureKey.java**:  
+  A utility class used to create unique keys for method signatures. These keys help in tracking method calls and ensuring that methods are accurately mapped to third-party libraries.
+
+- **Settings.java**:  
+  Contains configuration settings for the analysis process.
+  
+- **SourceJarAnalyzer.java**:  
+  Analyzes JAR files containing the source code for third-party libraries. This is crucial for decompiling the JARs and extracting method calls or dependencies from the libraries themselves.
+
+- **Utils.java**:  
+  A utility class providing common functions and helpers used throughout the analysis.
+---
+
+This explanation should give you a solid base, but feel free to modify the descriptions based on the specific functionality of each file. Let me know if you need further refinements!
 
 ### **2. CovSBOM_output/analysis**
-This folder stores the output files generated for each project. For each project, you will find three key files:
+This folder stores the output files generated for each project after analysis. For each project, you will find three key files:
 
-- **method_calls.json**: 
-  - This file contains a record of all unique method calls to third-party libraries before decompilation. It helps track which methods in the target program invoke external libraries.
-
-- **final_report_file_based.json**: 
-  - This file provides detailed call stack information to third-party libraries on a per-file basis. It may contain duplicates when different files in the target program call the same method.
-
-- **final_report_package_base.json**: 
-  - This file eliminates duplicates by organizing the call stack data based on third-party library packages. It only provides information for packages that the target program reaches, offering a streamlined view of method calls to external libraries.
+- **method_calls.json**:  
+  - This file contains a record of all unique method calls to third-party libraries before decompilation. It tracks methods in the target program that invoke external libraries, providing insight into how third-party libraries are used by the program. Users can review this file to understand which external methods are called in the project's code.
+  
+- **final_report_file_based.json**:  
+  - This file provides detailed call stack information to third-party libraries on a per-file basis. Since different files in the program may call the same method, this report may contain duplicates. Users can refer to this file for a file-specific breakdown of third-party library interactions.
+  
+- **final_report_package_base.json**:  
+  - This file consolidates the call stack data by removing duplicates and organizing the results by third-party library package. It presents a more streamlined view of method calls to external libraries, focusing on packages instead of individual files. This report gives users a clearer picture of which external packages are used by the program.
 
 ### **3. SBOM_Integration**
-this folder contains the required scripts to insert analysis into SBOM for both CDX and SPDX format.
+This folder contains the necessary scripts for inserting the analysis results into a Software Bill of Materials (SBOM). Both CycloneDX (CDX) and SPDX formats are supported. Users should run these scripts after the analysis is complete to update their SBOM with the analysis results.
+
+- **cdx.py**: A script that inserts CovSBOM analysis into a CycloneDX-formatted SBOM.
+- **spdx.py**: A script for integrating analysis results into an SPDX-formatted SBOM.
 
 ### **4. Analysis_scan**
-this folder contains the required scripts to scan for vulnerabilities after SBOM integration.
+This folder contains scripts that scan for vulnerabilities after SBOM integration. Once the SBOM has been updated with analysis results, users can use the following scripts to perform vulnerability scans on the integrated SBOM file:
+
+- **scanCovSBOMAnalysis.py**: Scans the SBOM for vulnerabilities using the integrated analysis results. This script requires a JSON file as input, which contains known vulnerabilities (e.g., CVE IDs).
 
 
 ## Example Project:
